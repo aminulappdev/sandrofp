@@ -4,6 +4,10 @@ class AppColors {
   static const Color primaryBackgroundColor = Color(0xffF5F1EB);
   static const Color elevatedButtonColor = Color(0xff6CC7FE);
   static const Color iconButtonThemeColor = Color(0xffA074A0);
+  static const Color yellowColor = Color(0xffFFDD3A);
+  static const Color circleIconColor = Color(0xffF3F3F5);
+  static const Color greenColor = Color(0xff367F55);
+
   static List<Color> gradiantColors = [
     Color(0xff7C45CB),
     Color(0xFF7B3DD3),

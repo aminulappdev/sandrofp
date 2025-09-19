@@ -1,33 +1,46 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sandrofp/app/res/custom_style/custom_size.dart';
+import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
+import 'package:sandrofp/app/res/custom_style/custom_size.dart' ;
+import 'package:sandrofp/gen/assets.gen.dart';
 
-class AuthHeader extends StatelessWidget {
+class AuthHeaderWidget extends StatelessWidget {
   final String title;
   final String subtitle;
-  const AuthHeader({super.key, required this.title, required this.subtitle});
+
+  const AuthHeaderWidget({
+    super.key,
+    required this.title,
+    required this.subtitle,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: GoogleFonts.poppins(
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
-          ),
-          textAlign: TextAlign.center,
+        Row(
+          children: [
+            CircleIconWidget(
+              onTap: () {},
+              imagePath: Assets.images.arrowBack.path,
+            ),
+            widthBox10,
+            Text(
+              title,
+              style: GoogleFonts.poppins(
+                fontSize: 32,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
+          ],
         ),
-        heightBox5,
+        heightBox10,
         Text(
           subtitle,
           style: GoogleFonts.poppins(
-            fontSize: 12,
+            fontSize: 14,
             fontWeight: FontWeight.w400,
             color: Colors.black,
           ),

@@ -1,7 +1,11 @@
 import 'package:crash_safe_image/crash_safe_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sandrofp/app/modules/onboarding/views/onboarding_02.dart';
+import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
@@ -30,7 +34,7 @@ class _OnboardingScreen01State extends State<OnboardingScreen01> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Container(
-              height: 428,
+              height: 570,
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -45,6 +49,8 @@ class _OnboardingScreen01State extends State<OnboardingScreen01> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     heightBox24,
                     CrashSafeImage(
@@ -80,12 +86,18 @@ class _OnboardingScreen01State extends State<OnboardingScreen01> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    heightBox20,
+                    CustomExpanded(),
                     CustomElevatedButton(
                       title: 'Get Started',
-                      color: Colors.amber,
-                      onPress: () {},
+                      color: AppColors.yellowColor,
+                      onPress: () {
+                        Get.to(
+                          () => OnboardingScreen02(),
+                          transition: Transition.rightToLeft, // Animation type
+                        );
+                      },
                     ),
+                    heightBox50,
                   ],
                 ),
               ),

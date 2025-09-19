@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
+import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 
 class AgreeConditionCheck extends StatefulWidget {
   const AgreeConditionCheck({super.key, required this.onChanged});
@@ -50,29 +50,9 @@ class _AgreeConditionCheckState extends State<AgreeConditionCheck> {
                   text: 'Terms & Conditions ',
                   style: TextStyle(
                     decoration: TextDecoration.underline,
-                    color: Colors.blue,
+                    color: AppColors.greenColor,
                   ),
                 ),
-                // TextSpan(
-                //   text: 'and ',
-                //   style: TextStyle(color: Colors.black),
-                // ),
-                // TextSpan(
-                //   recognizer: TapGestureRecognizer()
-                //     ..onTap = () {
-                //       // Navigator.pushNamed(context, InfoScreen.routeName,
-                //       //     arguments: {
-                //       //       'appBarTitle': 'Privacy and Policies',
-                //       //       'data':
-                //       //           '${controller.contentlist?[0].privacyPolicy}'
-                //       //     });
-                //     },
-                //   text: 'Privacy Policy',
-                //   style: TextStyle(
-                //     decoration: TextDecoration.underline,
-                //     color: Colors.black,
-                //   ),
-                // ),
               ],
             ),
           ),

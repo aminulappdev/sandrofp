@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sandrofp/app/modules/common/views/onboarding_screen.dart';
 import 'package:sandrofp/app/modules/onboarding/views/onboarding_01.dart';
 import 'package:sandrofp/app/res/app_binder/controller_binder.dart';
 
@@ -34,7 +33,7 @@ class MyApp extends StatelessWidget {
         initialBinding: ControllerBinder(),
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
-          fontFamily: 'OpenSans',
+          fontFamily: 'Poppins',
           appBarTheme: const AppBarTheme(
             backgroundColor: Colors.transparent,
             elevation: 0,
