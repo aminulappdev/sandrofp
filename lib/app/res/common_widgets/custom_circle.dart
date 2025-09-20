@@ -7,7 +7,7 @@ class CircleIconWidget extends StatelessWidget {
   final double radius;
   final double iconRadius;
   final Color color;
-  final VoidCallback? onTap;
+  final VoidCallback onTap;
   const CircleIconWidget({
     super.key,
     required this.imagePath,

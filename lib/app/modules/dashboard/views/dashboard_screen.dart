@@ -1,8 +1,8 @@
-
 import 'package:circle_nav_bar/circle_nav_bar.dart';
 import 'package:crash_safe_image/crash_safe_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sandrofp/app/modules/home/views/home_screen.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
@@ -38,23 +38,48 @@ class _DashboardScreenState extends State<DashboardScreen> {
         activeIcons: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: CrashSafeImage(Assets.images.heart03.keyName, height: 20, width: 20,color: AppColors.greenColor),
+            child: CrashSafeImage(
+              Assets.images.heart03.keyName,
+              height: 20,
+              width: 20,
+              color: AppColors.greenColor,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: CrashSafeImage(Assets.images.sms.keyName, height: 20, width: 20, color: AppColors.greenColor),
+            child: CrashSafeImage(
+              Assets.images.sms.keyName,
+              height: 20,
+              width: 20,
+              color: AppColors.greenColor,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: CrashSafeImage(Assets.images.home.keyName, height: 20, width: 20, color: AppColors.greenColor),
+            child: CrashSafeImage(
+              Assets.images.home.keyName,
+              height: 20,
+              width: 20,
+              color: AppColors.greenColor,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: CrashSafeImage(Assets.images.settings.keyName, height: 20, width: 20, color: AppColors.greenColor),
+            child: CrashSafeImage(
+              Assets.images.settings.keyName,
+              height: 20,
+              width: 20,
+              color: AppColors.greenColor,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(1.0),
-            child: CrashSafeImage(Assets.images.person02.keyName, height: 20, width: 20, color: AppColors.greenColor),
+            child: CrashSafeImage(
+              Assets.images.person02.keyName,
+              height: 20,
+              width: 20,
+              color: AppColors.greenColor,
+            ),
           ),
         ],
 
@@ -85,7 +110,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           Column(
             children: [
-              CrashSafeImage(Assets.images.home.keyName, height: 20, width: 20,color: Colors.white,),
+              CrashSafeImage(
+                Assets.images.home.keyName,
+                height: 20,
+                width: 20,
+                color: Colors.white,
+              ),
               heightBox4,
               Text(
                 "Home",
@@ -123,11 +153,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ],
           ),
         ],
-        // gradient: LinearGradient(
-        //   begin: Alignment.centerLeft,
-        //   end: Alignment.centerRight,
-        //   colors: [Color(0xff204C33), Color(0xff132C1E)],
-        // ),
         circleColor: AppColors.yellowColor,
         color: Color(0xff204C33),
         height: 100,
@@ -137,37 +162,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
           tabIndex = index;
           pageController.jumpToPage(tabIndex);
         },
-        // padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
         cornerRadius: const BorderRadius.only(
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),
           bottomRight: Radius.circular(0),
           bottomLeft: Radius.circular(0),
         ),
-       // shadowColor: Colors.deepPurple,
         elevation: 0,
       ),
       body: PageView(
         controller: pageController,
-        onPageChanged: (v) {
-          tabIndex = v;
-        },
+        physics: NeverScrollableScrollPhysics(), // এই line টা add করুন
         children: [
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            color: Colors.red,
-          ),
+          HomeScreen(),
           Container(
             width: double.infinity,
             height: double.infinity,
             color: Colors.green,
           ),
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            color: Colors.blue,
-          ),
+          HomeScreen(),
           Container(
             width: double.infinity,
             height: double.infinity,

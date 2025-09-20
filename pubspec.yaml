@@ -61,6 +61,7 @@ dependencies:
   crash_safe_image: ^0.2.0
   animated_bottom_navigation_bar: ^1.4.0
   circle_nav_bar: ^2.2.0
+  flutter_card_swiper: ^7.0.2
 
 dev_dependencies:
   flutter_test:
