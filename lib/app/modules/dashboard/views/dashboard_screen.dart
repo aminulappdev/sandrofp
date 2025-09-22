@@ -2,6 +2,7 @@ import 'package:circle_nav_bar/circle_nav_bar.dart';
 import 'package:crash_safe_image/crash_safe_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sandrofp/app/modules/cart/views/cart_screen.dart';
 import 'package:sandrofp/app/modules/home/views/home_screen.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
@@ -175,11 +176,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         physics: NeverScrollableScrollPhysics(), // এই line টা add করুন
         children: [
           HomeScreen(),
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            color: Colors.green,
-          ),
+          CartScreen(),
           HomeScreen(),
           Container(
             width: double.infinity,

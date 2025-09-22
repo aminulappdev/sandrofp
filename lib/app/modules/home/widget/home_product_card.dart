@@ -201,7 +201,7 @@ class HomeProductCard extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: Color(0xffEBF2EE),
                               borderRadius: BorderRadius.circular(20),
-                            ),
+                            ), 
                             child: Center(
                               child: Text(
                                 '2km away',

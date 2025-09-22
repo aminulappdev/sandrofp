@@ -8,13 +8,14 @@ class CircleIconWidget extends StatelessWidget {
   final double iconRadius;
   final Color color;
   final VoidCallback onTap;
+  final Color? iconColor;
   const CircleIconWidget({
     super.key,
     required this.imagePath,
     this.radius = 17,
     this.color = AppColors.circleIconColor,
     required this.onTap,
-    this.iconRadius = 12,
+    this.iconRadius = 12, this.iconColor,
   });
 
   @override
@@ -24,7 +25,7 @@ class CircleIconWidget extends StatelessWidget {
       child: CircleAvatar(
         backgroundColor: color,
         radius: radius,
-        child: CrashSafeImage(imagePath, height: iconRadius, width: iconRadius),
+        child: CrashSafeImage(imagePath, height: iconRadius, width: iconRadius, color: iconColor,),
       ),
     );
   }

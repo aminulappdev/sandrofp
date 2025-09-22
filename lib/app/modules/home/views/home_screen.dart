@@ -3,6 +3,7 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sandrofp/app/modules/home/views/product_details_screen.dart';
 import 'package:sandrofp/app/modules/home/views/view_all_item_screen.dart';
 import 'package:sandrofp/app/modules/home/widget/category_header.dart';
 import 'package:sandrofp/app/modules/home/widget/category_image.dart';
@@ -22,11 +23,21 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     List<Widget> cards = [
-      HomeProductCard(onTap: () {  },),
-      HomeProductCard(onTap: () {
-        
-      },),
-      HomeProductCard(onTap: () {  },),
+      HomeProductCard(
+        onTap: () {
+          Get.to(ProductDetailsScreen());
+        },
+      ),
+      HomeProductCard(
+        onTap: () {
+          Get.to(ProductDetailsScreen());
+        },
+      ),
+      HomeProductCard(
+        onTap: () {
+          Get.to(ProductDetailsScreen());
+        },
+      ),
     ];
 
     return Scaffold(
@@ -127,9 +138,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     heightBox12,
 
-                    CategoryHeader(name: 'Matches products', onTap: () {
-                      Get.to(() => const ViewAllItemScreen());
-                    }),
+                    CategoryHeader(
+                      name: 'Matches products',
+                      onTap: () {
+                        Get.to(() => const ViewAllItemScreen());
+                      },
+                    ),
                     heightBox10,
                     SizedBox(
                       height: 550,
