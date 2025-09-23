@@ -8,6 +8,7 @@ import 'package:sandrofp/app/modules/home/widget/color_plate.dart';
 import 'package:sandrofp/app/modules/home/widget/feature_row.dart';
 import 'package:sandrofp/app/modules/home/widget/label_data.dart';
 import 'package:sandrofp/app/modules/home/widget/product_static_data.dart';
+import 'package:sandrofp/app/modules/others/views/exchange_history_screen.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
@@ -243,7 +244,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ),
 
                   Card(
-                    elevation: 2,
+                    elevation: 2, 
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
                         topRight: Radius.circular(20),
@@ -284,7 +285,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
                                 textColor: Colors.white,
                                 title: 'Exchange',
-                                onPress: () {},
+                                onPress: () {
+                                  Get.to(() => ExchangeHistoryScreen());
+                                },
                               ),
                             ),
                           ],

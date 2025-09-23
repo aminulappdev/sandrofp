@@ -9,6 +9,7 @@ import 'package:sandrofp/app/modules/home/widget/category_header.dart';
 import 'package:sandrofp/app/modules/home/widget/category_image.dart';
 import 'package:sandrofp/app/modules/home/widget/home_product_card.dart';
 import 'package:sandrofp/app/modules/home/widget/homepage_header.dart';
+import 'package:sandrofp/app/modules/product/views/upload_product_info_screen.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
@@ -30,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       HomeProductCard(
         onTap: () {
-          Get.to(ProductDetailsScreen());
+          Get.to(UploadProductInfoScreen());
         },
       ),
       HomeProductCard(

@@ -1,4 +1,3 @@
-
 import 'package:crash_safe_image/crash_safe_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,17 +5,13 @@ import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
 class StatusCard extends StatelessWidget {
-  const StatusCard({
-    super.key,
-  });
+  const StatusCard({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 1,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Container(
         height: 210,
         decoration: BoxDecoration(
@@ -28,12 +23,10 @@ class StatusCard extends StatelessWidget {
           child: Column(
             children: [
               Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Current Status',
@@ -53,7 +46,7 @@ class StatusCard extends StatelessWidget {
                       ),
                     ],
                   ),
-    
+
                   CircleAvatar(
                     backgroundColor: Color(0xffEBF2EE),
                     radius: 25,
@@ -67,8 +60,7 @@ class StatusCard extends StatelessWidget {
               ),
               heightBox20,
               Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     children: [
@@ -83,7 +75,7 @@ class StatusCard extends StatelessWidget {
                       ),
                       heightBox4,
                       SizedBox(
-                        width: 90,
+                        width: 85,
                         child: Text(
                           'You have Exchanged',
                           style: GoogleFonts.poppins(
@@ -96,7 +88,7 @@ class StatusCard extends StatelessWidget {
                       ),
                     ],
                   ),
-    
+                  FlowWidget(),
                   Column(
                     children: [
                       CircleAvatar(
@@ -110,7 +102,7 @@ class StatusCard extends StatelessWidget {
                       ),
                       heightBox4,
                       SizedBox(
-                        width: 90,
+                        width: 85,
                         child: Text(
                           'You have Exchanged',
                           style: GoogleFonts.poppins(
@@ -123,7 +115,8 @@ class StatusCard extends StatelessWidget {
                       ),
                     ],
                   ),
-    
+
+                  FlowWidget(),
                   Column(
                     children: [
                       CircleAvatar(
@@ -137,7 +130,7 @@ class StatusCard extends StatelessWidget {
                       ),
                       heightBox4,
                       SizedBox(
-                        width: 90,
+                        width: 85,
                         child: Text(
                           'You have Exchanged',
                           style: GoogleFonts.poppins(
@@ -156,6 +149,27 @@ class StatusCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class FlowWidget extends StatelessWidget {
+  const FlowWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(width: 50, height: 1, color: Color(0xffECECEC)),
+        Container(
+          width: 5,
+          height: 5,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Color(0xffEBF2EE),
+          ),
+        ),
+      ],
     );
   }
 }
