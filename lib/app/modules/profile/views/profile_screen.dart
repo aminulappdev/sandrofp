@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/home/widget/feature_row.dart';
 import 'package:sandrofp/app/modules/home/widget/home_product_card.dart';
 import 'package:sandrofp/app/modules/home/widget/label_data.dart';
+import 'package:sandrofp/app/modules/profile/widgets/comment_widget.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
@@ -37,13 +38,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Stack(
                     children: [
                       CircleAvatar(
-                        radius: 120,
+                        radius: 110,
                         backgroundColor: Color(0xffF3F3F5),
                         child: CircleAvatar(
-                          radius: 112,
+                          radius: 102,
                           backgroundColor: Colors.white,
                           child: CircleAvatar(
-                            radius: 104,
+                            radius: 94,
                             backgroundImage: AssetImage(
                               Assets.images.onboarding01.keyName,
                             ),
@@ -107,7 +108,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   CrashSafeImage(Assets.images.checked.keyName, height: 30),
                 ],
               ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -262,16 +262,78 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               heightBox10,
-              Text(
-                'Clothing items',
-                style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Clothing items',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ),
+                  heightBox10,
+                  SizedBox(
+                    height: 550, // Added height to constrain the ListView
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return SizedBox(
+                          width:
+                              300, // Added width to constrain HomeProductCard
+                          child: HomeProductCard(onTap: () {}),
+                        );
+                      },
+                    ),
+                  ),
+
+                  heightBox10,
+                  Text(
+                    'Clothing items',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ),
+                  heightBox10,
+                  SizedBox(
+                    height: 550, // Added height to constrain the ListView
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return SizedBox(
+                          width:
+                              300, // Added width to constrain HomeProductCard
+                          child: HomeProductCard(onTap: () {}),
+                        );
+                      },
+                    ),
+                  ),
+
+                  heightBox10,
+                  Text(
+                    'Client’s feedback',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ),
+                  heightBox10,
+                  CommentSection(),
+                  heightBox10,
+                  CommentSection(),
+                  
+                ],
               ),
-              heightBox10,
-              HomeProductCard(onTap: () {}),
+              heightBox100,
+              heightBox100,
               heightBox100,
             ],
           ),

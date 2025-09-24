@@ -3,6 +3,7 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sandrofp/app/modules/home/views/notification_screen.dart';
 import 'package:sandrofp/app/modules/home/views/product_details_screen.dart';
 import 'package:sandrofp/app/modules/home/views/view_all_item_screen.dart';
 import 'package:sandrofp/app/modules/home/widget/category_header.dart';
@@ -42,10 +43,11 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
 
     return Scaffold(
+      
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: [ 
             Container(
               height: 340,
               width: double.infinity,
@@ -64,7 +66,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 imagePath: Assets.images.onboarding01.keyName,
                 name: 'Aminul',
                 ammount: '5000',
-                notificationAction: () {},
+                notificationAction: () {
+                  Get.to(NotificationScreen());
+                },
                 settingsAction: () {},
                 arrowAction: () {},
               ),

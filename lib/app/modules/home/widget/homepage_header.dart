@@ -190,7 +190,7 @@ class HomepageHeader extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
+            ), 
           ),
           heightBox20,
           

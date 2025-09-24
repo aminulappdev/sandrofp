@@ -7,6 +7,7 @@ class AppColors {
   static const Color yellowColor = Color(0xffFFDD3A);
   static const Color circleIconColor = Color(0xffF3F3F5);
   static const Color greenColor = Color(0xff367F55);
+  static const Color profileData = Color(0xff595959);
 
   static List<Color> gradiantColors = [
     Color(0xff7C45CB),
