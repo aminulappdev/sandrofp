@@ -5,6 +5,9 @@ import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/exchange/views/exchange_screen.dart';
+import 'package:sandrofp/app/modules/profile/views/profile_screen.dart';
+import 'package:sandrofp/app/modules/settings/views/change_password_screen.dart';
+import 'package:sandrofp/app/modules/settings/views/content_screen.dart';
 import 'package:sandrofp/app/modules/settings/views/exchange_history_screen.dart';
 
 import 'package:sandrofp/app/modules/profile/views/report_screen.dart';
@@ -13,13 +16,14 @@ import 'package:sandrofp/app/modules/profile/widgets/settings_list_widget.dart';
 import 'package:sandrofp/app/modules/settings/views/token_exchange_screen.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
+import 'package:sandrofp/app/res/common_widgets/custom_dialog.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
 class SettingsScreen extends StatefulWidget {
   //final ProfileData? profileData;
   const SettingsScreen({super.key});
- 
+
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
@@ -35,14 +39,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Profile', leading: Container(), isBack: false,),
+      appBar: CustomAppBar(
+        title: 'Profile',
+        leading: Container(),
+        isBack: false,
+      ),
       body: Padding(
         padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SettingsHeader(imagePath: '', name: 'Md Aminul', onTap: () {}),
+              SettingsHeader(
+                imagePath:
+                    'https://fastly.picsum.photos/id/1/200/300.jpg?hmac=jH5bDkLr6Tgy3oAg5khKCHeunZMHq0ehBZr6vGifPLY',
+                name: 'Md Aminul',
+                onTap: () {
+                  Get.to(() => const ProfileScreen());
+                },
+              ),
               heightBox30,
               Text(
                 'Other options',
@@ -68,7 +83,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     iconData: Assets.images.exchange.keyName,
                     name: 'Token exchange',
                     onTap: () {
-                      Get.to(()=> const TokenExchangeScreen());
+                      Get.to(() => const TokenExchangeScreen());
                     },
                   ),
                   heightBox16,
@@ -76,28 +91,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     iconData: Assets.images.exHistory.keyName,
                     name: 'Exchange History',
                     onTap: () {
-                       Get.to(()=> const ExchangeHistoryScreen());
+                      Get.to(() => const ExchangeHistoryScreen());
                     },
                   ),
                   heightBox16,
                   SettingItemList(
                     iconData: Assets.images.lock.keyName,
                     name: 'Change Password',
-                    onTap: () {},
+                    onTap: () {
+                      Get.to(() => const ChangePasswordScreen(email: ''));
+                    },
                   ),
                   heightBox16,
                   SettingItemList(
                     iconData: Assets.images.help.keyName,
                     name: 'Help & Support',
                     onTap: () {
-                      Get.to(const ReportScreen());
+                      Get.to(const ContentScreen());
                     },
                   ),
                   heightBox16,
                   SettingItemList(
                     iconData: Assets.images.terms.keyName,
                     name: 'Terms of Service',
-                    onTap: () {},
+                    onTap: () {
+                      Get.to(const ContentScreen());
+                    },
                   ),
                   heightBox16,
 
@@ -112,8 +131,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   SettingItemList(
                     iconData: Assets.images.logOut.keyName,
                     name: 'Logout',
-                    onTap: () {},
+                    onTap: () {
+                      _showLogoutDialog(context);
+                    },
                   ),
+                  heightBox100,
+                  heightBox100,
                 ],
               ),
             ],
@@ -123,27 +146,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  // void _showLogoutDialog(BuildContext context) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return CustomDialog(
-  //         yesText: 'Yes',
-  //         noText: 'No',
-  //         noOntap: () {
-  //           Navigator.pop(context);
-  //         },
-  //         yesOntap: () {
-  //           StorageUtil.deleteData(StorageUtil.userAccessToken);
-  //           Get.offAll(SignInScreen());
-  //         },
-  //         iconData: Icons.delete,
-  //         subtitle: '',
-  //         title: 'Do you want to log out this profile?',
-  //       );
-  //     },
-  //   );
-  // }
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomDialog(
+          yesText: 'Yes',
+          noText: 'No',
+          noOntap: () {
+            Navigator.pop(context);
+          },
+          yesOntap: () {},
+          iconData: Icons.delete,
+          subtitle: '',
+          title: 'Do you want to log out this profile?',
+        );
+      },
+    );
+  }
 
   // void _showDeleteAccountDialog(BuildContext context) {
   //   showDialog(

@@ -3,6 +3,7 @@ import 'package:crash_safe_image/crash_safe_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/cart/views/cart_screen.dart';
+import 'package:sandrofp/app/modules/cart/views/my_product_card_page.dart';
 import 'package:sandrofp/app/modules/chat/views/chat_screen.dart';
 import 'package:sandrofp/app/modules/home/views/home_screen.dart';
 import 'package:sandrofp/app/modules/profile/views/profile_screen.dart';
@@ -159,7 +160,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ],
         circleColor: AppColors.yellowColor,
         color: Color(0xff204C33),
-        height: 100,
+        height: 85,
         circleWidth: 70,
         activeIndex: tabIndex,
         onTap: (index) {
@@ -178,7 +179,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         controller: pageController,
         physics: NeverScrollableScrollPhysics(), // এই line টা add করুন
         children: [
-          HomeScreen(),
+          MyProductCardScreen(),
           ChatListScreen(),
           HomeScreen(),
           SettingsScreen(),

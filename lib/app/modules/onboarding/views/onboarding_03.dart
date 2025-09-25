@@ -20,6 +20,8 @@ class OnboardingScreen03 extends StatefulWidget {
 class _OnboardingScreen03State extends State<OnboardingScreen03> {
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -37,7 +39,7 @@ class _OnboardingScreen03State extends State<OnboardingScreen03> {
               clipBehavior: Clip.none,
               children: [
                 Container(
-                  height: 500,
+                  height: height * 0.50,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -77,7 +79,7 @@ class _OnboardingScreen03State extends State<OnboardingScreen03> {
                             color: Colors.white,
                           ),
                         ),
-                        heightBox40,
+                        heightBox30,
                         SizedBox(
                           child: Text(
                             'Saving up to 15% cost on Satroca.',
@@ -90,6 +92,7 @@ class _OnboardingScreen03State extends State<OnboardingScreen03> {
                         ),
                         CustomExpanded(),
                         CustomElevatedButton(
+                          textColor: Colors.black,
                           title: 'Next',
                           color: AppColors.yellowColor,
                           onPress: () {
@@ -102,10 +105,10 @@ class _OnboardingScreen03State extends State<OnboardingScreen03> {
                   ),
                 ),
 
-                Positioned(left: 20, top: -130, child: InfoWidget()),
+                Positioned(left: 20, top: -80, child: InfoWidget()),
                 Positioned(
                   left: 50,
-                  top: -220,
+                  top: -160,
                   child: Opacity(opacity: 0.4, child: InfoWidget()),
                 ),
               ],

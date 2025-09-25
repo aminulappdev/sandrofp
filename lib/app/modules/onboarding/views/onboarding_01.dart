@@ -20,6 +20,8 @@ class OnboardingScreen01 extends StatefulWidget {
 class _OnboardingScreen01State extends State<OnboardingScreen01> {
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -34,7 +36,7 @@ class _OnboardingScreen01State extends State<OnboardingScreen01> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Container(
-              height: 570,
+              height: height * 0.6,
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -64,7 +66,7 @@ class _OnboardingScreen01State extends State<OnboardingScreen01> {
                       width: 186,
                       height: 46,
                     ),
-                    heightBox24,
+                    heightBox10,
                     SizedBox(
                       child: Text(
                         'Swap your product get your more vibe',
@@ -88,6 +90,7 @@ class _OnboardingScreen01State extends State<OnboardingScreen01> {
                     ),
                     CustomExpanded(),
                     CustomElevatedButton(
+                      textColor: Colors.black,
                       title: 'Get Started',
                       color: AppColors.yellowColor,
                       onPress: () {
@@ -97,7 +100,7 @@ class _OnboardingScreen01State extends State<OnboardingScreen01> {
                         );
                       },
                     ),
-                    heightBox50,
+                    heightBox30,
                   ],
                 ),
               ),

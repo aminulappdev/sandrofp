@@ -20,6 +20,8 @@ class OnboardingScreen02 extends StatefulWidget {
 class _OnboardingScreen02State extends State<OnboardingScreen02> {
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -37,7 +39,7 @@ class _OnboardingScreen02State extends State<OnboardingScreen02> {
               clipBehavior: Clip.none,
               children: [
                 Container(
-                  height: 520,
+                  height: height * 0.55,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -81,6 +83,7 @@ class _OnboardingScreen02State extends State<OnboardingScreen02> {
                         ),                  
                         CustomExpanded(),
                         CustomElevatedButton(
+                          textColor: Colors.black,
                           title: 'Next',
                           color: AppColors.yellowColor,
                           onPress: () {
@@ -93,7 +96,7 @@ class _OnboardingScreen02State extends State<OnboardingScreen02> {
                   ),
                 ),
 
-                Positioned(left: 100, top: -35, child: InfoWidget()),
+                Positioned(left: width * 0.18, top: -35, child: InfoWidget()),
               ],
             ),
           ],

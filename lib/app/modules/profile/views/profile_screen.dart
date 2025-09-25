@@ -1,9 +1,12 @@
 import 'package:crash_safe_image/crash_safe_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/home/widget/feature_row.dart';
 import 'package:sandrofp/app/modules/home/widget/home_product_card.dart';
 import 'package:sandrofp/app/modules/home/widget/label_data.dart';
+import 'package:sandrofp/app/modules/profile/views/edit_profile_screen.dart';
 import 'package:sandrofp/app/modules/profile/widgets/comment_widget.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
@@ -133,7 +136,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
               heightBox10,
-              CustomElevatedButton(title: 'View Profile', onPress: () {}),
+              CustomElevatedButton(title: 'Edit Profile', onPress: () {
+                Get.to(EditProfileScreen());
+              }),
               heightBox20,
               Container(
                 width: double.infinity,
@@ -338,7 +343,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
           ),
         ),
-      ),
+      ), 
     );
   }
 }

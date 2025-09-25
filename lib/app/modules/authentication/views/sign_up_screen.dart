@@ -5,7 +5,8 @@ import 'package:sandrofp/app/modules/authentication/widget/agree_condition_widge
 import 'package:sandrofp/app/modules/authentication/widget/auth_header_widget.dart';
 import 'package:sandrofp/app/modules/authentication/widget/label_name_widget.dart';
 import 'package:sandrofp/app/modules/authentication/widget/liner_widger.dart';
-import 'package:sandrofp/app/modules/authentication/widget/sign_up_widhet.dart';
+import 'package:sandrofp/app/modules/authentication/widget/sign_in_widget.dart';
+import 'package:sandrofp/app/modules/authentication/widget/sign_up_widget.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
@@ -140,11 +141,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     heightBox10,
                     AgreeConditionCheck(onChanged: (bool value) {}),
                     heightBox10,
-                    CustomElevatedButton(title: 'Sign up', onPress: () {
-                      Get.to(() => const OtpVerifyScreen(email: '', isVerify: false,));
-                    }),
+                    CustomElevatedButton(
+                      title: 'Sign up',
+                      onPress: () {
+                        Get.to(
+                          () =>
+                              const OtpVerifyScreen(email: '', isVerify: false),
+                        );
+                      },
+                    ),
                     heightBox10,
-                    Liner(title: 'Continue'), 
+                    Liner(title: 'Continue'),
                     heightBox10,
                     CustomElevatedButton(
                       color: Colors.transparent,
@@ -155,10 +162,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       onPress: () {},
                     ),
                     heightBox20,
-                   
-                  
-                    Center(child: SignUpWidget()),
 
+                    Center(child: SignInWidget()),
                   ],
                 ),
               ),
