@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sandrofp/app/modules/others/views/completed_history.dart';
-import 'package:sandrofp/app/modules/others/views/declined_history.dart';
-import 'package:sandrofp/app/modules/others/views/pending_history.dart';
+import 'package:sandrofp/app/modules/settings/views/all_history/completed_history.dart';
+import 'package:sandrofp/app/modules/settings/views/all_history/declined_history.dart';
+import 'package:sandrofp/app/modules/settings/views/all_history/pending_history.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
@@ -19,8 +19,6 @@ class _ExchangeHistoryScreenState extends State<ExchangeHistoryScreen> {
   int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
-    
-
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Exchange History',
@@ -61,16 +59,18 @@ class _ExchangeHistoryScreenState extends State<ExchangeHistoryScreen> {
                       Text(
                         'Completed',
                         style: GoogleFonts.poppins(
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.w600,
-                          color: selectedIndex == 0 ? const Color.fromARGB(255, 32, 71, 48) : const Color.fromARGB(255, 0, 0, 0),
+                          color: selectedIndex == 0
+                              ? const Color.fromARGB(255, 32, 71, 48)
+                              : const Color.fromARGB(255, 0, 0, 0),
                         ),
                       ),
                       heightBox4,
                       selectedIndex == 0
                           ? Container(
                               height: 1,
-                              width: 100,
+                              width: 90,
                               color: const Color.fromARGB(255, 32, 71, 48),
                             )
                           : Container(),
@@ -88,16 +88,18 @@ class _ExchangeHistoryScreenState extends State<ExchangeHistoryScreen> {
                       Text(
                         'Pending',
                         style: GoogleFonts.poppins(
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.w600,
-                           color: selectedIndex == 1 ? const Color.fromARGB(255, 32, 71, 48) : const Color.fromARGB(255, 0, 0, 0),
+                          color: selectedIndex == 1
+                              ? const Color.fromARGB(255, 32, 71, 48)
+                              : const Color.fromARGB(255, 0, 0, 0),
                         ),
                       ),
                       heightBox4,
                       selectedIndex == 1
                           ? Container(
                               height: 1,
-                              width: 70,
+                              width: 60,
                               color: const Color.fromARGB(255, 32, 71, 48),
                             )
                           : Container(),
@@ -115,16 +117,18 @@ class _ExchangeHistoryScreenState extends State<ExchangeHistoryScreen> {
                       Text(
                         'Declined',
                         style: GoogleFonts.poppins(
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.w600,
-                           color: selectedIndex == 2 ? const Color.fromARGB(255, 32, 71, 48) : const Color.fromARGB(255, 0, 0, 0),
+                          color: selectedIndex == 2
+                              ? const Color.fromARGB(255, 32, 71, 48)
+                              : const Color.fromARGB(255, 0, 0, 0),
                         ),
                       ),
                       heightBox4,
                       selectedIndex == 2
                           ? Container(
                               height: 1,
-                              width: 80,
+                              width: 70,
                               color: const Color.fromARGB(255, 32, 71, 48),
                             )
                           : Container(),

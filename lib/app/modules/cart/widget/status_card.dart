@@ -62,93 +62,51 @@ class StatusCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Color(0xffEBF2EE),
-                        radius: 25,
-                        child: CrashSafeImage(
-                          Assets.images.group02.keyName,
-                          height: 20,
-                          width: 20,
-                        ),
-                      ),
-                      heightBox4,
-                      SizedBox(
-                        width: 85,
-                        child: Text(
-                          'You have Exchanged',
-                          style: GoogleFonts.poppins(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
+                  StageWidget(),
                   FlowWidget(),
-                  Column(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Color(0xffEBF2EE),
-                        radius: 25,
-                        child: CrashSafeImage(
-                          Assets.images.group02.keyName,
-                          height: 20,
-                          width: 20,
-                        ),
-                      ),
-                      heightBox4,
-                      SizedBox(
-                        width: 85,
-                        child: Text(
-                          'You have Exchanged',
-                          style: GoogleFonts.poppins(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-
+                  StageWidget(),
                   FlowWidget(),
-                  Column(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Color(0xffEBF2EE),
-                        radius: 25,
-                        child: CrashSafeImage(
-                          Assets.images.group02.keyName,
-                          height: 20,
-                          width: 20,
-                        ),
-                      ),
-                      heightBox4,
-                      SizedBox(
-                        width: 85,
-                        child: Text(
-                          'You have Exchanged',
-                          style: GoogleFonts.poppins(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
+                  StageWidget(),
                 ],
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class StageWidget extends StatelessWidget {
+  const StageWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        CircleAvatar(
+          backgroundColor: Color(0xffEBF2EE),
+          radius: 25,
+          child: CrashSafeImage(
+            Assets.images.group02.keyName,
+            height: 20,
+            width: 20,
+          ),
+        ),
+        heightBox4,
+        SizedBox(
+          width: 60,
+          child: Text(
+            'You have Exchanged',
+            style: GoogleFonts.poppins(
+              fontSize: 10,
+              fontWeight: FontWeight.w400,
+              color: Colors.black,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -160,7 +118,7 @@ class FlowWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(width: 50, height: 1, color: Color(0xffECECEC)),
+        Container(width: 45, height: 1, color: Color(0xffECECEC)),
         Container(
           width: 5,
           height: 5,

@@ -7,14 +7,14 @@ import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
-class ProductCardScreen extends StatefulWidget {
-  const ProductCardScreen({super.key});
+class MyProductCardScreen extends StatefulWidget {
+  const MyProductCardScreen({super.key});
 
   @override
-  State<ProductCardScreen> createState() => _ProductCardScreenState();
+  State<MyProductCardScreen> createState() => _MyProductCardScreenState();
 }
 
-class _ProductCardScreenState extends State<ProductCardScreen> {
+class _MyProductCardScreenState extends State<MyProductCardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +42,7 @@ class _ProductCardScreenState extends State<ProductCardScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            heightBox12,
+            
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -66,12 +66,12 @@ class _ProductCardScreenState extends State<ProductCardScreen> {
                       color: Colors.black,
                     ),
                   ),
-                  heightBox10,
+                  heightBox20,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Your Product',
+                        'Your Product (10)',
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -93,10 +93,11 @@ class _ProductCardScreenState extends State<ProductCardScreen> {
                       ),
                     ],
                   ),
-                  heightBox10,
+        
 
                   SizedBox(
                     child: ListView.builder(
+                      padding: EdgeInsets.zero,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: 10,

@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         useInheritedMediaQuery: true,
         initialBinding: ControllerBinder(),
         theme: ThemeData(
-          scaffoldBackgroundColor: Colors.white,
+          scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
           fontFamily: 'Poppins',
           appBarTheme: const AppBarTheme(
             backgroundColor: Colors.transparent,

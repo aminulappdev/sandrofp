@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sandrofp/app/modules/exchange/views/exchange_screen.dart';
+import 'package:sandrofp/app/modules/settings/views/exchange_history_screen.dart';
+
 import 'package:sandrofp/app/modules/profile/views/report_screen.dart';
 import 'package:sandrofp/app/modules/profile/widgets/settings_header_widget.dart';
 import 'package:sandrofp/app/modules/profile/widgets/settings_list_widget.dart';
+import 'package:sandrofp/app/modules/settings/views/token_exchange_screen.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
-import 'package:sandrofp/app/res/app_images/assets_path.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
@@ -15,7 +19,7 @@ import 'package:sandrofp/gen/assets.gen.dart';
 class SettingsScreen extends StatefulWidget {
   //final ProfileData? profileData;
   const SettingsScreen({super.key});
-
+ 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
@@ -31,7 +35,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Profile', leading: Container()),
+      appBar: CustomAppBar(title: 'Profile', leading: Container(), isBack: false,),
       body: Padding(
         padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
         child: SingleChildScrollView(
@@ -63,13 +67,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   SettingItemList(
                     iconData: Assets.images.exchange.keyName,
                     name: 'Token exchange',
-                    onTap: () {},
+                    onTap: () {
+                      Get.to(()=> const TokenExchangeScreen());
+                    },
                   ),
                   heightBox16,
                   SettingItemList(
                     iconData: Assets.images.exHistory.keyName,
                     name: 'Exchange History',
-                    onTap: () {},
+                    onTap: () {
+                       Get.to(()=> const ExchangeHistoryScreen());
+                    },
                   ),
                   heightBox16,
                   SettingItemList(

@@ -3,13 +3,15 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sandrofp/app/modules/home/views/filter_screen.dart';
 import 'package:sandrofp/app/modules/home/views/notification_screen.dart';
-import 'package:sandrofp/app/modules/home/views/product_details_screen.dart';
+import 'package:sandrofp/app/modules/product/views/product_details_screen.dart';
 import 'package:sandrofp/app/modules/home/views/view_all_item_screen.dart';
 import 'package:sandrofp/app/modules/home/widget/category_header.dart';
 import 'package:sandrofp/app/modules/home/widget/category_image.dart';
 import 'package:sandrofp/app/modules/home/widget/home_product_card.dart';
 import 'package:sandrofp/app/modules/home/widget/homepage_header.dart';
+
 import 'package:sandrofp/app/modules/product/views/upload_product_info_screen.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
@@ -43,11 +45,10 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
 
     return Scaffold(
-      
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [ 
+          children: [
             Container(
               height: 340,
               width: double.infinity,
@@ -63,13 +64,15 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
               child: HomepageHeader(
-                imagePath: Assets.images.onboarding01.keyName,
+                imagePath: Assets.images.profile.keyName,
                 name: 'Aminul',
                 ammount: '5000',
                 notificationAction: () {
                   Get.to(NotificationScreen());
                 },
-                settingsAction: () {},
+                settingsAction: () {
+                  Get.to(FilterScreen());
+                },
                 arrowAction: () {},
               ),
             ),
@@ -97,17 +100,21 @@ class _HomeScreenState extends State<HomeScreen> {
                             CategoryImage(
                               height: 110,
                               width: 160,
-                              imagePath: Assets.images.onboarding01.keyName,
+                              imagePath: Assets.images.mobile2.keyName,
                               name: 'Electronics',
-                              onTap: () {},
+                              onTap: () {
+                                Get.to(() => const ViewAllItemScreen());
+                              },
                             ),
                             heightBox8,
                             CategoryImage(
                               height: 110,
                               width: 160,
-                              imagePath: Assets.images.onboarding01.keyName,
-                              name: 'Electronics',
-                              onTap: () {},
+                              imagePath: Assets.images.room2.keyName,
+                              name: 'Furniture',
+                              onTap: () {
+                                Get.to(() => const ViewAllItemScreen());
+                              },
                             ),
                           ],
                         ),
@@ -119,23 +126,29 @@ class _HomeScreenState extends State<HomeScreen> {
                               width: 154,
                               imagePath: Assets.images.onboarding01.keyName,
                               name: 'Clothing',
-                              onTap: () {},
+                              onTap: () {
+                                Get.to(() => const ViewAllItemScreen());
+                              },
                             ),
                             heightBox8,
                             CategoryImage(
                               height: 72,
                               width: 154,
-                              imagePath: Assets.images.onboarding01.keyName,
-                              name: 'Clothing',
-                              onTap: () {},
+                              imagePath: Assets.images.book.keyName,
+                              name: 'Books',
+                              onTap: () {
+                                Get.to(() => const ());
+                              },
                             ),
                             heightBox8,
                             CategoryImage(
                               height: 72,
                               width: 154,
-                              imagePath: Assets.images.onboarding01.keyName,
-                              name: 'Clothing',
-                              onTap: () {},
+                              imagePath: Assets.images.cycle.keyName,
+                              name: 'Other',
+                              onTap: () {
+                                Get.to(() => const ViewAllItemScreen());
+                              },
                             ),
                           ],
                         ),

@@ -31,7 +31,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Completed', leading: Container()),
+      appBar: CustomAppBar(title: 'Completed', leading: Container(),),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

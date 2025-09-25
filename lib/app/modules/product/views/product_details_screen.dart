@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/cart/views/cart_screen.dart';
+import 'package:sandrofp/app/modules/exchange/views/exchange_screen.dart';
 import 'package:sandrofp/app/modules/home/widget/buyer_details.dart';
 import 'package:sandrofp/app/modules/home/widget/color_plate.dart';
 import 'package:sandrofp/app/modules/home/widget/feature_row.dart';
 import 'package:sandrofp/app/modules/home/widget/label_data.dart';
 import 'package:sandrofp/app/modules/home/widget/product_static_data.dart';
-import 'package:sandrofp/app/modules/others/views/exchange_history_screen.dart';
-import 'package:sandrofp/app/modules/product/views/exchange_completed_screen.dart';
+import 'package:sandrofp/app/modules/exchange/views/exchange_screen.dart';
+import 'package:sandrofp/app/modules/exchange/views/exchange_completed_screen.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
@@ -245,7 +245,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ),
 
                   Card(
-                    elevation: 2, 
+                    elevation: 2,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
                         topRight: Radius.circular(20),
@@ -283,11 +283,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               width: 160,
                               child: CustomElevatedButton(
                                 color: AppColors.greenColor,
-
+ 
                                 textColor: Colors.white,
                                 title: 'Exchange',
                                 onPress: () {
-                                  Get.to(() => ExchangedCompletedScreen());
+                                  Get.to(() => ExchangeScreen());
                                 },
                               ),
                             ),

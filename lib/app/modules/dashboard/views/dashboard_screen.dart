@@ -6,7 +6,7 @@ import 'package:sandrofp/app/modules/cart/views/cart_screen.dart';
 import 'package:sandrofp/app/modules/chat/views/chat_screen.dart';
 import 'package:sandrofp/app/modules/home/views/home_screen.dart';
 import 'package:sandrofp/app/modules/profile/views/profile_screen.dart';
-import 'package:sandrofp/app/modules/profile/views/settings_screen.dart';
+import 'package:sandrofp/app/modules/settings/views/settings_screen.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
@@ -41,7 +41,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       bottomNavigationBar: CircleNavBar(
         activeIcons: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(18.0),
             child: CrashSafeImage(
               Assets.images.heart03.keyName,
               height: 20,
@@ -50,7 +50,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(18.0),
             child: CrashSafeImage(
               Assets.images.sms.keyName,
               height: 20,
@@ -68,7 +68,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(18.0),
             child: CrashSafeImage(
               Assets.images.settings.keyName,
               height: 20,
@@ -77,7 +77,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(1.0),
+            padding: const EdgeInsets.all(18.0),
             child: CrashSafeImage(
               Assets.images.person02.keyName,
               height: 20,

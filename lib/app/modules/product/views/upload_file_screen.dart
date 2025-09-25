@@ -4,7 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/cart/widget/status_card.dart';
-import 'package:sandrofp/app/modules/home/views/product_details_screen.dart';
+import 'package:sandrofp/app/modules/product/views/product_details_screen.dart';
 import 'package:sandrofp/app/modules/home/widget/label_data.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';

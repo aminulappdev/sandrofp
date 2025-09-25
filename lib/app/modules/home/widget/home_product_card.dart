@@ -17,9 +17,7 @@ class HomeProductCard extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
-        onTap: onTap,
         child: Container(
-         
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             color: Colors.white,
@@ -201,7 +199,7 @@ class HomeProductCard extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: Color(0xffEBF2EE),
                               borderRadius: BorderRadius.circular(20),
-                            ), 
+                            ),
                             child: Center(
                               child: Text(
                                 '2km away',
@@ -235,7 +233,7 @@ class HomeProductCard extends StatelessWidget {
                       ),
                     ),
                     heightBox12,
-        
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -244,12 +242,12 @@ class HomeProductCard extends StatelessWidget {
                           width: 150,
                           child: CustomElevatedButton(
                             title: 'View Details',
-                            onPress: () {},
+                            onPress: onTap,
                             color: Colors.black,
                             textColor: Colors.white,
                           ),
                         ),
-        
+
                         Row(
                           children: [
                             CircleIconWidget(

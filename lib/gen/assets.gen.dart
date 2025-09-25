@@ -29,6 +29,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/add.png
   AssetGenImage get add => const AssetGenImage('assets/images/add.png');
 
+  /// File path: assets/images/appBar_Background.png
+  AssetGenImage get appBarBackground =>
+      const AssetGenImage('assets/images/appBar_Background.png');
+
   /// File path: assets/images/arrow_back.png
   AssetGenImage get arrowBack =>
       const AssetGenImage('assets/images/arrow_back.png');
@@ -59,6 +63,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/banana.png
   AssetGenImage get banana => const AssetGenImage('assets/images/banana.png');
 
+  /// File path: assets/images/book.png
+  AssetGenImage get book => const AssetGenImage('assets/images/book.png');
+
   /// File path: assets/images/brush_sheld.png
   AssetGenImage get brushSheld =>
       const AssetGenImage('assets/images/brush_sheld.png');
@@ -80,6 +87,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/cross.png
   AssetGenImage get cross => const AssetGenImage('assets/images/cross.png');
 
+  /// File path: assets/images/cycle.png
+  AssetGenImage get cycle => const AssetGenImage('assets/images/cycle.png');
+
   /// File path: assets/images/delete.png
   AssetGenImage get delete => const AssetGenImage('assets/images/delete.png');
 
@@ -96,6 +106,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/exchange.png
   AssetGenImage get exchange =>
       const AssetGenImage('assets/images/exchange.png');
+
+  /// File path: assets/images/exchange02.png
+  AssetGenImage get exchange02 =>
+      const AssetGenImage('assets/images/exchange02.png');
 
   /// File path: assets/images/file_exchanged.png
   AssetGenImage get fileExchanged =>
@@ -169,9 +183,16 @@ class $AssetsImagesGen {
   /// File path: assets/images/minus.png
   AssetGenImage get minus => const AssetGenImage('assets/images/minus.png');
 
+  /// File path: assets/images/mobile (2).png
+  AssetGenImage get mobile2 =>
+      const AssetGenImage('assets/images/mobile (2).png');
+
   /// File path: assets/images/notification.png
   AssetGenImage get notification =>
       const AssetGenImage('assets/images/notification.png');
+
+  /// File path: assets/images/pant.png
+  AssetGenImage get pant => const AssetGenImage('assets/images/pant.png');
 
   /// File path: assets/images/person.png
   AssetGenImage get person => const AssetGenImage('assets/images/person.png');
@@ -186,6 +207,12 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/pin.png
   AssetGenImage get pin => const AssetGenImage('assets/images/pin.png');
+
+  /// File path: assets/images/profile.png
+  AssetGenImage get profile => const AssetGenImage('assets/images/profile.png');
+
+  /// File path: assets/images/room2.png
+  AssetGenImage get room2 => const AssetGenImage('assets/images/room2.png');
 
   /// File path: assets/images/rreturn.png
   AssetGenImage get rreturn => const AssetGenImage('assets/images/rreturn.png');
@@ -205,6 +232,9 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/sms.png
   AssetGenImage get sms => const AssetGenImage('assets/images/sms.png');
+
+  /// File path: assets/images/sofa.png
+  AssetGenImage get sofa => const AssetGenImage('assets/images/sofa.png');
 
   /// File path: assets/images/star.png
   AssetGenImage get star => const AssetGenImage('assets/images/star.png');
@@ -228,6 +258,7 @@ class $AssetsImagesGen {
     onboarding02,
     onboarding03,
     add,
+    appBarBackground,
     arrowBack,
     arrowFont,
     avatur01,
@@ -236,17 +267,20 @@ class $AssetsImagesGen {
     backgroundEarth,
     bag,
     banana,
+    book,
     brushSheld,
     calender,
     chat,
     checked,
     crazyEmoji,
     cross,
+    cycle,
     delete,
     done,
     done02,
     exHistory,
     exchange,
+    exchange02,
     fileExchanged,
     filter,
     gallery,
@@ -268,17 +302,22 @@ class $AssetsImagesGen {
     logOut,
     menExchanged,
     minus,
+    mobile2,
     notification,
+    pant,
     person,
     person02,
     perspnBlock,
     pin,
+    profile,
+    room2,
     rreturn,
     search,
     settings,
     share,
     smile,
     sms,
+    sofa,
     star,
     terms,
     text,

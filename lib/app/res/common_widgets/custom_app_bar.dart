@@ -1,4 +1,3 @@
-
 import 'package:crash_safe_image/crash_safe_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,9 +5,15 @@ import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final bool isBack;
   final String title;
   final Widget leading;
-  const CustomAppBar({super.key, required this.title, required this.leading});
+  const CustomAppBar({
+    super.key,
+    required this.title,
+    required this.leading,
+    this.isBack = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +26,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           bottomRight: Radius.circular(40),
         ),
         image: DecorationImage(
-          image: AssetImage(Assets.images.background.keyName),
+          image: AssetImage(Assets.images.appBarBackground.keyName),
           fit: BoxFit.fill,
         ),
       ),
@@ -34,10 +39,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           children: [
             Row(
               children: [
-                CrashSafeImage(
-                  Assets.images.rreturn.keyName,
-                  height: 22,
-                  width: 22,
+                GestureDetector(
+                  onTap: isBack == true ? () => Navigator.pop(context) : null,
+                  child: CrashSafeImage(
+                    Assets.images.rreturn.keyName,
+                    height: 22,
+                    width: 22,
+                  ),
                 ),
                 widthBox10,
                 Text(

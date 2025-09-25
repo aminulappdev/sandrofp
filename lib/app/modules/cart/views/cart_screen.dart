@@ -25,6 +25,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffFBFBFD),
       appBar: CustomAppBar(
         title: 'Back',
         leading: Row(
@@ -100,106 +101,111 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ),
 
-          Container(
-            height: 250,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(40),
-                topRight: Radius.circular(40),
+          Card(
+            elevation: 1,
+            color: Color(0xffFBFBFD),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+            child: Container(
+              height: 250,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(40),
+                  topRight: Radius.circular(40),
+                ),
               ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                children: [
-                  TextFormField(
-                    decoration: InputDecoration(
-                      suffixIcon: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: 40,
-                          width: 80,
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Center(
-                              child: Text(
-                                'Apply',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  children: [
+                    TextFormField(
+                      decoration: InputDecoration(
+                        suffixIcon: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            height: 40,
+                            width: 80,
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Center(
+                                child: Text(
+                                  'Apply',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
+            
+                        hintText: 'Enter discount code',
+                        filled: true,
+                        fillColor: Color(0xffF3F3F5),
                       ),
-
-                      hintText: 'Enter discount code',
-                      filled: true,
-                      fillColor: Color(0xffF3F3F5),
                     ),
-                  ),
-                  heightBox12,
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      FeatureRow(
-                        titleWeight: FontWeight.w400,
-                        title: 'Total', widget: Text('3000')),
-                      heightBox12,
-                      FeatureRow(
-                        titleWeight: FontWeight.w400,
-                        title: 'Subtotal',
-                        widget: Row(
-                          children: [
-                            CrashSafeImage(
-                              Assets.images.banana.keyName,
-                              height: 12,
-                              width: 12,
-                            ),
-                            widthBox5,
-                            Text(
-                              '3000',
-                              style: GoogleFonts.poppins(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.yellowColor,
+                    heightBox12,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        FeatureRow(
+                          titleWeight: FontWeight.w400,
+                          title: 'Total', widget: Text('3000')),
+                        heightBox12,
+                        FeatureRow(
+                          titleWeight: FontWeight.w400,
+                          title: 'Subtotal',
+                          widget: Row(
+                            children: [
+                              CrashSafeImage(
+                                Assets.images.banana.keyName,
+                                height: 12,
+                                width: 12,
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      heightBox20,
-                      StraightLiner(),
-                      heightBox10,
-                      FeatureRow(
-                        titleWeight: FontWeight.w400,
-                        title: 'Total',
-                        widget: Text(
-                          'Rs. 3000',
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
+                              widthBox5,
+                              Text(
+                                '3000',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.yellowColor,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                      
-                      heightBox10,
-                    ],
-                  ),
-
-                  CustomElevatedButton(title: 'Checkout', onPress: () {
-                    Get.to(()=> OrderProcessScreen());
-                  }),
-                ],
+                        heightBox20,
+                        StraightLiner(),
+                        heightBox10,
+                        FeatureRow(
+                          titleWeight: FontWeight.w400,
+                          title: 'Total',
+                          widget: Text(
+                            'Rs. 3000',
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        
+                        heightBox10,
+                      ],
+                    ),
+            
+                    CustomElevatedButton(title: 'Checkout', onPress: () {
+                      Get.to(()=> OrderProcessScreen());
+                    }),
+                  ],
+                ),
               ),
             ),
           ),

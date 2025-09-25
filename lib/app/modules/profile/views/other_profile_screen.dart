@@ -1,6 +1,9 @@
 import 'package:crash_safe_image/crash_safe_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sandrofp/app/modules/chat/views/message_screen.dart';
 import 'package:sandrofp/app/modules/home/widget/feature_row.dart';
 import 'package:sandrofp/app/modules/home/widget/home_product_card.dart';
 import 'package:sandrofp/app/modules/home/widget/label_data.dart';
@@ -10,18 +13,22 @@ import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+class OtherProfileScreen extends StatefulWidget {
+  const OtherProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<OtherProfileScreen> createState() => _OtherProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _OtherProfileScreenState extends State<OtherProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Profile', leading: Container(),isBack: false,),
+      appBar: CustomAppBar(
+        title: 'Profile',
+        leading: Container(),
+        isBack: true,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
@@ -133,7 +140,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
               heightBox10,
-              CustomElevatedButton(title: 'View Profile', onPress: () {}),
+              CustomElevatedButton(title: 'Message', onPress: () {
+                Get.to(()=> ChatScreen());
+              }),
               heightBox20,
               Container(
                 width: double.infinity,
@@ -329,7 +338,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   CommentSection(),
                   heightBox10,
                   CommentSection(),
-                  
                 ],
               ),
               heightBox100,

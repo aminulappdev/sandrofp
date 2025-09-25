@@ -2,7 +2,7 @@ import 'package:crash_safe_image/crash_safe_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sandrofp/app/modules/cart/views/product_card_page.dart';
+import 'package:sandrofp/app/modules/cart/views/my_product_card_page.dart';
 import 'package:sandrofp/app/modules/cart/widget/exchange_card.dart';
 import 'package:sandrofp/app/modules/cart/widget/product_cart.dart';
 import 'package:sandrofp/app/modules/cart/widget/status_card.dart';
@@ -156,9 +156,11 @@ class _ExchangeProcessScreenState extends State<ExchangeProcessScreen> {
                     heightBox20,
                     CustomElevatedButton(
                       color: Colors.grey,
-                      title: 'Exchange ', onPress: () {
-                        Get.to(() => ProductCardScreen());
-                      },),
+                      title: 'Exchange ',
+                      onPress: () {
+                        Get.to(() => MyProductCardScreen());
+                      },
+                    ),
                   ],
                 ),
               ),

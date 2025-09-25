@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
@@ -6,9 +5,7 @@ import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
 class ChatListHeader extends StatelessWidget {
-  const ChatListHeader({
-    super.key,
-  });
+  const ChatListHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +18,7 @@ class ChatListHeader extends StatelessWidget {
           bottomRight: Radius.circular(40),
         ),
         image: DecorationImage(
-          image: AssetImage(Assets.images.background.keyName),
+          image: AssetImage(Assets.images.appBarBackground.keyName),
           fit: BoxFit.fill,
         ),
       ),
@@ -38,10 +35,11 @@ class ChatListHeader extends StatelessWidget {
                 Row(
                   children: [
                     CircleAvatar(
-            
                       backgroundImage: AssetImage(
-                          Assets.images.onboarding01.keyName),
-                      radius: 20,),
+                        Assets.images.profile.keyName,
+                      ),
+                      radius: 20,
+                    ),
                     widthBox10,
                     Text(
                       'Aminul Islam',
@@ -57,7 +55,9 @@ class ChatListHeader extends StatelessWidget {
                   radius: 20,
                   iconRadius: 20,
                   color: Color(0xffFFFFFF).withValues(alpha: 0.05),
-                  imagePath: Assets.images.notification.path, onTap: (){}),
+                  imagePath: Assets.images.notification.path,
+                  onTap: () {},
+                ),
               ],
             ),
             heightBox16,
@@ -71,16 +71,13 @@ class ChatListHeader extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                     color: Colors.grey,
                   ),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Colors.grey,
-                  ),
+                  prefixIcon: Icon(Icons.search, color: Colors.grey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
