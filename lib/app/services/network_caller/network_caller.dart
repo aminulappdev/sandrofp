@@ -263,7 +263,7 @@ class NetworkCaller {
         var streamedResponse = await request.send();
         response = await http.Response.fromStream(streamedResponse);
       } else {
-        // Handle regular HTTP request
+        // Handle regular HTTP request 
         _logRequest(url, defaultHeaders, body);
         switch (method) {
           case 'GET':

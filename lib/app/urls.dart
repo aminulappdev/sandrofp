@@ -3,7 +3,7 @@ class Urls {
   // static const String _baseUrl = 'http://10.10.10.17:5005/api/v1';
   // static const String socketUrl = 'http://10.10.10.17:4000/';
 
-  static const String _baseUrl = 'http://206.162.244.133:5001/api/v1';
+  static const String _baseUrl = 'http://103.186.20.117:6136/api/v1';
   static const String socketUrl = 'http://206.162.244.133:4001/';
 
   // =========================================== Common ============================================== //
