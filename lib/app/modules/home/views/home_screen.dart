@@ -1,59 +1,41 @@
+// app/modules/home/views/home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sandrofp/app/modules/home/views/filter_screen.dart';
-import 'package:sandrofp/app/modules/home/views/notification_screen.dart';
-import 'package:sandrofp/app/modules/product/views/product_details_screen.dart';
-import 'package:sandrofp/app/modules/home/views/view_all_item_screen.dart';
+import 'package:sandrofp/app/modules/home/controller/home_controller.dart';
 import 'package:sandrofp/app/modules/home/widget/category_header.dart';
 import 'package:sandrofp/app/modules/home/widget/category_image.dart';
 import 'package:sandrofp/app/modules/home/widget/home_product_card.dart';
 import 'package:sandrofp/app/modules/home/widget/homepage_header.dart';
-
-import 'package:sandrofp/app/modules/product/views/upload_product_info_screen.dart';
+import 'package:sandrofp/app/modules/profile/controllers/profile_controller.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends GetView<HomeController> {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  @override
   Widget build(BuildContext context) {
-    List<Widget> cards = [
-      HomeProductCard(
-        onTap: () {
-          Get.to(ProductDetailsScreen());
-        },
-      ),
-      HomeProductCard(
-        onTap: () {
-          Get.to(UploadProductInfoScreen());
-        },
-      ),
-      HomeProductCard(
-        onTap: () {
-          Get.to(ProductDetailsScreen());
-        },
-      ),
-    ];
+    final HomeController c = Get.put(HomeController());
+    final ProfileController profileController = Get.find<ProfileController>();
+    List<Widget> _buildCards() {
+      return c.matchProducts.map((product) {
+        return HomeProductCard(onTap: product['onTap'] as VoidCallback);
+      }).toList();
+    }
 
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Header Background
             Container(
               height: 340,
               width: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(40),
                   bottomRight: Radius.circular(40),
                 ),
@@ -62,152 +44,140 @@ class _HomeScreenState extends State<HomeScreen> {
                   fit: BoxFit.fill,
                 ),
               ),
-
-              child: HomepageHeader(
-                imagePath: Assets.images.profile.keyName,
-                name: 'Aminul',
-                ammount: '5000',
-                notificationAction: () {
-                  Get.to(NotificationScreen());
-                },
-                settingsAction: () {
-                  Get.to(FilterScreen());
-                },
-                arrowAction: () {},
-              ),
+              child: Obx(() {
+                if (profileController.isLoading.value) {
+                  return SizedBox(
+                    height: 30,
+                    width: 30,
+                    child: const Center(child: CircularProgressIndicator()),
+                  );
+                } else {
+                  return HomepageHeader(
+                    imagePath: Assets.images.profile.keyName,
+                    name: profileController.profileData?.name ?? '',
+                    ammount: '5000',
+                    notificationAction: c.goToNotifications,
+                    settingsAction: c.goToFilters,
+                    arrowAction: () {},
+                  );
+                }
+              }),
             ),
             heightBox12,
 
+            // Main Content
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Exchange by items',
-                      style: GoogleFonts.poppins(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Exchange by items',
+                    style: GoogleFonts.poppins(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
                     ),
-                    heightBox8,
-                    Row(
-                      children: [
-                        Column(
-                          children: [
-                            CategoryImage(
-                              height: 110,
-                              width: 160,
-                              imagePath: Assets.images.mobile2.keyName,
-                              name: 'Electronics',
-                              onTap: () {
-                                Get.to(() => const ViewAllItemScreen());
-                              },
-                            ),
-                            heightBox8,
-                            CategoryImage(
-                              height: 110,
-                              width: 160,
-                              imagePath: Assets.images.room2.keyName,
-                              name: 'Furniture',
-                              onTap: () {
-                                Get.to(() => const ViewAllItemScreen());
-                              },
-                            ),
-                          ],
-                        ),
-                        widthBox10,
-                        Column(
-                          children: [
-                            CategoryImage(
-                              height: 72,
-                              width: 154,
-                              imagePath: Assets.images.onboarding01.keyName,
-                              name: 'Clothing',
-                              onTap: () {
-                                Get.to(() => const ViewAllItemScreen());
-                              },
-                            ),
-                            heightBox8,
-                            CategoryImage(
-                              height: 72,
-                              width: 154,
-                              imagePath: Assets.images.book.keyName,
-                              name: 'Books',
-                              onTap: () {
-                                Get.to(() => const ());
-                              },
-                            ),
-                            heightBox8,
-                            CategoryImage(
-                              height: 72,
-                              width: 154,
-                              imagePath: Assets.images.cycle.keyName,
-                              name: 'Other',
-                              onTap: () {
-                                Get.to(() => const ViewAllItemScreen());
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    heightBox12,
+                  ),
+                  heightBox8,
 
-                    CategoryHeader(
-                      name: 'Matches products',
-                      onTap: () {
-                        Get.to(() => const ViewAllItemScreen());
-                      },
-                    ),
-                    heightBox10,
-                    SizedBox(
-                      height: 550,
-                      width: double.infinity,
-                      child: CardSwiper(
-                        padding: EdgeInsets.only(left: 0, right: 12),
+                  // Category Grid
+                  Row(
+                    children: [
+                      Column(
+                        children: [
+                          CategoryImage(
+                            height: 110,
+                            width: 160,
+                            imagePath: Assets.images.mobile2.keyName,
+                            name: 'Electronics',
+                            onTap: c.goToViewAll,
+                          ),
+                          heightBox8,
+                          CategoryImage(
+                            height: 110,
+                            width: 160,
+                            imagePath: Assets.images.room2.keyName,
+                            name: 'Furniture',
+                            onTap: c.goToViewAll,
+                          ),
+                        ],
+                      ),
+                      widthBox10,
+                      Column(
+                        children: [
+                          CategoryImage(
+                            height: 72,
+                            width: 154,
+                            imagePath: Assets.images.onboarding01.keyName,
+                            name: 'Clothing',
+                            onTap: c.goToViewAll,
+                          ),
+                          heightBox8,
+                          CategoryImage(
+                            height: 72,
+                            width: 154,
+                            imagePath: Assets.images.book.keyName,
+                            name: 'Books',
+                            onTap: c.goToViewAll,
+                          ),
+                          heightBox8,
+                          CategoryImage(
+                            height: 72,
+                            width: 154,
+                            imagePath: Assets.images.cycle.keyName,
+                            name: 'Other',
+                            onTap: c.goToViewAll,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  heightBox12,
+
+                  // Matches Section 1
+                  CategoryHeader(
+                    name: 'Matches products',
+                    onTap: c.goToViewAll,
+                  ),
+                  heightBox10,
+                  SizedBox(
+                    height: 550,
+                    child: Obx(
+                      () => CardSwiper(
+                        padding: const EdgeInsets.only(left: 0, right: 12),
                         scale: 0.98,
-                        backCardOffset: Offset(12, 0), // কম offset (40 থেকে 20)
-                        numberOfCardsDisplayed: 2, // আরো কার্ড দেখানোর জন্য
-                        cardsCount: cards.length,
-                        cardBuilder:
-                            (
-                              context,
-                              index,
-                              percentThresholdX,
-                              percentThresholdY,
-                            ) => cards[index],
+                        backCardOffset: const Offset(12, 0),
+                        numberOfCardsDisplayed: 2,
+                        cardsCount: _buildCards().length,
+                        cardBuilder: (context, index, _, __) =>
+                            _buildCards()[index],
                       ),
                     ),
-                    heightBox12,
+                  ),
+                  heightBox12,
 
-                    CategoryHeader(name: 'Matches products', onTap: () {}),
-                    heightBox10,
-
-                    SizedBox(
-                      height: 550,
-                      width: double.infinity,
-                      child: CardSwiper(
-                        padding: EdgeInsets.only(left: 0, right: 12),
+                  // Matches Section 2
+                  CategoryHeader(name: 'Nearby products', onTap: c.goToViewAll),
+                  heightBox10,
+                  SizedBox(
+                    height: 550,
+                    child: Obx(
+                      () => CardSwiper(
+                        padding: const EdgeInsets.only(left: 0, right: 12),
                         scale: 0.98,
-                        backCardOffset: Offset(12, 0), // কম offset (40 থেকে 20)
-                        numberOfCardsDisplayed: 2, // আরো কার্ড দেখানোর জন্য
-                        cardsCount: cards.length,
-                        cardBuilder:
-                            (
-                              context,
-                              index,
-                              percentThresholdX,
-                              percentThresholdY,
-                            ) => cards[index],
+                        backCardOffset: const Offset(12, 0),
+                        numberOfCardsDisplayed: 2,
+                        cardsCount: _buildCards().length,
+                        cardBuilder: (context, index, _, __) =>
+                            _buildCards()[index],
                       ),
                     ),
-                    heightBox100,
-                    heightBox100,
-                  ],
-                ),
+                  ),
+
+                  heightBox100,
+                  heightBox100,
+                ],
               ),
             ),
           ],

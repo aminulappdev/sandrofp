@@ -2,12 +2,7 @@ import 'package:crash_safe_image/crash_safe_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_intl_phone_field/flutter_intl_phone_field.dart'
     show IntlPhoneField;
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sandrofp/app/modules/cart/views/my_product_card_page.dart';
-import 'package:sandrofp/app/modules/cart/widget/exchange_card.dart';
-import 'package:sandrofp/app/modules/cart/widget/product_cart.dart';
-import 'package:sandrofp/app/modules/cart/widget/status_card.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
@@ -154,7 +149,7 @@ class _TokenExchangeScreenState extends State<TokenExchangeScreen> {
                     CustomElevatedButton(
                       title: 'Exchange ',
                       onPress: () {
-                        showSnackBarMessage(context, 'Successfully Exchange');
+                        showSuccess('Successfully Exchange');
                       },
                     ),
                   ],

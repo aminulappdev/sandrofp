@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sandrofp/app/modules/exchange/views/exchange_screen.dart';
 import 'package:sandrofp/app/modules/profile/views/profile_screen.dart';
 import 'package:sandrofp/app/modules/settings/views/change_password_screen.dart';
 import 'package:sandrofp/app/modules/settings/views/content_screen.dart';
 import 'package:sandrofp/app/modules/settings/views/exchange_history_screen.dart';
-
-import 'package:sandrofp/app/modules/profile/views/report_screen.dart';
 import 'package:sandrofp/app/modules/profile/widgets/settings_header_widget.dart';
 import 'package:sandrofp/app/modules/profile/widgets/settings_list_widget.dart';
 import 'package:sandrofp/app/modules/settings/views/token_exchange_screen.dart';
@@ -165,24 +160,5 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  // void _showDeleteAccountDialog(BuildContext context) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return CustomDialog(
-  //         yesText: 'Yes',
-  //         noText: 'No',
-  //         noOntap: () {
-  //           Navigator.pop(context);
-  //         },
-  //         yesOntap: () {
-  //           Get.to(GrabbedConfirmedScreen());
-  //         },
-  //         iconData: Icons.delete,
-  //         subtitle: '',
-  //         title: 'Do you want to delete this profile?',
-  //       );
-  //     },
-  //   );
-  // }
+
 }

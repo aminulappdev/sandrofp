@@ -1,139 +1,161 @@
-import 'package:crash_safe_image/crash_safe_image.dart';
+// screens/edit_profile_screen.dart
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sandrofp/app/modules/authentication/widget/label_name_widget.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
+import '../controllers/edit_profile_controller.dart';
 
-class EditProfileScreen extends StatefulWidget {
+class EditProfileScreen extends GetView<EditProfileController> {
   const EditProfileScreen({super.key});
 
   @override
-  State<EditProfileScreen> createState() => _EditProfileScreenState();
-}
-
-class _EditProfileScreenState extends State<EditProfileScreen> {
-  @override
   Widget build(BuildContext context) {
+    // Controller initialize
+    Get.put(EditProfileController());
+
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Profile',
+        title: 'Edit Profile',
         leading: Container(),
         isBack: true,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
+      body: Form(
+        key: controller.formKey,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              heightBox12,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Stack(
-                    children: [
-                      CircleAvatar(
-                        radius: 90,
-                        backgroundColor: Color(0xffF3F3F5),
-                        child: CircleAvatar(
-                          radius: 85,
-                          backgroundColor: Colors.white,
+              heightBox30,
+
+              // Profile Picture with Camera Button
+              Center(
+                child: Obx(() => Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 80,
+                          backgroundColor: const Color(0xffF3F3F5),
                           child: CircleAvatar(
-                            radius: 80,
-                            backgroundImage: AssetImage(
-                              Assets.images.onboarding01.keyName,
+                            radius: 76,
+                            backgroundColor: Colors.white,
+                            child: CircleAvatar(
+                              radius: 72,
+                              backgroundImage: _getImageProvider(),
                             ),
                           ),
                         ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 10,
-                        child: Container(
-                          height: 42,
-                          width: 42,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(width: 1, color: Colors.white),
-                            color: Color(0xffF3F3F5),
-                          ),
-                          child: Center(
-                            child: CrashSafeImage(
-                              Assets.images.add.keyName,
-                              color: AppColors.greenColor,
-                              height: 20,
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: GestureDetector(
+                            onTap: controller.pickImage, // তোমার ImagePickerHelper কল হচ্ছে
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.greenColor,
+                               
+                              ),
+                              child: const Icon(
+                                Icons.camera_alt,
+                                color: Colors.white,
+                                size: 22,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    )),
               ),
-              heightBox12,
 
-              Form(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    heightBox10,
-                    LabelName(label: 'Username'),
-                    heightBox10,
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        hintText: 'Enter your username',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
+              heightBox40,
 
-                    heightBox20,
-                    LabelName(label: 'Email'),
-                    heightBox10,
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        hintText: 'Enter your email',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    heightBox20,
-                    LabelName(label: 'Phone Number'),
-                    heightBox10,
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        hintText: 'Enter your phone number',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    heightBox20,
-                    LabelName(label: 'About user'),
-                    heightBox10,
-                    TextFormField(
-                      maxLines: 5,
-                      decoration: const InputDecoration(
-                        hintText: 'Enter your email',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    heightBox20,
-                  ],
+              // Username
+              LabelName(label: 'Username'),
+              heightBox8,
+              TextFormField(
+                controller: controller.usernameCtrl,
+                validator: (value) => value!.trim().isEmpty ? 'Enter username' : null,
+                decoration: const InputDecoration(
+                  hintText: 'Enter your username',
+                  border: OutlineInputBorder(),
                 ),
               ),
 
-              heightBox12,
-              CustomElevatedButton(title: 'Save changes', onPress: () {
-                showSnackBarMessage(context, 'Profile updated successfully');
-              }),
-              heightBox12
+              heightBox20,
+
+              // Email
+              LabelName(label: 'Email'),
+              heightBox8,
+              TextFormField(
+                controller: controller.emailCtrl,
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) => value!.trim().isEmpty ? 'Enter email' : null,
+                decoration: const InputDecoration(
+                  hintText: 'Enter your email',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+
+              heightBox20,
+
+              // Phone Number
+              LabelName(label: 'Phone Number'),
+              heightBox8,
+              TextFormField(
+                controller: controller.phoneCtrl,
+                keyboardType: TextInputType.phone,
+                validator: (value) => value!.trim().isEmpty ? 'Enter phone' : null,
+                decoration: const InputDecoration(
+                  hintText: 'Enter your phone number',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+
+              heightBox20,
+
+              // About User
+              LabelName(label: 'About you'),
+              heightBox8,
+              TextFormField(
+                controller: controller.aboutCtrl,
+                maxLines: 4,
+                decoration: const InputDecoration(
+                  hintText: 'Tell us about yourself',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+
+              heightBox40,
+
+              // Save Button
+              Obx(() => CustomElevatedButton(
+                    title: 'Save Changes',
+                  
+                    onPress: controller.isLoading.value ? null : controller.editProfile,
+                  )),
+
+              heightBox30,
             ],
           ),
         ),
       ),
     );
+  }
+
+  // Image Provider (Local / Network / Asset)
+  ImageProvider _getImageProvider() {
+    if (controller.selectedImage.value != null) {
+      return FileImage(controller.selectedImage.value!);
+    } else if (controller.networkImageUrl.value.isNotEmpty) {
+      return NetworkImage(controller.networkImageUrl.value);
+    } else {
+      return AssetImage(Assets.images.onboarding01.keyName);
+    }
   }
 }

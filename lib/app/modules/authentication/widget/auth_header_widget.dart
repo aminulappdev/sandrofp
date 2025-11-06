@@ -22,7 +22,9 @@ class AuthHeaderWidget extends StatelessWidget {
         Row(
           children: [
             CircleIconWidget(
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+              },
               imagePath: Assets.images.arrowBack.path,
             ),
             widthBox10,

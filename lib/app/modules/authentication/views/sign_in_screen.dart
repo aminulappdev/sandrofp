@@ -74,7 +74,7 @@ class SignInScreen extends GetView<SignInController> {
                       ),
                     ),
                     heightBox10,
-
+ 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [

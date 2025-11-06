@@ -1,24 +1,27 @@
+// network_caller.dart
 // ignore_for_file: depend_on_referenced_packages, avoid_print
 
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:logger/logger.dart';
 import 'package:mime/mime.dart';
-import 'package:sandrofp/app/services/network_caller/error_message_model.dart';
-import 'package:sandrofp/app/services/network_caller/network_response.dart';
 
+import 'error_message_model.dart';
+import 'network_response.dart';
 
 class NetworkCaller {
   final Logger _logger = Logger();
 
-  // GET request
+  // ──────────────────────  GET  ──────────────────────
   Future<NetworkResponse> getRequest(
     String url, {
     Map<String, dynamic>? queryParams,
     Map<String, String>? headers,
     String? accessToken,
+    String? customTokenName,
   }) async {
     return _handleRequest(
       method: 'GET',
@@ -26,10 +29,11 @@ class NetworkCaller {
       queryParams: queryParams,
       headers: headers,
       accessToken: accessToken,
+      customTokenName: customTokenName,
     );
   }
 
-  // POST request
+  // ──────────────────────  POST  ──────────────────────
   Future<NetworkResponse> postRequest(
     String url, {
     Map<String, dynamic>? queryParams,
@@ -41,6 +45,7 @@ class NetworkCaller {
     String? keyNameImage,
     String? keyNameCover,
     String? accessToken,
+    String? customTokenName,
   }) async {
     return _handleRequest(
       method: 'POST',
@@ -54,10 +59,11 @@ class NetworkCaller {
       keyNameImage: keyNameImage,
       keyNameCover: keyNameCover,
       accessToken: accessToken,
+      customTokenName: customTokenName,
     );
   }
 
-  // PATCH request
+  // ──────────────────────  PATCH  ──────────────────────
   Future<NetworkResponse> patchRequest(
     String url, {
     Map<String, dynamic>? queryParams,
@@ -69,6 +75,7 @@ class NetworkCaller {
     String? keyNameImage,
     String? keyNameCover,
     String? accessToken,
+    String? customTokenName,
   }) async {
     return _handleRequest(
       method: 'PATCH',
@@ -82,10 +89,11 @@ class NetworkCaller {
       keyNameImage: keyNameImage,
       keyNameCover: keyNameCover,
       accessToken: accessToken,
+      customTokenName: customTokenName,
     );
   }
 
-  // PUT request
+  // ──────────────────────  PUT  ──────────────────────
   Future<NetworkResponse> putRequest(
     String url, {
     Map<String, dynamic>? queryParams,
@@ -97,6 +105,7 @@ class NetworkCaller {
     String? keyNameImage,
     String? keyNameCover,
     String? accessToken,
+    String? customTokenName,
   }) async {
     return _handleRequest(
       method: 'PUT',
@@ -110,15 +119,17 @@ class NetworkCaller {
       keyNameImage: keyNameImage,
       keyNameCover: keyNameCover,
       accessToken: accessToken,
+      customTokenName: customTokenName,
     );
   }
 
-  // DELETE request
+  // ──────────────────────  DELETE  ──────────────────────
   Future<NetworkResponse> deleteRequest(
     String url, {
     Map<String, dynamic>? queryParams,
     Map<String, String>? headers,
     String? accessToken,
+    String? customTokenName,
   }) async {
     return _handleRequest(
       method: 'DELETE',
@@ -126,14 +137,18 @@ class NetworkCaller {
       queryParams: queryParams,
       headers: headers,
       accessToken: accessToken,
+      customTokenName: customTokenName,
     );
   }
 
-  
+  // ─────────────────────────────────────────────────────
+  // ──────────────────────  PRIVATE  ─────────────────────
+  // ─────────────────────────────────────────────────────
+
   String _cleanPath(String path) {
     return path.startsWith('file://') ? path.replaceFirst('file://', '') : path;
   }
- 
+
   void _logRequest(String url, Map<String, String> headers, [dynamic body]) {
     _logger.i('URL => $url\nHeaders => $headers\nBody => $body');
   }
@@ -153,7 +168,7 @@ class NetworkCaller {
       );
     }
   }
- 
+
   Future<NetworkResponse> _handleRequest({
     required String method,
     required String url,
@@ -166,105 +181,113 @@ class NetworkCaller {
     String? keyNameImage,
     String? keyNameCover,
     String? accessToken,
+    String? customTokenName,
   }) async {
     try {
-      // Append query parameters if provided
+      // ────── Query Params ──────
+      var finalUrl = url;
       if (queryParams != null && queryParams.isNotEmpty) {
-        url +=
-            '?${queryParams.entries.map((e) => '${e.key}=${e.value}').join('&')}';
+        final qp = queryParams.entries
+            .map(
+              (e) =>
+                  '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value.toString())}',
+            )
+            .join('&');
+        finalUrl += '?$qp';
       }
 
-      Uri uri = Uri.parse(url);
-      Map<String, String> defaultHeaders = {
+      final uri = Uri.parse(finalUrl);
+
+      // ────── Default Headers ──────
+      final Map<String, String> defaultHeaders = {
         'content-type': 'application/json',
-        ...?headers, // Merge custom headers
+        ...?headers,
       };
 
-      // Add accessToken to headers if provided
+      // ────── TOKEN: Authorization = Bearer, অন্যান্য = শুধু token ──────
       if (accessToken != null && accessToken.isNotEmpty) {
-        defaultHeaders['Authorization'] = 'Bearer $accessToken';
+        final tokenKey = (customTokenName?.isNotEmpty == true)
+            ? customTokenName!
+            : 'Authorization';
+
+        if (tokenKey == 'Authorization') {
+          defaultHeaders[tokenKey] = 'Bearer $accessToken';
+          _logger.d('TOKEN SENT → Authorization: Bearer $accessToken');
+        } else {
+          defaultHeaders[tokenKey] = accessToken;
+          _logger.d('TOKEN SENT → $tokenKey: $accessToken');
+        }
       }
 
       http.Response? response;
-      var request = image != null || images != null || cover != null
+      final bool isMultipart =
+          image != null || (images?.isNotEmpty ?? false) || cover != null;
+      final http.MultipartRequest? multipartReq = isMultipart
           ? http.MultipartRequest(method, uri)
           : null;
 
-      if (request != null) {
-        // Handle multipart request for file uploads
-        request.headers.addAll(defaultHeaders);
+      // ────── Multipart (File upload) ──────
+      if (multipartReq != null) {
+        multipartReq.headers.addAll(defaultHeaders);
         if (body != null) {
-          request.fields['payload'] = jsonEncode(body);
+          multipartReq.fields['data'] = jsonEncode(body);
         }
 
-        // Add single image
+        // Single image
         if (image != null) {
-          String imagePath = _cleanPath(image.path);
-          print('Adding image: $imagePath');
+          final path = _cleanPath(image.path);
           if (await image.exists()) {
-            String? mimeType = lookupMimeType(imagePath) ?? 'image/jpeg';
-            request.files.add(
+            final mime = lookupMimeType(path) ?? 'image/jpeg';
+            multipartReq.files.add(
               await http.MultipartFile.fromPath(
-                keyNameImage ?? 'image',
-                imagePath,
-                contentType: MediaType.parse(mimeType),
+                keyNameImage ?? 'profile',
+                path,
+                contentType: MediaType.parse(mime),
               ),
-            );
-          } else {
-            print('Image file does not exist: $imagePath');
-            return NetworkResponse(
-              isSuccess: false,
-              statusCode: -1,
-              errorMessage: 'Image file does not exist: $imagePath',
             );
           }
         }
 
-        // Add multiple images
-        if (images != null && images.isNotEmpty) {
-          for (File img in images) {
-            String imagePath = _cleanPath(img.path);
-            print('Adding multiple images: $imagePath');
+        // Multiple images
+        if (images != null) {
+          for (final img in images) {
+            final path = _cleanPath(img.path);
             if (await img.exists()) {
-              String? mimeType = lookupMimeType(imagePath) ?? 'image/jpeg';
-              request.files.add(
+              final mime = lookupMimeType(path) ?? 'image/jpeg';
+              multipartReq.files.add(
                 await http.MultipartFile.fromPath(
                   keyNameImage ?? 'images',
-                  imagePath,
-                  contentType: MediaType.parse(mimeType),
+                  path,
+                  contentType: MediaType.parse(mime),
                 ),
               );
-            } else {
-              print('Image file does not exist: $imagePath');
             }
           }
         }
 
-        // Add cover image
+        // Cover image
         if (cover != null) {
-          String coverPath = _cleanPath(cover.path);
-          print('Adding cover: $coverPath');
+          final path = _cleanPath(cover.path);
           if (await cover.exists()) {
-            String? mimeType = lookupMimeType(coverPath) ?? 'image/jpeg';
-            request.files.add(
+            final mime = lookupMimeType(path) ?? 'image/jpeg';
+            multipartReq.files.add(
               await http.MultipartFile.fromPath(
                 keyNameCover ?? 'cover',
-                coverPath,
-                contentType: MediaType.parse(mimeType),
+                path,
+                contentType: MediaType.parse(mime),
               ),
             );
-          } else {
-            print('Cover file does not exist: $coverPath');
           }
         }
 
-        _logRequest(url, defaultHeaders, body);
-        print('Request files: ${request.files}');
-        var streamedResponse = await request.send();
-        response = await http.Response.fromStream(streamedResponse);
-      } else {
-        // Handle regular HTTP request 
-        _logRequest(url, defaultHeaders, body);
+        _logRequest(finalUrl, defaultHeaders, body);
+        final streamed = await multipartReq.send();
+        response = await http.Response.fromStream(streamed);
+      }
+      // ────── Normal HTTP request ──────
+      else {
+        _logRequest(finalUrl, defaultHeaders, body);
+
         switch (method) {
           case 'GET':
             response = await http.get(uri, headers: defaultHeaders);
@@ -293,27 +316,38 @@ class NetworkCaller {
           case 'DELETE':
             response = await http.delete(uri, headers: defaultHeaders);
             break;
+          default:
+            throw Exception('Unsupported method: $method');
         }
       }
 
-      _logResponse(url, response!.statusCode, response.headers, response.body);
+      // ────── Response handling ──────
+      _logResponse(
+        finalUrl,
+        response!.statusCode,
+        response.headers,
+        response.body,
+      );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final decodedResponse = jsonDecode(response.body);
+        final data = jsonDecode(response.body);
         return NetworkResponse(
           isSuccess: true,
           statusCode: response.statusCode,
-          responseData: decodedResponse,
+          responseData: data,
         );
       } else {
-        final decodedResponse = jsonDecode(response.body);
-        ErrorMessageModel errorMessageModel = ErrorMessageModel.fromJson(
-          decodedResponse,
-        );
+        dynamic decoded;
+        try {
+          decoded = jsonDecode(response.body);
+        } catch (_) {
+          decoded = {'message': response.body};
+        }
+        final err = ErrorMessageModel.fromJson(decoded);
         return NetworkResponse(
           isSuccess: false,
           statusCode: response.statusCode,
-          errorMessage: errorMessageModel.message ?? 'Something went wrong',
+          errorMessage: err.message ?? 'Something went wrong',
         );
       }
     } catch (e) {
@@ -325,6 +359,4 @@ class NetworkCaller {
       );
     }
   }
-
-
 }

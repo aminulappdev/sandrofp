@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sandrofp/app/get_storage.dart';
+import 'package:sandrofp/app/modules/dashboard/views/dashboard_screen.dart';
 import 'package:sandrofp/app/services/network_caller/custom.dart';
 import 'package:sandrofp/app/services/network_caller/network_caller.dart';
 import 'package:sandrofp/app/services/network_caller/validator_service.dart';
@@ -41,7 +43,11 @@ class SignInController extends GetxController {
 
     if (response.isSuccess) {
       final data = response.responseData['data'];
-      if (data != null && data['need_verify'] == true) {
+      if (data != null) {
+        StorageUtil.saveData(StorageUtil.userAccessToken, data['accessToken']);
+        StorageUtil.saveData(StorageUtil.userId, data['user']['_id']);
+
+        Get.offAll(() => DashboardScreen());
       } else {}
     } else {
       Get.snackbar(

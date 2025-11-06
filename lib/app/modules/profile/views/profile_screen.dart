@@ -1,349 +1,297 @@
+// app/modules/profile/views/profile_screen.dart
 import 'package:crash_safe_image/crash_safe_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/home/widget/feature_row.dart';
 import 'package:sandrofp/app/modules/home/widget/home_product_card.dart';
 import 'package:sandrofp/app/modules/home/widget/label_data.dart';
-import 'package:sandrofp/app/modules/profile/views/edit_profile_screen.dart';
+import 'package:sandrofp/app/modules/profile/controllers/profile_controller.dart';
+import 'package:sandrofp/app/modules/profile/controllers/profile_screen_controller.dart';
 import 'package:sandrofp/app/modules/profile/widgets/comment_widget.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends GetView<ProfileScreenController> {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen> {
-  @override
   Widget build(BuildContext context) {
+    Get.put(ProfileScreenController()); // অটো ইনজেক্ট
+    final ProfileController profileController = Get.find<ProfileController>();
+
     return Scaffold(
-      appBar: CustomAppBar(title: 'Profile', leading: Container(),isBack: false,),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              heightBox12,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
+      appBar: CustomAppBar(
+        title: 'Profile',
+        leading: Container(),
+        isBack: false,
+      ),
+      body: Obx(() {
+        if (profileController.isLoading.value) {
+          return SizedBox(
+            height: Get.height,
+            child: Center(child: CircularProgressIndicator()),
+          );
+        } else {
+          return SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Obx(
+              () => Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(width: 40),
-                  Stack(
-                    children: [
-                      CircleAvatar(
-                        radius: 110,
-                        backgroundColor: Color(0xffF3F3F5),
-                        child: CircleAvatar(
-                          radius: 102,
-                          backgroundColor: Colors.white,
-                          child: CircleAvatar(
-                            radius: 94,
-                            backgroundImage: AssetImage(
-                              Assets.images.onboarding01.keyName,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        left: 50,
-                        child: Container(
-                          height: 42,
-                          width: 138,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(width: 1, color: Colors.white),
-                            color: Color(0xffF3F3F5),
-                          ),
-                          child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                CrashSafeImage(
-                                  Assets.images.brushSheld.keyName,
-                                  height: 20,
-                                ),
-                                widthBox8,
-                                Text(
-                                  'Beginner',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.more_horiz, size: 40),
-                  ),
-                ],
-              ),
-              heightBox12,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Sandro Fernando',
-                    style: GoogleFonts.poppins(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
-                  ),
-                  widthBox8,
-                  CrashSafeImage(Assets.images.checked.keyName, height: 30),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CrashSafeImage(Assets.images.star.keyName, height: 30),
-                  widthBox8,
-                  Text(
-                    '4.5',
-                    style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                    ),
-                  ),
-                  widthBox8,
-                  Text(
-                    '(100)',
-                    style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-              heightBox10,
-              CustomElevatedButton(title: 'Edit Profile', onPress: () {
-                Get.to(EditProfileScreen());
-              }),
-              heightBox20,
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Color(0xffF3F3F5),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
+                  heightBox12,
+
+                  // Avatar + Level Badge
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'User information',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                        ),
-                      ),
-                      heightBox10,
-                      FeatureRow(
-                        titleWeight: FontWeight.w400,
-                        title: 'Location',
-                        widget: Text('New York', style: GoogleFonts.poppins()),
-                      ),
-                      heightBox10,
-                      FeatureRow(
-                        titleWeight: FontWeight.w400,
-                        title: 'Age',
-                        widget: Text('25', style: GoogleFonts.poppins()),
-                      ),
-                      heightBox10,
-                      FeatureRow(
-                        titleWeight: FontWeight.w400,
-                        title: 'Gender',
-                        widget: Text('Male', style: GoogleFonts.poppins()),
-                      ),
-                      heightBox10,
-                      FeatureRow(
-                        titleWeight: FontWeight.w400,
-                        title: 'Height',
-                        widget: Text('5\' 8"', style: GoogleFonts.poppins()),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              heightBox12,
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Color(0xffF3F3F5),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'User information',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                        ),
-                      ),
-                      heightBox10,
-                      Text(
-                        'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humor, or randomized words which don t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isnt anything embarrassing hidden in the middle of text. All the Lorem Ipsum.',
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              heightBox20,
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Color(0xffF3F3F5),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Exchange Categories',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                        ),
-                      ),
-                      heightBox10,
-                      Row(
+                      const SizedBox(width: 40),
+                      Stack(
                         children: [
-                          LabelData(
-                            bgColor: Color.fromARGB(255, 255, 255, 255),
-                            titleColor: Colors.black,
-                            title: 'Other',
+                          CircleAvatar(
+                            radius: 110,
+                            backgroundColor: const Color(0xffF3F3F5),
+                            child: CircleAvatar(
+                              radius: 102,
+                              backgroundColor: Colors.white,
+                              child: CircleAvatar(
+                                radius: 94,
+                                backgroundImage: AssetImage(
+                                  Assets.images.onboarding01.keyName,
+                                ),
+                              ),
+                            ),
                           ),
-                          widthBox10,
-                          LabelData(
-                            bgColor: Color.fromARGB(255, 255, 255, 255),
-                            titleColor: Colors.black,
-                            title: 'Other',
-                          ),
-                          widthBox10,
-                          LabelData(
-                            bgColor: Color.fromARGB(255, 255, 255, 255),
-                            titleColor: Colors.black,
-                            title: 'Other',
+                          Positioned(
+                            bottom: 0,
+                            left: 50,
+                            child: Container(
+                              height: 42,
+                              width: 138,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Colors.white),
+                                color: const Color(0xffF3F3F5),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CrashSafeImage(
+                                    Assets.images.brushSheld.keyName,
+                                    height: 20,
+                                  ),
+                                  widthBox8,
+                                  Text(
+                                    profileController.profileData?.status ?? '',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ],
                       ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.more_horiz, size: 40),
+                      ),
                     ],
                   ),
-                ),
-              ),
-              heightBox10,
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Clothing items',
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
+
+                  heightBox12,
+
+                  // Name + Verified
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        profileController.profileData?.name ?? '',
+                        style: GoogleFonts.poppins(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      widthBox8,
+                      CrashSafeImage(Assets.images.checked.keyName, height: 30),
+                    ],
                   ),
-                  heightBox10,
-                  SizedBox(
-                    height: 550, // Added height to constrain the ListView
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return SizedBox(
-                          width:
-                              300, // Added width to constrain HomeProductCard
-                          child: HomeProductCard(onTap: () {}),
-                        );
-                      },
-                    ),
+
+                  // Rating
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CrashSafeImage(Assets.images.star.keyName, height: 30),
+                      widthBox8,
+                      Text(
+                        profileController.profileData?.avgRating.toString() ??
+                            '',
+                        style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
+                      ),
+                      widthBox8,
+                      Text(
+                        '(${controller.user['reviews']})',
+                        style: GoogleFonts.poppins(fontWeight: FontWeight.w400),
+                      ),
+                    ],
                   ),
 
                   heightBox10,
-                  Text(
-                    'Clothing items',
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
-                  ),
-                  heightBox10,
-                  SizedBox(
-                    height: 550, // Added height to constrain the ListView
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return SizedBox(
-                          width:
-                              300, // Added width to constrain HomeProductCard
-                          child: HomeProductCard(onTap: () {}),
-                        );
-                      },
-                    ),
+                  CustomElevatedButton(
+                    title: 'Edit Profile',
+                    onPress: controller.goToEditProfile,
                   ),
 
-                  heightBox10,
+                  heightBox20,
+
+                  // User Info Card
+                  _buildInfoCard('User information', [
+                    FeatureRow(
+                      title: 'Location',
+                      widget: Text(
+                        profileController.profileData?.status ?? 'N/A',
+                      ),
+                    ),
+                    FeatureRow(
+                      title: 'Age',
+                      widget: Text(profileController.profileData?.status ?? ''),
+                    ),
+                    FeatureRow(
+                      title: 'Gender',
+                      widget: Text(
+                        profileController.profileData?.gender ?? 'N/A',
+                      ),
+                    ),
+                    FeatureRow(
+                      title: 'Height',
+                      widget: Text(
+                        profileController.profileData?.status ?? 'N/A',
+                      ),
+                    ),
+                  ]),
+
+                  heightBox12,
+
+                  // Bio Card
+                  _buildInfoCard('About me', [
+                    Text(
+                      controller.user['bio'],
+                      style: GoogleFonts.poppins(fontSize: 12),
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ]),
+
+                  heightBox20,
+
+                  // Categories
+                  _buildInfoCard('Exchange Categories', [
+                    Wrap(
+                      spacing: 10,
+                      children: controller.categories
+                          .map(
+                            (cat) => LabelData(
+                              title: cat,
+                              bgColor: Colors.white,
+                              titleColor: Colors.black,
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ]),
+
+                  heightBox20,
+
+                  // Clothing Items
+                  _buildProductSection(
+                    'Clothing items',
+                    controller.clothingItems,
+                  ),
+                  heightBox20,
+
+                  // Electronics
+                  _buildProductSection(
+                    'Electronics items',
+                    controller.electronicItems,
+                  ),
+                  heightBox20,
+
+                  // Feedback
                   Text(
                     'Client’s feedback',
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: Colors.black,
                     ),
                   ),
                   heightBox10,
-                  CommentSection(),
-                  heightBox10,
-                  CommentSection(),
-                  
+                  ...controller.feedbacks.map(
+                    (fb) => Column(children: [CommentSection(), heightBox10]),
+                  ),
+
+                  heightBox100,
+                  heightBox100,
                 ],
               ),
-              heightBox100,
-              heightBox100,
-              heightBox100,
-            ],
+            ),
+          );
+        }
+      }),
+    );
+  }
+
+  Widget _buildInfoCard(String title, List<Widget> children) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: const Color(0xffF3F3F5),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          heightBox10,
+          ...children,
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProductSection(
+    String title,
+    RxList<RxMap<String, dynamic>> items,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w600),
+        ),
+        heightBox10,
+        SizedBox(
+          height: 550,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: items.length,
+            itemBuilder: (context, i) =>
+                SizedBox(width: 300, child: HomeProductCard(onTap: () {})),
           ),
         ),
-      ), 
+      ],
     );
   }
 }

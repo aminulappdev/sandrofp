@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
-import 'package:sandrofp/app/modules/authentication/views/sign_in_screen.dart';
-import 'package:sandrofp/app/modules/authentication/widget/auth_header_widget.dart';
 import 'package:sandrofp/app/modules/authentication/widget/label_name_widget.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
@@ -129,7 +125,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     CustomElevatedButton(
                       title: 'Change Password',
                       onPress: ()  {
-                        showSnackBarMessage(context, 'Password Changed Successfully', false);
+                        showSuccess('Password Changed Successfully');
                       },
                     ),
 
