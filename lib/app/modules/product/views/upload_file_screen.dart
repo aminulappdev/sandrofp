@@ -1,30 +1,25 @@
-import 'package:crash_safe_image/crash_safe_image.dart';
+// app/modules/product/views/upload_file_screen.dart
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sandrofp/app/modules/cart/widget/status_card.dart';
-import 'package:sandrofp/app/modules/product/views/product_details_screen.dart';
-import 'package:sandrofp/app/modules/home/widget/label_data.dart';
-import 'package:sandrofp/app/res/app_colors/app_colors.dart';
+import 'package:sandrofp/app/modules/product/controller/add_product_controller.dart';
+import 'package:sandrofp/app/modules/product/widgets/status_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
-import 'package:sandrofp/app/res/common_widgets/image_container.dart';
+import 'package:sandrofp/app/res/common_widgets/image_picker_controller.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
-class UploadProductFileScreen extends StatefulWidget {
+class UploadProductFileScreen extends GetView<AddProductController> {
   const UploadProductFileScreen({super.key});
 
   @override
-  State<UploadProductFileScreen> createState() =>
-      _UploadProductFileScreenState();
-}
-
-class _UploadProductFileScreenState extends State<UploadProductFileScreen> {
-  @override
   Widget build(BuildContext context) {
+    final controller = Get.find<AddProductController>();
+    final imagePickerHelper = ImagePickerHelper();
+
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Upload Product',
@@ -33,7 +28,7 @@ class _UploadProductFileScreenState extends State<UploadProductFileScreen> {
             CircleIconWidget(
               radius: 20,
               iconRadius: 20,
-              color: Color(0xffFFFFFF).withValues(alpha: 0.05),
+              color: const Color(0xffFFFFFF).withValues(alpha: 0.05),
               imagePath: Assets.images.notification.keyName,
               onTap: () {},
             ),
@@ -52,137 +47,20 @@ class _UploadProductFileScreenState extends State<UploadProductFileScreen> {
             mainAxisSize: MainAxisSize.max,
             children: [
               heightBox12,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xffEBF2EE),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 6,
-                      ),
-                      child: Text(
-                        'Undo',
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.greenColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xffEBF2EE),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 6,
-                      ),
-                      child: Text(
-                        'Save',
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.greenColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+              StatusBar(
+                firstName: 'Information',
+                firstBgColor: const Color(0xffEBF2EE),
+                firtsIconColor: null,
+                firstIconPath: Assets.images.group02.keyName,
+                secondName: 'Description',
+                secondBgColor: const Color(0xffEBF2EE),
+                secondIconColor: null,
+                secondIconPath: Assets.images.group02.keyName,
+                thirdName: 'Upload',
+                thirdBgColor: const Color(0xffEBF2EE),
+                thirdIconColor: null,
+                thirdIconPath: Assets.images.group02.keyName,
               ),
-
-              heightBox20,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Color(0xffEBF2EE),
-                        radius: 25,
-                        child: CrashSafeImage(
-                          Assets.images.group02.keyName,
-                          height: 20,
-                          width: 20,
-                        ),
-                      ),
-                      heightBox4,
-                      SizedBox(
-                        child: Text(
-                          'Information',
-                          style: GoogleFonts.poppins(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                  FlowWidget(),
-                  Column(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Color(0xffEBF2EE),
-                        radius: 25,
-                        child: CrashSafeImage(
-                          Assets.images.group02.keyName,
-                          height: 20,
-                          width: 20,
-                        ),
-                      ),
-                      heightBox4,
-                      SizedBox(
-                        child: Text(
-                          'Description',
-                          style: GoogleFonts.poppins(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  FlowWidget(),
-                  Column(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Color(0xffEBF2EE),
-                        radius: 25,
-                        child: CrashSafeImage(
-                          Assets.images.group02.keyName,
-                          height: 20,
-                          width: 20,
-                        ),
-                      ),
-                      heightBox16,
-                      SizedBox(
-                        child: Text(
-                          'Upload',
-                          style: GoogleFonts.poppins(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-
               heightBox14,
               Text(
                 'Product image',
@@ -194,7 +72,7 @@ class _UploadProductFileScreenState extends State<UploadProductFileScreen> {
               ),
               heightBox4,
               Text(
-                'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
+                'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
                 style: GoogleFonts.poppins(
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
@@ -202,54 +80,141 @@ class _UploadProductFileScreenState extends State<UploadProductFileScreen> {
                 ),
               ),
 
+              // === BIG IMAGE ===
               heightBox12,
-              ImageContainer(
-                height: 200,
-                width: double.infinity,
-                imagePath: Assets.images.onboarding01.keyName,
-                radius: 20,
-              ),
+              Obx(() {
+                if (controller.selectedImages.isNotEmpty) {
+                  return Stack(
+                    children: [
+                      Container(
+                        height: 200,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          image: DecorationImage(
+                            image: FileImage(controller.selectedImages.first),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: GestureDetector(
+                          onTap: () => controller.removeImage(controller.selectedImages.first),
+                          child: CircleAvatar(
+                            radius: 14,
+                            backgroundColor: Colors.black54,
+                            child: Icon(Icons.close, size: 16, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  return Container(
+                    height: 150,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.red, width: 1),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'Please select at least one image',
+                        style: TextStyle(color: Colors.red, fontSize: 14),
+                      ),
+                    ),
+                  );
+                }
+              }),
+
               heightBox10,
-               Text(
+              Text(
                 'Image should be 380* 200*',
                 style: GoogleFonts.poppins(
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
-                  color: Color(0xffFF0000),
+                  color: const Color(0xffFF0000),
                 ),
               ),
-             
+
+              // === Small Image Grid ===
+              heightBox20,
+              Obx(() {
+                final remainingImages = controller.selectedImages.length > 1
+                    ? controller.selectedImages.sublist(1)
+                    : <File>[];
+                if (remainingImages.isEmpty) return const SizedBox();
+                return GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                    childAspectRatio: 1,
+                  ),
+                  itemCount: remainingImages.length,
+                  itemBuilder: (context, index) {
+                    final image = remainingImages[index];
+                    return Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.file(image, width: double.infinity, height: double.infinity, fit: BoxFit.cover),
+                        ),
+                        Positioned(
+                          top: 4,
+                          right: 4,
+                          child: GestureDetector(
+                            onTap: () => controller.removeImage(image),
+                            child: CircleAvatar(
+                              radius: 10,
+                              backgroundColor: Colors.black54,
+                              child: Icon(Icons.close, size: 12, color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }),
+
               heightBox20,
               CustomElevatedButton(
                 color: Colors.transparent,
                 textColor: Colors.black,
                 borderColor: Colors.black,
-                title: 'Add more photos', onPress: () {}),
+                title: 'Add more photos',
+                onPress: () {
+                  imagePickerHelper.showMultiImagePicker(context, (file) {
+                    controller.addImage(file);
+                  });
+                },
+              ),
+
               heightBox20,
-              CustomElevatedButton(title: 'Next', onPress: () {
-                Get.to(()=>ProductDetailsScreen());
-              }),
+              CustomElevatedButton(
+                title: 'Next',
+                onPress: () {
+                  if (controller.selectedImages.isNotEmpty) {
+                    controller.goToProductDetails();
+                  } else {
+                    Get.snackbar(
+                      'Image Required',
+                      'Please select at least one image',
+                      backgroundColor: Colors.red,
+                      colorText: Colors.white,
+                    );
+                  }
+                },
+              ),
               heightBox20,
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class Label extends StatelessWidget {
-  final String label;
-  const Label({super.key, required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      label,
-      style: GoogleFonts.poppins(
-        fontSize: 14,
-        fontWeight: FontWeight.w600,
-        color: Colors.black,
       ),
     );
   }

@@ -13,7 +13,7 @@ class ResetPasswordScreen extends GetView<ResetPasswordController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold( 
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(

@@ -192,15 +192,15 @@ class HomepageHeader extends StatelessWidget {
               ),
             ), 
           ),
-          heightBox20,
+          // heightBox20,
           
-          TextFormField(
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search, color: Colors.black, size: 28),
-              hintText: 'Looking for..',
-              fillColor: Colors.white,
-            ),
-          ),
+          // TextFormField(
+          //   decoration: InputDecoration(
+          //     prefixIcon: Icon(Icons.search, color: Colors.black, size: 28),
+          //     hintText: 'Looking for..',
+          //     fillColor: Colors.white,
+          //   ),
+          // ),
         ],
       ),
     );

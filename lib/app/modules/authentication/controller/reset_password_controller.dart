@@ -76,6 +76,6 @@ class ResetPasswordController extends GetxController {
       showError('Something went wrong');
     } finally {
       isLoading(false);
-    }
+    } 
   }
 }

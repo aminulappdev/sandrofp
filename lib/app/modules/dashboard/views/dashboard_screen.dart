@@ -40,12 +40,12 @@ class DashboardScreen extends GetView<DashboardController> {
       body: PageView(
         controller: controller.pageController,
         physics: const NeverScrollableScrollPhysics(),
-        children: const [
-          MyProductCardScreen(),
-          ChatListScreen(),
-          HomeScreen(),
-          SettingsScreen(),
-          ProfileScreen(),
+        children: [
+          const MyProductCardScreen(),
+          const ChatListScreen(),
+          const HomeScreen(),
+          const SettingsScreen(),
+          const ProfileScreen(),
         ],
       ),
     );

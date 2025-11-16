@@ -1,5 +1,6 @@
 // app/modules/profile/controllers/profile_controller.dart
 import 'package:get/get.dart';
+import 'package:sandrofp/app/modules/profile/controllers/my_product_controller.dart';
 import 'package:sandrofp/app/modules/profile/views/edit_profile_screen.dart';
 
 class ProfileScreenController extends GetxController {
@@ -18,9 +19,15 @@ class ProfileScreenController extends GetxController {
   }.obs;
 
   // Categories & Products
-  final RxList<String> categories = ['Clothing', 'Electronics', 'Furniture'].obs;
-  final RxList<RxMap<String, dynamic>> clothingItems = <RxMap<String, dynamic>>[].obs;
-  final RxList<RxMap<String, dynamic>> electronicItems = <RxMap<String, dynamic>>[].obs;
+  final RxList<String> categories = [
+    'Clothing',
+    'Electronics',
+    'Furniture',
+  ].obs;
+  final RxList<RxMap<String, dynamic>> clothingItems =
+      <RxMap<String, dynamic>>[].obs;
+  final RxList<RxMap<String, dynamic>> electronicItems =
+      <RxMap<String, dynamic>>[].obs;
 
   // Feedback
   final RxList<FeedbackItem> feedbacks = <FeedbackItem>[].obs;
@@ -29,6 +36,8 @@ class ProfileScreenController extends GetxController {
   void onInit() {
     super.onInit();
     loadDummyData();
+
+    
   }
 
   void loadDummyData() {
@@ -48,5 +57,9 @@ class FeedbackItem {
   final String name;
   final int rating;
   final String comment;
-  FeedbackItem({required this.name, required this.rating, required this.comment});
+  FeedbackItem({
+    required this.name,
+    required this.rating,
+    required this.comment,
+  });
 }

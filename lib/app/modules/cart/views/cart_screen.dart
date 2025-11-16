@@ -1,12 +1,16 @@
+// app/modules/cart/views/cart_screen.dart
 import 'package:crash_safe_image/crash_safe_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sandrofp/app/modules/cart/views/order_process.dart';
 import 'package:sandrofp/app/modules/cart/widget/product_cart.dart';
+import 'package:sandrofp/app/modules/exchange/views/exchange_screen.dart';
 import 'package:sandrofp/app/modules/home/widget/feature_row.dart';
+import 'package:sandrofp/app/modules/product/controller/cart_controller.dart';
+
+import 'package:sandrofp/app/modules/profile/controllers/my_product_controller.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
+import 'package:sandrofp/app/res/common_widgets/bottom_card.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
@@ -14,18 +18,17 @@ import 'package:sandrofp/app/res/common_widgets/straight_liner.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
-class CartScreen extends StatefulWidget {
+
+class CartScreen extends GetView<CartController> {
   const CartScreen({super.key});
 
   @override
-  State<CartScreen> createState() => _CartScreenState();
-}
-
-class _CartScreenState extends State<CartScreen> {
-  @override
   Widget build(BuildContext context) {
+    Get.put(CartController());
+    final myProductController = Get.find<MyProductController>();
+
     return Scaffold(
-      backgroundColor: Color(0xffFBFBFD),
+      backgroundColor: const Color(0xffFBFBFD),
       appBar: CustomAppBar(
         title: 'Back',
         leading: Row(
@@ -33,181 +36,148 @@ class _CartScreenState extends State<CartScreen> {
             CircleIconWidget(
               radius: 20,
               iconRadius: 20,
-              color: Color(0xffFFFFFF).withValues(alpha: 0.05),
+              color: const Color(0xffFFFFFF).withValues(alpha: 0.05),
               imagePath: Assets.images.notification.keyName,
               onTap: () {},
             ),
             widthBox10,
             CircleAvatar(
+              radius: 20,
               backgroundImage: AssetImage(Assets.images.onboarding01.keyName),
             ),
           ],
         ),
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max,
         children: [
-          heightBox12,
           Expanded(
-            // ✅ Wrap the inner Column with Expanded
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Total collections (04)',
-                    style: GoogleFonts.poppins(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
-                  ),
-                  heightBox12,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Checkbox(value: false, onChanged: (null)),
-                      CircleIconWidget(
-                        iconRadius: 20,
-                        iconColor: Colors.red,
-                        radius: 25,
-                        color: Color(0xffFFE6E6),
-                        imagePath: Assets.images.delete.path,
-                        onTap: () {},
-                      ),
-                    ],
-                  ),
-                  Expanded(
-                    // ✅ Keep this Expanded for the ListView
-                    child: ListView.builder(
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4),
-                          child: Row(
-                            children: [
-                              Checkbox(value: false, onChanged: (null)),
-                              Expanded(child: ProductCart()),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+            child: Obx(() {
+              if (myProductController.isLoading.value) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              final products = myProductController.allProductItems;
+              if (products.isEmpty) {
+                return const Center(child: Text("No products available"));
+              }
 
-          Card(
-            elevation: 1,
-            color: Color(0xffFBFBFD),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-            child: Container(
-              height: 250,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40),
-                  topRight: Radius.circular(40),
-                ),
-              ),
-              child: Padding(
+              return Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextFormField(
-                      decoration: InputDecoration(
-                        suffixIcon: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            height: 40,
-                            width: 80,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Center(
-                                child: Text(
-                                  'Apply',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white,
+                    Text('My Products', style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600)),
+                    heightBox12,
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: products.length,
+                        itemBuilder: (context, index) {
+                          final product = products[index];
+                          final id = product.id.toString();
+
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            child: Row(
+                              children: [
+                                Obx(() => Checkbox(
+                                      value: controller.selectedProductIds.contains(id),
+                                      onChanged: (_) => controller.toggleSelection(id),
+                                      activeColor: AppColors.greenColor,
+                                    )),
+                                Expanded(
+                                  child: ProductCart(
+                                    productImage: product.images.firstOrNull?.url ?? '',
+                                    productName: product.name,
+                                    productPrice: product.price.toString(),
+                                    description: product.descriptions,
+                                    address: product.name,
+                                    quantity: 1,
+                                    onQuantityChanged: (_) {},
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
-                          ),
-                        ),
-            
-                        hintText: 'Enter discount code',
-                        filled: true,
-                        fillColor: Color(0xffF3F3F5),
+                          );
+                        },
                       ),
                     ),
-                    heightBox12,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        FeatureRow(
-                          titleWeight: FontWeight.w400,
-                          title: 'Total', widget: Text('3000')),
-                        heightBox12,
-                        FeatureRow(
-                          titleWeight: FontWeight.w400,
-                          title: 'Subtotal',
-                          widget: Row(
-                            children: [
-                              CrashSafeImage(
-                                Assets.images.banana.keyName,
-                                height: 12,
-                                width: 12,
-                              ),
-                              widthBox5,
-                              Text(
-                                '3000',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.yellowColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        heightBox20,
-                        StraightLiner(),
-                        heightBox10,
-                        FeatureRow(
-                          titleWeight: FontWeight.w400,
-                          title: 'Total',
-                          widget: Text(
-                            'Rs. 3000',
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                        
-                        heightBox10,
-                      ],
-                    ),
-            
-                    CustomElevatedButton(title: 'Checkout', onPress: () {
-                      Get.to(()=> OrderProcessScreen());
-                    }),
                   ],
                 ),
-              ),
-            ),
+              );
+            }),
+          ),
+
+          BottomCard(
+            child: Obx(() {
+              final count = controller.selectedProductIds.length;
+              final hasSelection = count > 0;
+
+              return Column(
+                children: [
+                  heightBox12,
+                  FeatureRow(
+                    title: 'Exch Product Value',
+                    widget: Text('Rs. ${controller.exchangePrice.value.toStringAsFixed(2)}',
+                        style: GoogleFonts.poppins(fontWeight: FontWeight.w600, color: Colors.blue)),
+                  ),
+                  heightBox8,
+                  FeatureRow(
+                    title: 'Selected Total',
+                    widget: Row(
+                      children: [
+                        CrashSafeImage(Assets.images.banana.keyName, height: 16, width: 16),
+                        widthBox5,
+                        Text(controller.selectedTotal.value.toStringAsFixed(2),
+                            style: GoogleFonts.poppins(fontWeight: FontWeight.w600, color: AppColors.yellowColor)),
+                      ],
+                    ),
+                  ),
+                  heightBox8,
+                  FeatureRow(
+                    title: 'Remaining (Extra Token)',
+                    widget: Text('Rs. ${controller.remainingPrice.value.toStringAsFixed(2)}',
+                        style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: controller.remainingPrice.value > 0 ? Colors.orange : Colors.red)),
+                  ),
+                  heightBox12,
+                  const StraightLiner(),
+                  heightBox10,
+                  CustomElevatedButton(
+                    title: hasSelection ? 'Proceed with $count Item${count > 1 ? 's' : ''}' : 'Select items',
+                    onPress: hasSelection
+                        ? () {
+                            final selectedMaps = controller.selectedProductIds.map((id) {
+                              final p = myProductController.allProductItems.firstWhere((e) => e.id.toString() == id);
+                              return {
+                                'id': p.id.toString(),
+                                'image': p.images.firstOrNull?.url ?? '',
+                                'title': p.name,
+                                'price': p.price,
+                                'description': p.descriptions,
+                              };
+                            }).toList();
+
+                            Get.to(() => const ExchangeView(), arguments: {
+                              'exchangeProduct': {
+                                'id': controller.productData?.id ?? '0',
+                                'image': controller.productData?.images.firstOrNull?.url ?? '',
+                                'title': controller.productData?.name ?? 'Unknown',
+                                'price': controller.productData?.price ?? 0,
+                                'description': controller.productData?.descriptions,
+                              },
+                              'selectedProducts': selectedMaps,
+                              'selectedTotal': controller.selectedTotal.value,
+                              'remainingToken': controller.remainingPrice.value,
+                            });
+                          }
+                        : null,
+                    color: AppColors.greenColor,
+                    textColor: Colors.white,
+                  ),
+                ],
+              );
+            }),
           ),
         ],
       ),

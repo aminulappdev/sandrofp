@@ -1,26 +1,32 @@
 // app/modules/home/controllers/home_controller.dart
 import 'package:get/get.dart';
+import 'package:sandrofp/app/modules/home/views/filter_screen.dart';
+import 'package:sandrofp/app/modules/home/views/notification_screen.dart';
+import 'package:sandrofp/app/modules/home/views/view_all_item_screen.dart';
+import 'package:sandrofp/app/modules/product/controller/all_product_controller.dart';
+import 'package:sandrofp/app/modules/product/model/product_model.dart';
+import 'package:sandrofp/app/modules/product/views/product_details_screen.dart';
 
 class HomeController extends GetxController {
   // যদি পরে ডেটা লোড করতে চাও (API থেকে)
-  final RxList<RxMap<String, dynamic>> matchProducts = <RxMap<String, dynamic>>[].obs;
+  final RxList<RxMap<String, dynamic>> matchProducts =
+      <RxMap<String, dynamic>>[].obs; 
 
   @override
   void onInit() {
     super.onInit();
-    loadDummyProducts();
+
+    final allProductController = Get.find<AllProductController>();
+    allProductController.getAllProduct('');
   }
 
-  void loadDummyProducts() {
-    // ডামি প্রোডাক্ট (তোমার HomeProductCard এর জন্য)
-    matchProducts.addAll([
-      {'title': 'iPhone 13', 'onTap': () => Get.toNamed('/product-details')}.obs,
-      {'title': 'Upload New', 'onTap': () => Get.toNamed('/upload-product')}.obs,
-      {'title': 'MacBook Pro', 'onTap': () => Get.toNamed('/product-details')}.obs,
-    ]);
-  }
+  void goToNotifications() => Get.to(NotificationScreen());
+  void goToFilters() => Get.to(FilterScreen());
+  void goToViewAll(String title, String? categoryId) => Get.to(
+    () => ViewAllItemScreen(),
+    arguments: {'title': title, 'category': categoryId},
+  );
 
-  void goToNotifications() => Get.toNamed('/notifications');
-  void goToFilters() => Get.toNamed('/filters');
-  void goToViewAll() => Get.toNamed('/view-all');
+  void goToProductDetails(AllProductItemModel data) =>
+      Get.to(() => ProductDetailsScreen(), arguments: {'data': data});
 }

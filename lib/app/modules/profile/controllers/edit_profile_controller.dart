@@ -21,7 +21,7 @@ class EditProfileController extends GetxController {
   final formKey = GlobalKey<FormState>();
   final usernameCtrl = TextEditingController();
   final emailCtrl = TextEditingController();
-  final phoneCtrl = TextEditingController();
+  final phoneCtrl = TextEditingController(); 
   final aboutCtrl = TextEditingController();
 
   final Rx<File?> selectedImage = Rx<File?>(null);

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/cart/widget/product_cart.dart';
+import 'package:sandrofp/app/modules/product/views/upload_product_info_screen.dart';
+import 'package:sandrofp/app/modules/profile/controllers/my_product_controller.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
+import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
@@ -15,6 +19,8 @@ class MyProductCardScreen extends StatefulWidget {
 }
 
 class _MyProductCardScreenState extends State<MyProductCardScreen> {
+  final MyProductController myProductController = Get.find<MyProductController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,85 +43,91 @@ class _MyProductCardScreenState extends State<MyProductCardScreen> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Processing Details',
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header Part (Fixed)
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Processing Details',
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
                   ),
-                  heightBox4,
-                  Text(
-                    'On time we got your exchange offer',
-                    style: GoogleFonts.poppins(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
+                ),
+                heightBox4,
+                Text(
+                  'On time we got your exchange offer',
+                  style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
                   ),
-                  heightBox20,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Your Product (10)',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                        ),
+                ),
+                heightBox10,
+                CustomElevatedButton(
+                  title: 'Add Product',
+                  onPress: () {
+                    Get.to(() => UploadProductInfoScreen());
+                  },
+                  borderColor: AppColors.greenColor,
+                  color: Colors.transparent,
+                  textColor: AppColors.greenColor,
+                ),
+                heightBox10,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'My Products',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          // Add your view action here
-                        },
-                        child: Text(
-                          'View',
-                          style: GoogleFonts.poppins(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.greenColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-        
-
-                  SizedBox(
-                    child: ListView.builder(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: 10,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 6),
-                          child: ProductCart(),
-                        );
-                      },
                     ),
-                  ),
-
-                  heightBox20,
-                ],
-              ),
+                   
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+
+          // List Part - Fixed with Expanded
+          Expanded(
+            child: Obx(() {
+              if (myProductController.isLoading.value) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                return ListView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0 ),
+                  itemCount: myProductController.allProductItems.length,
+                  itemBuilder: (context, index) {
+                    var product = myProductController.allProductItems[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 6.0),
+                      child: ProductCart(
+                        productImage: product.images.first.url,
+                        address: product.name,
+                        productName: product.name,
+                        productPrice: product.price.toString(),
+                        description: product.descriptions,
+                      ),
+                    );
+                  },
+                );
+              }
+              
+            }),
+          ),
+          heightBox100
+        ],
       ),
     );
   }

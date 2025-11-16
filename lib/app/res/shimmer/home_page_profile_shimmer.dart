@@ -10,7 +10,7 @@ class HomePageProfileShimmerEffectWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.of(context).size.width, 
       child: Shimmer.fromColors(
           baseColor: Colors.grey,
           highlightColor: Colors.white,

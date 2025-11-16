@@ -1,120 +1,107 @@
-// image_picker_helper.dart
+// app/res/common_widgets/image_picker_controller.dart
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 
 class ImagePickerHelper {
-  // Function to pick an image from the camera
-  Future<void> pickImageFromCamera(
-      BuildContext context, Function(File) onImagePicked) async {
-    try {
-      final pickedImage =
-          await ImagePicker().pickImage(source: ImageSource.camera);
-      if (pickedImage != null) {
-        onImagePicked(File(pickedImage.path));
-      }
-    } catch (e) {
-      debugPrint("Error picking image: $e");
-    } finally {
-      if (Navigator.canPop(context)) Navigator.pop(context);
-    }
-  }
-
-  // Function to pick an image from the gallery
-  Future<void> pickImageFromGallery(
-      BuildContext context, Function(File) onImagePicked) async {
-    try {
-      final pickedImage =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (pickedImage != null) {
-        onImagePicked(File(pickedImage.path));
-      }
-    } catch (e) {
-      debugPrint("Error picking image: $e");
-    } finally {
-      if (Navigator.canPop(context)) Navigator.pop(context); // Close the dialog
-    }
-  }
-
-  // Function to show the image picker dialog
-  Future<void> showAlertDialog(
-      BuildContext context, Function(File) onImagePicked) {
-    return showDialog(
+  // === তোমার আগের ফাংশন (অপরিবর্তিত) ===
+  void showAlertDialog(BuildContext context, Function(File) onImagePicked) {
+    showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text("Select Image Source"),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(ctx);
+              final picked = await ImagePicker().pickImage(
+                source: ImageSource.camera,
+                imageQuality: 85,
+              );
+              if (picked != null) {
+                onImagePicked(File(picked.path));
+              }
+            },
+            child: const Text("Camera"),
           ),
-          content: SizedBox(
-            height: 150.h,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      pickImageFromCamera(context, onImagePicked);
-                    },
-                    child: Row(
-                      
-                      children: [
-                        Icon(Icons.camera_alt, size: 30.sp),
-                        widthBox10,
-                        Text(
-                          'Take a Photo',
-                          style: TextStyle(
-                              fontSize: 16.sp, fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                  ),
-                  heightBox12,
-                  InkWell(
-                    onTap: () {
-                      pickImageFromGallery(context, onImagePicked);
-                    },
-                    child: Row(
-                     
-                      children: [
-                        Icon(Icons.image, size: 30.sp),
-                        widthBox10,
-                        Text(
-                          'Choose from Gallery',
-                          style: TextStyle(
-                              fontSize: 16.sp, fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                  ),
-                  heightBox12,
-                  Container(
-                    height: 1,
-                    width: double.infinity,
-                    color: const Color.fromARGB(255, 77, 76, 76),
-                  ),
-                  heightBox12,
-                  InkWell(
-                    onTap: () {
-                      if (Navigator.canPop(context)) Navigator.pop(context);
-                    },
-                    child: Center(
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(
-                            fontSize: 16.sp, fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(ctx);
+              final pickedImages = await ImagePicker().pickMultiImage(
+                imageQuality: 85,
+              );
+              if (pickedImages.isNotEmpty) {
+                for (var img in pickedImages) {
+                  onImagePicked(File(img.path));
+                }
+              }
+            },
+            child: const Text("Gallery"),
           ),
-        );
-      },
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text("Cancel", style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // === নতুন ফাংশন: শুধু মাল্টিপল ইমেজ (Gallery) ===
+  /// শুধু Gallery থেকে একাধিক ছবি সিলেক্ট করবে
+  /// কোনো ডায়ালগ দেখাবে না – সরাসরি Gallery খুলবে
+  Future<void> showMultiImagePicker(
+    BuildContext context,
+    Function(File) onImagePicked,
+  ) async {
+    try {
+      final pickedImages = await ImagePicker().pickMultiImage(
+        imageQuality: 85,
+      );
+
+      if (pickedImages.isNotEmpty) {
+        for (var img in pickedImages) {
+          onImagePicked(File(img.path));
+        }
+      }
+    } catch (e) {
+      debugPrint("Multi Image Picker Error: $e");
+      // অপশনাল: স্ন্যাকবার দেখাতে পারো
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Failed to pick images")),
+      );
+    }
+  }
+
+  // === অপশনাল: ক্যামেরা + গ্যালারি ছাড়া শুধু গ্যালারি (ডায়ালগ সহ) ===
+  void showGalleryOnlyDialog(BuildContext context, Function(File) onImagePicked) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text("Choose from Gallery"),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(ctx);
+              final pickedImages = await ImagePicker().pickMultiImage(
+                imageQuality: 85,
+              );
+              if (pickedImages.isNotEmpty) {
+                for (var img in pickedImages) {
+                  onImagePicked(File(img.path));
+                }
+              }
+            },
+            child: const Text("Select Multiple"),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text("Cancel", style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
     );
   }
 }

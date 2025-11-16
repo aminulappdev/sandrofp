@@ -1,162 +1,98 @@
+// app/modules/authentication/views/change_password_screen.dart
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sandrofp/app/modules/authentication/widget/label_name_widget.dart';
+import 'package:sandrofp/app/modules/settings/controller/change_password_controller.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
+import 'package:sandrofp/app/services/network_caller/validator_service.dart';
 
-class ChangePasswordScreen extends StatefulWidget {
+class ChangePasswordScreen extends GetView<ChangePasswordController> {
   final String email;
   const ChangePasswordScreen({super.key, required this.email});
 
   @override
-  State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
-}
-
-class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
-  final TextEditingController passwordCtrl = TextEditingController();
-  final TextEditingController newPasswordCtrl = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  // final ForgotPasswordController forgotPasswordController = Get.put(
-  //   ForgotPasswordController(),
-  // );
-
-  // final ResetPasswordController resetPasswordController = Get.put(
-  //   ResetPasswordController(),
-  // );
-
-  bool _obscureText = true;
-  bool _confirmObscureText = true;
-  bool showButton = false;
-
-  @override
-  void initState() {
-    print('is email ${widget.email}');
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    // Controller inject
+    final controller = Get.put(ChangePasswordController());
+
     return Scaffold(
       appBar: CustomAppBar(title: 'Change Password', leading: Container()),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-                       
-              Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    heightBox10,
-
-                    LabelName(label: 'Password'),
-                    heightBox10,
-                    TextFormField(
-                      controller: passwordCtrl,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      keyboardType: TextInputType.text,
-                      obscureText: _obscureText,
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Enter password';
-                        } else if (value.length < 6) {
-                          return 'Password must be at least 6 characters';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Enter password',
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscureText
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                            color: Colors.grey,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _obscureText = !_obscureText;
-                            });
-                          },
+          child: Form(
+            key: controller.formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                LabelName(label: 'Old Password'),
+                heightBox8,
+                Obx(
+                  () => TextFormField(
+                    controller: controller.passwordCtrl,
+                    obscureText: controller.obscurePassword.value,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    decoration: InputDecoration(
+                      hintText: 'Enter old password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          controller.obscurePassword.value
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.grey,
                         ),
+                        onPressed: controller.togglePasswordVisibility,
                       ),
                     ),
-                    heightBox10,
-                    LabelName(label: 'Confirm password'),
-                    heightBox14,
-                    TextFormField(
-                      controller: newPasswordCtrl,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      keyboardType: TextInputType.text,
-                      obscureText: _confirmObscureText,
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Enter confirm password';
-                        } else if (value.length < 6) {
-                          return 'Password must be at least 6 characters';
-                        } else if (value != passwordCtrl.text) {
-                          return 'Passwords do not match';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Enter confirm password',
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _confirmObscureText
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                            color: Colors.grey,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _confirmObscureText = !_confirmObscureText;
-                            });
-                          },
-                        ),
-                      ),
+                    validator: (value) => ValidatorService.validatePassword(
+                      controller.passwordCtrl.text,
                     ),
-
-                    heightBox20,
-                    CustomElevatedButton(
-                      title: 'Change Password',
-                      onPress: ()  {
-                        showSuccess('Password Changed Successfully');
-                      },
-                    ),
-
-                  ],
+                  ),
                 ),
-              ),
-            ],
+
+                heightBox20,
+                LabelName(label: 'New Password'),
+                heightBox8,
+                Obx(
+                  () => TextFormField(
+                    controller: controller.confirmPasswordCtrl,
+                    obscureText: controller.obscureConfirm.value,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    decoration: InputDecoration(
+                      hintText: 'new password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          controller.obscureConfirm.value
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.grey,
+                        ),
+                        onPressed: controller.toggleConfirmVisibility,
+                      ),
+                    ),
+                    validator: (value) => ValidatorService.validatePassword(
+                      controller.passwordCtrl.text,
+                    ),
+                  ),
+                ),
+
+                heightBox40,
+
+                Obx(
+                  () => CustomElevatedButton(
+                    title: 'Change Password',
+                    onPress: controller.isLoading.value
+                        ? null
+                        : controller.changePassword,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
-
-  // Future<void> resetPassword() async {
-  //   final bool isSuccess = await resetPasswordController.resetPassword(
-  //     email: widget.email,
-  //     password: newPasswordCtrl.text,
-  //   );
-
-  //   if (isSuccess) {
-  //     if (mounted) {
-  //       Get.to(() => SignInScreen());
-  //     }
-  //   } else {
-  //     if (mounted) {
-  //       showSnackBarMessage(
-  //         context,
-  //         forgotPasswordController.errorMessage,
-  //         true,
-  //       );
-  //     }
-  //   }
-  // }
 }

@@ -6,9 +6,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/home/widget/feature_row.dart';
 import 'package:sandrofp/app/modules/home/widget/home_product_card.dart';
 import 'package:sandrofp/app/modules/home/widget/label_data.dart';
+import 'package:sandrofp/app/modules/profile/controllers/my_product_controller.dart';
 import 'package:sandrofp/app/modules/profile/controllers/profile_controller.dart';
 import 'package:sandrofp/app/modules/profile/controllers/profile_screen_controller.dart';
 import 'package:sandrofp/app/modules/profile/widgets/comment_widget.dart';
+import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
@@ -21,6 +23,8 @@ class ProfileScreen extends GetView<ProfileScreenController> {
   Widget build(BuildContext context) {
     Get.put(ProfileScreenController()); // অটো ইনজেক্ট
     final ProfileController profileController = Get.find<ProfileController>();
+    final MyProductController myProductController =
+        Get.find<MyProductController>();
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -180,7 +184,7 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                   // Bio Card
                   _buildInfoCard('About me', [
                     Text(
-                      controller.user['bio'],
+                      profileController.profileData?.about ?? 'N/A',
                       style: GoogleFonts.poppins(fontSize: 12),
                       maxLines: 5,
                       overflow: TextOverflow.ellipsis,
@@ -190,35 +194,95 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                   heightBox20,
 
                   // Categories
-                  _buildInfoCard('Exchange Categories', [
-                    Wrap(
-                      spacing: 10,
-                      children: controller.categories
-                          .map(
-                            (cat) => LabelData(
-                              title: cat,
-                              bgColor: Colors.white,
-                              titleColor: Colors.black,
-                            ),
-                          )
-                          .toList(),
-                    ),
-                  ]),
-
-                  heightBox20,
+                  // _buildInfoCard('Exchange Categories', [
+                  //   Wrap(
+                  //     spacing: 10,
+                  //     children: controller.categories
+                  //         .map(
+                  //           (cat) => LabelData(
+                  //             title: cat,
+                  //             bgColor: Colors.white,
+                  //             titleColor: Colors.black,
+                  //           ),
+                  //         )
+                  //         .toList(),
+                  //   ),
+                  // ]),
 
                   // Clothing Items
-                  _buildProductSection(
-                    'Clothing items',
-                    controller.clothingItems,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'My Products',
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const Spacer(),
+                          GestureDetector(
+                            onTap: () {},
+                            child: Text(
+                              'View All',
+                              style: GoogleFonts.poppins(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.greenColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      heightBox10,
+                      SizedBox(
+                        height: Get.height * 0.67,
+                        child: Obx(() {
+                          if (myProductController.isLoading.value) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else {
+                            var items = myProductController.allProductItems;
+                            return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: items.length,
+                              itemBuilder: (context, i) {
+                                var product = items[i];
+                                return SizedBox(
+                                  width: 300,
+                                  child: HomeProductCard(
+                                    onTap: () {},
+                                    price: product.price.toString(),
+                                    imagePath: product.images.isEmpty
+                                        ? ''
+                                        : product.images[0].url,
+                                    title: product.brands,
+                                    description: product.descriptions,
+                                    discount: product.discount.toString(),
+                                    rating: product.name.toString(),
+                                    distance: product.name.toString(),
+                                    profile: product.author?.profile.toString(),
+                                    ownerName: product.author?.name.toString(),
+                                    address: product.author?.name.toString(),
+                                  ),
+                                );
+                              },
+                            );
+                          }
+                        }),
+                      ),
+                    ],
                   ),
                   heightBox20,
 
                   // Electronics
-                  _buildProductSection(
-                    'Electronics items',
-                    controller.electronicItems,
-                  ),
+                  // _buildProductSection(
+                  //   'Electronics items',
+                  //   controller.electronicItems,
+                  // ),
                   heightBox20,
 
                   // Feedback
@@ -277,13 +341,32 @@ class ProfileScreen extends GetView<ProfileScreenController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w600),
+        Row(
+          children: [
+            Text(
+              title,
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const Spacer(),
+            GestureDetector(
+              onTap: () {},
+              child: Text(
+                'View All',
+                style: GoogleFonts.poppins(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.greenColor,
+                ),
+              ),
+            ),
+          ],
         ),
         heightBox10,
         SizedBox(
-          height: 550,
+          height: Get.height * 0.67,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: items.length,

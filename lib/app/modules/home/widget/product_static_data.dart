@@ -1,4 +1,3 @@
-
 import 'package:crash_safe_image/crash_safe_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,8 +6,18 @@ import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
 class ProductStaticData extends StatelessWidget {
+  final String? price;
+  final String? discount;
+  final String? address;
+  final String? title;
+  final String? description;
   const ProductStaticData({
     super.key,
+    this.price,
+    this.discount,
+    this.address,
+    this.title,
+    this.description,
   });
 
   @override
@@ -21,13 +30,10 @@ class ProductStaticData extends StatelessWidget {
           children: [
             Row(
               children: [
-                CrashSafeImage(
-                  Assets.images.banana.keyName,
-                  height: 22,
-                ),
+                CrashSafeImage(Assets.images.banana.keyName, height: 22),
                 widthBox8,
                 Text(
-                  '(250)',
+                  '($price)',
                   style: GoogleFonts.poppins(
                     fontSize: 22,
                     fontWeight: FontWeight.w600,
@@ -35,10 +41,7 @@ class ProductStaticData extends StatelessWidget {
                   ),
                 ),
                 widthBox8,
-                CrashSafeImage(
-                  Assets.images.label.keyName,
-                  height: 22,
-                ),
+                CrashSafeImage(Assets.images.label.keyName, height: 22),
               ],
             ),
             Container(
@@ -50,31 +53,29 @@ class ProductStaticData extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  '(20%)',
+                  '($discount)',
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: Color(0xff998523),
+                    decoration: TextDecoration.lineThrough,
                   ),
                 ),
               ),
             ),
           ],
         ),
-        
+
         heightBox10,
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
-                CrashSafeImage(
-                  Assets.images.location.keyName,
-                  height: 16,
-                ),
+                CrashSafeImage(Assets.images.location.keyName, height: 16),
                 widthBox8,
                 Text(
-                  'Porto Alegre(RS)',
+                  '$address',
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
@@ -108,7 +109,7 @@ class ProductStaticData extends StatelessWidget {
         ),
         heightBox12,
         Text(
-          'Gucci green fully 6 set customized sofa available!',
+          '$title',
           style: GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.w600,
@@ -117,7 +118,7 @@ class ProductStaticData extends StatelessWidget {
         ),
         heightBox8,
         Text(
-          'Lorem ipsum dolor sit am connecter our adipescent elite. Maecenas herderite cultus libero accused. Lorem ipsum dolor sit am connecter our adipescent elite. Maecenas herderite cultus libero accused. Maecenas herderite cultus libero accused...',
+          '$description',
           style: GoogleFonts.poppins(
             fontSize: 12,
             fontWeight: FontWeight.w400,
@@ -137,10 +138,7 @@ class ProductStaticData extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                CrashSafeImage(
-                  Assets.images.banana.keyName,
-                  height: 22,
-                ),
+                CrashSafeImage(Assets.images.banana.keyName, height: 22),
                 widthBox8,
                 Text(
                   'Fully banana exchange available',
@@ -157,7 +155,7 @@ class ProductStaticData extends StatelessWidget {
         heightBox10,
         Container(
           height: 36,
-          width: 300,
+          width: 320,
           decoration: BoxDecoration(
             color: Color(0xffEBF2EE),
             borderRadius: BorderRadius.circular(8),
@@ -166,13 +164,10 @@ class ProductStaticData extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                CrashSafeImage(
-                  Assets.images.done02.keyName,
-                  height: 22,
-                ),
+                CrashSafeImage(Assets.images.done02.keyName, height: 22),
                 widthBox8,
                 Text(
-                  'Fully banana exchange available',
+                  'Protected with secure payment processing',
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,

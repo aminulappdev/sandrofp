@@ -12,7 +12,7 @@ class ProfileController extends GetxController {
   final Rx<ProfileModel?> _profileModel = Rx<ProfileModel?>(null);
   ProfileData? get profileData => _profileModel.value?.data;
   
-  final RxBool isLoading = false.obs;
+  final RxBool isLoading = false.obs; 
 
 
 

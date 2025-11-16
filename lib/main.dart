@@ -65,3 +65,36 @@ OutlineInputBorder _inputBorder() {
     borderRadius: BorderRadius.circular(50.r),
   );
 }
+
+
+// TextFormField(
+//                       decoration: InputDecoration(
+//                         suffixIcon: Padding(
+//                           padding: const EdgeInsets.all(8.0),
+//                           child: Container(
+//                             height: 40,
+//                             width: 80,
+//                             decoration: BoxDecoration(
+//                               color: Colors.black,
+//                               borderRadius: BorderRadius.circular(20),
+//                             ),
+//                             child: Padding(
+//                               padding: const EdgeInsets.all(4.0),
+//                               child: Center(
+//                                 child: Text(
+//                                   'Apply',
+//                                   style: GoogleFonts.poppins(
+//                                     fontSize: 12,
+//                                     fontWeight: FontWeight.w400,
+//                                     color: Colors.white,
+//                                   ),
+//                                 ),
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+//                         hintText: 'Enter discount code',
+//                         filled: true,
+//                         fillColor: Color(0xffF3F3F5),
+//                       ),
+//                     ),

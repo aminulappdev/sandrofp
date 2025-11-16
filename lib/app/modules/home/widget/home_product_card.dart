@@ -8,8 +8,36 @@ import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart' show Assets;
 
 class HomeProductCard extends StatelessWidget {
+  final String? imagePath;
+  final String? price;
+  final String? discount;
+  final String? ownerName;
+  final String? profile;
+  final String? rating;
+  final String? address;
+  final String? distance;
+  final String? title;
+  final String? description;
+
   final VoidCallback onTap;
-  const HomeProductCard({super.key, required this.onTap});
+  final VoidCallback? shareTap;
+  final VoidCallback? reactTap;
+  const HomeProductCard({
+    super.key,
+    required this.onTap,
+    this.imagePath,
+    this.price,
+    this.discount,
+    this.ownerName,
+    this.profile,
+    this.rating,
+    this.address,
+    this.distance,
+    this.title,
+    this.description,
+    this.shareTap,
+    this.reactTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +55,14 @@ class HomeProductCard extends StatelessWidget {
               Container(
                 height: 220,
                 decoration: BoxDecoration(
+                  color: Colors.grey,
                   borderRadius: BorderRadius.only(
                     topRight: Radius.circular(12),
                     topLeft: Radius.circular(12),
                   ),
                   image: DecorationImage(
-                    image: AssetImage(Assets.images.onboarding01.keyName),
-                    fit: BoxFit.fill,
+                    image: NetworkImage(imagePath ?? ''),
+                    fit: BoxFit.cover,
                   ),
                 ),
                 child: Padding(
@@ -48,7 +77,7 @@ class HomeProductCard extends StatelessWidget {
                           height: 38,
                           width: 95,
                           decoration: BoxDecoration(
-                            color: Color(0xffEBF2EE),
+                             color: Color(0xffEBF2EE),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Center(
@@ -63,7 +92,7 @@ class HomeProductCard extends StatelessWidget {
                                 ),
                                 widthBox8,
                                 Text(
-                                  'View all',
+                                  'Verified',
                                   style: GoogleFonts.poppins(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600,
@@ -94,7 +123,7 @@ class HomeProductCard extends StatelessWidget {
                             ),
                             widthBox8,
                             Text(
-                              '(250)',
+                              '($price)',
                               style: GoogleFonts.poppins(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w600,
@@ -110,14 +139,14 @@ class HomeProductCard extends StatelessWidget {
                         ),
                         Container(
                           height: 30,
-                          width: 60,
+                          width: 80,
                           decoration: BoxDecoration(
                             color: Color(0xffFFF4C2),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Center(
                             child: Text(
-                              '(20%)',
+                              '($discount)',
                               style: GoogleFonts.poppins(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
@@ -142,7 +171,7 @@ class HomeProductCard extends StatelessWidget {
                             ),
                             widthBox8,
                             Text(
-                              'Aminul Islam',
+                              ownerName ?? '',
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
@@ -159,7 +188,7 @@ class HomeProductCard extends StatelessWidget {
                             ),
                             widthBox4,
                             Text(
-                              '4.5 (20)',
+                              '$rating (20)',
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
@@ -182,7 +211,7 @@ class HomeProductCard extends StatelessWidget {
                             ),
                             widthBox8,
                             Text(
-                              'Porto Alegre(RS)',
+                              address ?? '', 
                               style: GoogleFonts.poppins(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
@@ -202,7 +231,7 @@ class HomeProductCard extends StatelessWidget {
                             ),
                             child: Center(
                               child: Text(
-                                '2km away',
+                                '$distance km away',
                                 style: GoogleFonts.poppins(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
@@ -215,21 +244,31 @@ class HomeProductCard extends StatelessWidget {
                       ],
                     ),
                     heightBox12,
-                    Text(
-                      'Gucci green fully 6 set customized sofa available!',
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        title ?? '',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                     heightBox8,
-                    Text(
-                      'Lorem ipsum dolor sit am connecter our adipescent elite. Maecenas herderite cultus libero accused...',
-                      style: GoogleFonts.poppins(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black,
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        description ?? '',
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                     heightBox12,
@@ -252,7 +291,7 @@ class HomeProductCard extends StatelessWidget {
                           children: [
                             CircleIconWidget(
                               imagePath: Assets.images.share.keyName,
-                              onTap: () {},
+                              onTap: shareTap ?? () {},
                               radius: 20,
                               iconRadius: 16,
                               color: Color(0xffEBF2EE),
@@ -261,7 +300,7 @@ class HomeProductCard extends StatelessWidget {
                             CircleIconWidget(
                               iconRadius: 20,
                               imagePath: Assets.images.heart.keyName,
-                              onTap: () {},
+                              onTap: reactTap ?? () {},
                               radius: 20,
                               color: Color(0xffFFE6E6),
                             ),

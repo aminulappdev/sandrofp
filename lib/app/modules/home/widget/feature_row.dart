@@ -10,7 +10,7 @@ class FeatureRow extends StatelessWidget {
     super.key,
     required this.title,
     required this.widget,
-    this.titleWeight = FontWeight.w600,
+    this.titleWeight = FontWeight.w400,
   });
 
   @override

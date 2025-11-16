@@ -7,7 +7,7 @@ class CategoryImage extends StatelessWidget {
   final double height;
   final double width;
   final String name;
-  final VoidCallback onTap;
+  final VoidCallback onTap; 
   const CategoryImage({
     super.key,
     required this.imagePath,
@@ -23,10 +23,11 @@ class CategoryImage extends StatelessWidget {
         height: height,
         width: width,
         decoration: BoxDecoration(
+          color: Colors.grey,
           borderRadius: BorderRadius.circular(12),
           image: DecorationImage(
-            image: AssetImage(imagePath),
-            fit: BoxFit.fill,
+            image: NetworkImage(imagePath),
+            fit: BoxFit.cover,
           ),
         ),
         child: Padding(

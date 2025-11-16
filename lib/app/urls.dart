@@ -14,12 +14,22 @@ class Urls {
   static const String resendUrl = '$_baseUrl/otp/resend-otp';
   static const String forgetPasswordUrl = '$_baseUrl/auth/forgot-password';
   static const String resetPasswordUrl = '$_baseUrl/auth/reset-password';
+  static const String changePasswordUrl = '$_baseUrl/auth/change-password';
 
   static const String signInUrl = '$_baseUrl/auth/login';
 
-  // =========================================== Authentication ====================================== //
+  // =========================================== Profile ====================================== //
   static const String profileUrl = '$_baseUrl/users/my-profile';
   static const String updateProfileUrl = '$_baseUrl/users/update-my-profile';
+
+  // =========================================== Home ====================================== //
+  static String categoryUrl = '$_baseUrl/categories';
+
+   // =========================================== Product ====================================== //
+  static String productUrl = '$_baseUrl/products';
+  static String myProductUrl = '$_baseUrl/products/my-products';
+  static String exchangeUrl = '$_baseUrl/exchanges';
+
 
   static String grabbedById(String id) {
     return '$_baseUrl/assets/$id/grab';

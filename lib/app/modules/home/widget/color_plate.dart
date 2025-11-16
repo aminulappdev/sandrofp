@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class ColorPlate extends StatelessWidget {
   final Color color;
-  const ColorPlate({super.key, required this.color});
+  const ColorPlate({super.key, required this.color, required bool isSelected});
 
   @override
   Widget build(BuildContext context) {

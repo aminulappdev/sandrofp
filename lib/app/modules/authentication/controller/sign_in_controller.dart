@@ -38,6 +38,7 @@ class SignInController extends GetxController {
   Future<void> _performLogin() async {
     final response = await _networkCaller.postRequest(
       Urls.signInUrl,
+      
       body: {'email': emailCtrl.text, 'password': passwordCtrl.text},
     );
 

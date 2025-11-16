@@ -1,7 +1,6 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:sandrofp/gen/assets.gen.dart';
 
 class ImageContainer extends StatelessWidget {
   final double height;
@@ -25,7 +24,7 @@ class ImageContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(radius),
 
         image: DecorationImage(
-          image: AssetImage(Assets.images.onboarding01.keyName),
+          image: NetworkImage(imagePath),
           fit: BoxFit.cover,
         ),
       ),
