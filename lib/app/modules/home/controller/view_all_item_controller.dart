@@ -1,28 +1,51 @@
-// lib/app/modules/home/controllers/view_all_item_controller.dart
+// app/modules/home/controllers/view_all_item_controller.dart
 import 'package:get/get.dart';
 import 'package:sandrofp/app/modules/product/controller/all_product_controller.dart';
 
 class ViewAllItemController extends GetxController {
-  String? categoryId;
-  String? title;
-
   final AllProductController allProductController = Get.find<AllProductController>();
+
+  String? title;
+  String? type; // 'all', 'category', 'nearby'
 
   @override
   void onInit() {
     super.onInit();
 
     final args = Get.arguments as Map<String, dynamic>?;
-    categoryId = args?['category'] as String?;
-    title = args?['title'] as String?;
+    title = args?['title'] as String? ?? 'Products';
+    type = args?['type'] as String?;
 
-    // API কল করুন, কিন্তু build শেষ হওয়ার পর
+    // Load data based on type
     Future.delayed(Duration.zero, () {
-      allProductController.getAllProduct(categoryId);
+      if (type == 'category') {
+        final categoryId = args?['category'] as String?;
+        allProductController.getAllProductByCategory(categoryId);
+      } else if (type == 'nearby') {
+        final lat = args?['latitude'] as double?;
+        final lng = args?['longitude'] as double?;
+        if (lat != null && lng != null) {
+          allProductController.getAllProductByLocation(lat, lng);
+        }
+      } else {
+        // Default: All products
+        allProductController.getAllProduct();
+      }
     });
   }
 
   Future<void> refresh() async {
-    await allProductController.refreshProducts(categoryId);
+    if (type == 'category') {
+      final categoryId = Get.arguments?['category'] as String?;
+      await allProductController.getAllProductByCategory(categoryId);
+    } else if (type == 'nearby') {
+      final lat = Get.arguments?['latitude'] as double?;
+      final lng = Get.arguments?['longitude'] as double?;
+      if (lat != null && lng != null) {
+        await allProductController.getAllProductByLocation(lat, lng);
+      }
+    } else {
+      await allProductController.getAllProduct();
+    }
   }
 }

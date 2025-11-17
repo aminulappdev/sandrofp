@@ -8,6 +8,7 @@ import 'package:sandrofp/app/services/network_caller/network_caller.dart';
 import 'package:sandrofp/app/urls.dart';
 
 class ChangePasswordController extends GetxController {
+  final TextEditingController oldPasswordCtrl = TextEditingController();
   final TextEditingController passwordCtrl = TextEditingController();
   final TextEditingController confirmPasswordCtrl = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -15,6 +16,7 @@ class ChangePasswordController extends GetxController {
   final RxBool isLoading = false.obs;
   final RxBool obscurePassword = true.obs;
   final RxBool obscureConfirm = true.obs;
+  final RxBool obscureOld = true.obs;
 
   final NetworkCaller _networkCaller = NetworkCaller();
 
@@ -27,6 +29,7 @@ class ChangePasswordController extends GetxController {
 
   void togglePasswordVisibility() => obscurePassword.toggle();
   void toggleConfirmVisibility() => obscureConfirm.toggle();
+  void toggleOldVisibility() => obscureOld.toggle();
 
   Future<void> changePassword() async {
     if (!formKey.currentState!.validate()) return;
@@ -42,15 +45,15 @@ class ChangePasswordController extends GetxController {
       isLoading(true);
 
       final body = {
-        "oldPassword": passwordCtrl.text,
-        "confirmPassword": confirmPasswordCtrl.text,
+        "oldPassword": oldPasswordCtrl.text,
+        "confirmPassword": passwordCtrl.text,
         "newPassword": confirmPasswordCtrl.text,
       };
 
-      final response = await _networkCaller.postRequest(
+      final response = await _networkCaller.patchRequest(
         accessToken: StorageUtil.getData(StorageUtil.userAccessToken),
         Urls.changePasswordUrl,
-        customTokenName: 'token',
+
         body: body,
       );
 

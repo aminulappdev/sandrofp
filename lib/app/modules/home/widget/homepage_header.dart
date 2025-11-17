@@ -133,7 +133,7 @@ class HomepageHeader extends StatelessWidget {
                           ),
                           widthBox10,
                           Text(
-                            '5000',
+                            ammount,
                             style: GoogleFonts.poppins(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,

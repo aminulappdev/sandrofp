@@ -12,7 +12,7 @@ import 'package:sandrofp/app/modules/settings/views/settings_screen.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
-
+ 
 class DashboardScreen extends GetView<DashboardController> {
   const DashboardScreen({super.key});
 
@@ -94,3 +94,4 @@ class DashboardScreen extends GetView<DashboardController> {
     ],
   );
 }
+ 

@@ -3,9 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sandrofp/app/get_storage.dart';
+import 'package:sandrofp/app/modules/dashboard/views/dashboard_screen.dart';
 import 'package:sandrofp/app/modules/onboarding/views/onboarding_01.dart';
 import 'package:sandrofp/app/res/app_binder/controller_binder.dart';
-
 
 void main() async {
   // await PushNotificationService().init(); // Initialize Push Notifications
@@ -14,7 +15,7 @@ void main() async {
   await GetStorage.init();
 
   //final SocketService socketService = Get.put(SocketService());
- // await socketService.init();
+  // await socketService.init();
   runApp(const MyApp());
 }
 
@@ -40,7 +41,9 @@ class MyApp extends StatelessWidget {
           ),
           inputDecorationTheme: _inputDecorationTheme(),
         ),
-        home: OnboardingScreen01(),
+        home: StorageUtil.getData(StorageUtil.userAccessToken) != null
+            ? DashboardScreen()
+            : OnboardingScreen01(),
       ),
     );
   }

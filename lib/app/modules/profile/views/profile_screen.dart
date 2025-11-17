@@ -5,12 +5,10 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/home/widget/feature_row.dart';
 import 'package:sandrofp/app/modules/home/widget/home_product_card.dart';
-import 'package:sandrofp/app/modules/home/widget/label_data.dart';
 import 'package:sandrofp/app/modules/profile/controllers/my_product_controller.dart';
 import 'package:sandrofp/app/modules/profile/controllers/profile_controller.dart';
 import 'package:sandrofp/app/modules/profile/controllers/profile_screen_controller.dart';
 import 'package:sandrofp/app/modules/profile/widgets/comment_widget.dart';
-import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
@@ -223,17 +221,22 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                             ),
                           ),
                           const Spacer(),
-                          GestureDetector(
-                            onTap: () {},
-                            child: Text(
-                              'View All',
-                              style: GoogleFonts.poppins(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.greenColor,
-                              ),
-                            ),
-                          ),
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     Get.offAll(
+                          //       () => const DashboardScreen(),
+                          //       arguments: {"index": 0},
+                          //     );
+                          //   },
+                          //   child: Text(
+                          //     'View All',
+                          //     style: GoogleFonts.poppins(
+                          //       fontSize: 12,
+                          //       fontWeight: FontWeight.w400,
+                          //       color: AppColors.greenColor,
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                       heightBox10,
@@ -331,50 +334,6 @@ class ProfileScreen extends GetView<ProfileScreenController> {
           ...children,
         ],
       ),
-    );
-  }
-
-  Widget _buildProductSection(
-    String title,
-    RxList<RxMap<String, dynamic>> items,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Text(
-              title,
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const Spacer(),
-            GestureDetector(
-              onTap: () {},
-              child: Text(
-                'View All',
-                style: GoogleFonts.poppins(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.greenColor,
-                ),
-              ),
-            ),
-          ],
-        ),
-        heightBox10,
-        SizedBox(
-          height: Get.height * 0.67,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: items.length,
-            itemBuilder: (context, i) =>
-                SizedBox(width: 300, child: HomeProductCard(onTap: () {})),
-          ),
-        ),
-      ],
     );
   }
 }

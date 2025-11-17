@@ -31,11 +31,37 @@ class ChangePasswordScreen extends GetView<ChangePasswordController> {
                 heightBox8,
                 Obx(
                   () => TextFormField(
+                    controller: controller.oldPasswordCtrl,
+                    obscureText: controller.obscureOld.value,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    decoration: InputDecoration(
+                      hintText: 'Enter old password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          controller.obscureOld.value
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.grey,
+                        ),
+                        onPressed: controller.toggleOldVisibility,
+                      ),
+                    ),
+                    validator: (value) => ValidatorService.validatePassword(
+                      controller.oldPasswordCtrl.text,
+                    ),
+                  ),
+                ),
+
+                heightBox20,
+                LabelName(label: 'New Password'),
+                heightBox8,
+                Obx(
+                  () => TextFormField(
                     controller: controller.passwordCtrl,
                     obscureText: controller.obscurePassword.value,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: InputDecoration(
-                      hintText: 'Enter old password',
+                      hintText: 'new password',
                       suffixIcon: IconButton(
                         icon: Icon(
                           controller.obscurePassword.value
@@ -53,7 +79,7 @@ class ChangePasswordScreen extends GetView<ChangePasswordController> {
                 ),
 
                 heightBox20,
-                LabelName(label: 'New Password'),
+                LabelName(label: 'Confirm Password'),
                 heightBox8,
                 Obx(
                   () => TextFormField(
@@ -61,7 +87,7 @@ class ChangePasswordScreen extends GetView<ChangePasswordController> {
                     obscureText: controller.obscureConfirm.value,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: InputDecoration(
-                      hintText: 'new password',
+                      hintText: 'confirm password',
                       suffixIcon: IconButton(
                         icon: Icon(
                           controller.obscureConfirm.value
@@ -72,9 +98,11 @@ class ChangePasswordScreen extends GetView<ChangePasswordController> {
                         onPressed: controller.toggleConfirmVisibility,
                       ),
                     ),
-                    validator: (value) => ValidatorService.validatePassword(
-                      controller.passwordCtrl.text,
-                    ),
+                    validator: (value) =>
+                        ValidatorService.validateConfirmPassword(
+                          value,
+                          controller.passwordCtrl.text,
+                        ),
                   ),
                 ),
 

@@ -13,6 +13,7 @@ import 'package:sandrofp/app/modules/product/controller/cart_controller.dart';
 import 'package:sandrofp/app/modules/product/controller/product_details_controller.dart';
 import 'package:sandrofp/app/modules/profile/controllers/my_product_controller.dart';
 import 'package:sandrofp/app/modules/profile/controllers/profile_controller.dart';
+import 'package:sandrofp/app/modules/settings/controller/content_controller.dart';
 import 'package:sandrofp/app/services/network_caller/network_caller.dart';
 
 class ControllerBinder extends Bindings {
@@ -21,8 +22,7 @@ class ControllerBinder extends Bindings {
     Get.put(NetworkCaller());
     Get.put(ProfileController());
     Get.put(SignUpController());
-
-    Get.lazyPut(() => SignInController());
+    Get.put(SignInController());
     Get.lazyPut(() => OtpVerifyController());
     Get.lazyPut(() => ForgotPasswordController());
     Get.lazyPut(() => ResetPasswordController());
@@ -31,6 +31,7 @@ class ControllerBinder extends Bindings {
     Get.lazyPut(() => AllProductController());
     Get.lazyPut(() => MyProductController());
     Get.lazyPut(() => HomeController());
+    Get.lazyPut(() => ContentController());
 
     // এই লাইনটা যোগ করো
     Get.lazyPut<ViewAllItemController>(

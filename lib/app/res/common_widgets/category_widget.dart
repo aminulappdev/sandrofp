@@ -6,8 +6,8 @@ import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 class CategoryWidget extends StatelessWidget {
   final VoidCallback onTap;
   final String label;
-  final Color bgColor;
-  final Color textColor;
+  final Color? bgColor;
+  final Color? textColor;
   final double fontSize;
 
   const CategoryWidget({

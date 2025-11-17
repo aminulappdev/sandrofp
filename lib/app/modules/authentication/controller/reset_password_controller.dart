@@ -16,7 +16,7 @@ class ResetPasswordController extends GetxController {
   final RxBool obscurePassword = true.obs;
   final RxBool obscureConfirm = true.obs;
 
-  late String email;
+  late String email; 
   late String? token; // OTP token (optional)
 
   final NetworkCaller _networkCaller = NetworkCaller();

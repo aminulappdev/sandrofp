@@ -8,30 +8,55 @@ import 'package:sandrofp/app/services/network_caller/network_caller.dart';
 import 'package:sandrofp/app/urls.dart';
 
 class AllProductController extends GetxController {
-  final NetworkCaller _networkCaller = NetworkCaller(); 
- 
+  final NetworkCaller _networkCaller = NetworkCaller();
+
   // প্রোডাক্ট ডেটা
   final Rx<AllProductModel?> _allProductModel = Rx<AllProductModel?>(null);
   List<AllProductItemModel> get allProductItems =>
       _allProductModel.value?.data?.data ?? [];
 
-  // লোডিং স্টেট 
+  // লোডিং স্টেট
   final RxBool isLoading = true.obs;
 
   @override
   void onInit() {
     super.onInit();
-    getAllProduct(null); 
+    getAllProduct();
+    getAllProductByCategory(null);
   }
 
   // API কল
-  Future<void> getAllProduct(String? categoryId) async {
+  Future<void> getAllProduct() async {
+    isLoading(true);
+    try {
+      final response = await _networkCaller.getRequest(
+        Urls.productUrl,
+        accessToken: StorageUtil.getData(StorageUtil.userAccessToken),
+      );
+
+      if (response.isSuccess && response.responseData != null) {
+        _allProductModel.value = AllProductModel.fromJson(
+          response.responseData,
+        );
+      } else {
+        showError(response.errorMessage);
+        _allProductModel.value = null;
+      }
+    } catch (e) {
+      showError('Network error: $e');
+      _allProductModel.value = null;
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  Future<void> getAllProductByCategory(String? categoryId) async {
     isLoading(true);
     try {
       final Map<String, dynamic> params =
           (categoryId == null || categoryId.isEmpty)
-              ? {}
-              : {'category': categoryId};
+          ? {}
+          : {'category': categoryId};
 
       final response = await _networkCaller.getRequest(
         Urls.productUrl,
@@ -40,7 +65,42 @@ class AllProductController extends GetxController {
       );
 
       if (response.isSuccess && response.responseData != null) {
-        _allProductModel.value = AllProductModel.fromJson(response.responseData);
+        _allProductModel.value = AllProductModel.fromJson(
+          response.responseData,
+        );
+      } else {
+        showError(response.errorMessage);
+        _allProductModel.value = null;
+      }
+    } catch (e) {
+      showError('Network error: $e');
+      _allProductModel.value = null;
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  Future<void> getAllProductByLocation(
+    double latitude,
+    double longitude,
+  ) async {
+    isLoading(true);
+    try {
+      final Map<String, dynamic> params = {
+        'latitude': latitude,
+        'longitude': longitude,
+      };
+
+      final response = await _networkCaller.getRequest(
+        Urls.productUrl,
+        accessToken: StorageUtil.getData(StorageUtil.userAccessToken),
+        queryParams: params,
+      );
+
+      if (response.isSuccess && response.responseData != null) {
+        _allProductModel.value = AllProductModel.fromJson(
+          response.responseData,
+        );
       } else {
         showError(response.errorMessage);
         _allProductModel.value = null;
@@ -54,12 +114,12 @@ class AllProductController extends GetxController {
   }
 
   // lib/app/modules/product/controller/all_product_controller.dart
-void goToProductDetails(AllProductItemModel data) {
-  Get.find<HomeController>().goToProductDetails(data);
-}
+  void goToProductDetails(AllProductItemModel data) {
+    Get.find<HomeController>().goToProductDetails(data);
+  }
 
   // রিফ্রেশ করার জন্য
-  Future<void> refreshProducts(String? categoryId) async {
-    await getAllProduct(categoryId);
+  Future<void> refreshProducts() async {
+    await getAllProduct();
   }
 }

@@ -22,6 +22,7 @@ class ProductDetailsScreen extends GetView<ProductDetailsController> {
 
   @override
   Widget build(BuildContext context) {
+    var productLength = controller.product?.images.length ?? 0;
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Back',
@@ -73,7 +74,7 @@ class ProductDetailsScreen extends GetView<ProductDetailsController> {
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               physics: const BouncingScrollPhysics(),
-                              itemCount: controller.product?.images.length ?? 0,
+                              itemCount: productLength - 1,
                               itemBuilder: (context, index) {
                                 var newIndex = index + 1;
                                 return Padding(

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sandrofp/app/get_storage.dart';
+import 'package:sandrofp/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:sandrofp/app/modules/profile/views/profile_screen.dart';
 import 'package:sandrofp/app/modules/settings/views/change_password_screen.dart';
 import 'package:sandrofp/app/modules/settings/views/content_screen.dart';
@@ -102,7 +104,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     iconData: Assets.images.help.keyName,
                     name: 'Help & Support',
                     onTap: () {
-                      Get.to(const ContentScreen());
+                      Get.to(const ContentScreen(), arguments: {'title': 'Terms of Service', 'data': 'aboutUs'});
                     },
                   ),
                   heightBox16,
@@ -110,7 +112,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     iconData: Assets.images.terms.keyName,
                     name: 'Terms of Service',
                     onTap: () {
-                      Get.to(const ContentScreen());
+                      Get.to(const ContentScreen(), arguments: {'title': 'Terms of Service', 'data': 'aboutUs'});
                     },
                   ),
                   heightBox16,
@@ -151,7 +153,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
           noOntap: () {
             Navigator.pop(context);
           },
-          yesOntap: () {},
+          yesOntap: () {
+            StorageUtil.deleteData(StorageUtil.userAccessToken);
+            StorageUtil.deleteData(StorageUtil.userId);
+            Get.offAll(() => const SignInScreen());
+          },
           iconData: Icons.delete,
           subtitle: '',
           title: 'Do you want to log out this profile?',
@@ -159,6 +165,4 @@ class _SettingsScreenState extends State<SettingsScreen> {
       },
     );
   }
-
-
 }

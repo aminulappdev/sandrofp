@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:sandrofp/app/modules/home/controller/home_controller.dart';
 import 'package:sandrofp/app/modules/home/controller/view_all_item_controller.dart';
 import 'package:sandrofp/app/modules/home/widget/home_product_card.dart';
-import 'package:sandrofp/app/modules/product/controller/all_product_controller.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';

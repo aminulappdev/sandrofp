@@ -12,7 +12,7 @@ class Urls {
   static const String googleAuthUrl = '$_baseUrl/auth/google-login';
   static const String otpVerifyUrl = '$_baseUrl/otp/verify-otp';
   static const String resendUrl = '$_baseUrl/otp/resend-otp';
-  static const String forgetPasswordUrl = '$_baseUrl/auth/forgot-password';
+  static const String forgetPasswordUrl = '$_baseUrl/auth/forgot-password'; 
   static const String resetPasswordUrl = '$_baseUrl/auth/reset-password';
   static const String changePasswordUrl = '$_baseUrl/auth/change-password';
 
@@ -21,6 +21,7 @@ class Urls {
   // =========================================== Profile ====================================== //
   static const String profileUrl = '$_baseUrl/users/my-profile';
   static const String updateProfileUrl = '$_baseUrl/users/update-my-profile';
+  static const String contentUrl = '$_baseUrl/contents';
 
   // =========================================== Home ====================================== //
   static String categoryUrl = '$_baseUrl/categories';
