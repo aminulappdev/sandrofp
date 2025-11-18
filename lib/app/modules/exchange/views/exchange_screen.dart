@@ -64,7 +64,7 @@ class ExchangeView extends GetView<ExchangeController> {
                       address: '',
                       quantity: 1,
                       onQuantityChanged: (_) {},
-                    ),
+                    ), 
                     heightBox20,
 
                     // Exchange Icon

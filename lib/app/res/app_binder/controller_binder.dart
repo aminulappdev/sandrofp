@@ -14,6 +14,7 @@ import 'package:sandrofp/app/modules/product/controller/product_details_controll
 import 'package:sandrofp/app/modules/profile/controllers/my_product_controller.dart';
 import 'package:sandrofp/app/modules/profile/controllers/profile_controller.dart';
 import 'package:sandrofp/app/modules/settings/controller/content_controller.dart';
+import 'package:sandrofp/app/modules/settings/controller/exchange_history_controller.dart';
 import 'package:sandrofp/app/services/network_caller/network_caller.dart';
 
 class ControllerBinder extends Bindings {
@@ -32,6 +33,7 @@ class ControllerBinder extends Bindings {
     Get.lazyPut(() => MyProductController());
     Get.lazyPut(() => HomeController());
     Get.lazyPut(() => ContentController());
+    Get.lazyPut(() => ExchangeHistoryController());
 
     // এই লাইনটা যোগ করো
     Get.lazyPut<ViewAllItemController>(

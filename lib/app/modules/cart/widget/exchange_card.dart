@@ -1,9 +1,6 @@
 import 'package:crash_safe_image/crash_safe_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sandrofp/app/modules/exchange/views/exchange_process_screen.dart';
 import 'package:sandrofp/app/modules/home/widget/feature_row.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
@@ -12,10 +9,23 @@ import 'package:sandrofp/gen/assets.gen.dart' show Assets;
 class ExchangeCard extends StatelessWidget {
   final bool isShowButton;
   final bool isShowHeader;
+
+  final String? exchangeName;
+  final String? requestsForm;
+  final String? requestsTo;
+  final String? requestsDate;
+  final String? approvedDate;
+  final VoidCallback? onTap;
   const ExchangeCard({
     super.key,
     this.isShowButton = false,
     this.isShowHeader = false,
+    this.exchangeName,
+    this.requestsForm,
+    this.requestsTo,
+    this.requestsDate,
+    this.approvedDate,
+    this.onTap,
   });
 
   @override
@@ -60,7 +70,7 @@ class ExchangeCard extends StatelessWidget {
                     )
                   : Container(),
               FeatureRow(
-                title: 'Exchange Id',
+                title: 'Exchange Name',
                 widget: Container(
                   decoration: BoxDecoration(
                     color: Color(0xffFFFCEB),
@@ -70,7 +80,7 @@ class ExchangeCard extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(6.0),
                     child: Text(
-                      'AHJF2132',
+                      exchangeName ?? '',
                       style: GoogleFonts.poppins(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -101,7 +111,7 @@ class ExchangeCard extends StatelessWidget {
                         ),
                         widthBox8,
                         Text(
-                          'AHJF2132',
+                          requestsForm ?? '',
                           style: GoogleFonts.poppins(
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
@@ -134,7 +144,7 @@ class ExchangeCard extends StatelessWidget {
                         ),
                         widthBox8,
                         Text(
-                          'AHJF2132',
+                          requestsTo ?? '',
                           style: GoogleFonts.poppins(
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
@@ -151,7 +161,7 @@ class ExchangeCard extends StatelessWidget {
               FeatureRow(
                 title: 'Request date:',
                 widget: Text(
-                  '20 Sep 2022',
+                  requestsDate ?? '',
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
@@ -163,7 +173,7 @@ class ExchangeCard extends StatelessWidget {
               FeatureRow(
                 title: 'Approval date:',
                 widget: Text(
-                  '20 Sep 2022',
+                  approvedDate ?? '',
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
@@ -181,7 +191,7 @@ class ExchangeCard extends StatelessWidget {
                         textColor: Colors.white,
                         title: 'View Details',
                         onPress: () {
-                          Get.to(()=> ExchangeProcessScreen());
+                          onTap;
                         },
                       ),
                     )

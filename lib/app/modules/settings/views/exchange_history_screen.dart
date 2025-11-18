@@ -1,5 +1,8 @@
+// app/modules/settings/views/exchange_history_screen.dart
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sandrofp/app/modules/settings/controller/exchange_history_controller.dart';
 import 'package:sandrofp/app/modules/settings/views/all_history/completed_history.dart';
 import 'package:sandrofp/app/modules/settings/views/all_history/declined_history.dart';
 import 'package:sandrofp/app/modules/settings/views/all_history/pending_history.dart';
@@ -8,17 +11,14 @@ import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
-class ExchangeHistoryScreen extends StatefulWidget {
+class ExchangeHistoryScreen extends GetView<ExchangeHistoryController> {
   const ExchangeHistoryScreen({super.key});
 
   @override
-  State<ExchangeHistoryScreen> createState() => _ExchangeHistoryScreenState();
-}
-
-class _ExchangeHistoryScreenState extends State<ExchangeHistoryScreen> {
-  int selectedIndex = 0;
-  @override
   Widget build(BuildContext context) {
+    // If you used Binding, controller is already injected
+    // Otherwise you can do: final controller = Get.put(ExchangeHistoryController());
+
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Exchange History',
@@ -27,7 +27,7 @@ class _ExchangeHistoryScreenState extends State<ExchangeHistoryScreen> {
             CircleIconWidget(
               radius: 20,
               iconRadius: 20,
-              color: Color(0xffFFFFFF).withValues(alpha: 0.05),
+              color: const Color(0xffFFFFFF).withValues(alpha: 0.05),
               imagePath: Assets.images.notification.keyName,
               onTap: () {},
             ),
@@ -42,113 +42,72 @@ class _ExchangeHistoryScreenState extends State<ExchangeHistoryScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
           children: [
             heightBox12,
 
+            // Tab bar
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    selectedIndex = 0;
-                    setState(() {});
-                  },
-                  child: Column(
-                    children: [
-                      Text(
-                        'Completed',
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: selectedIndex == 0
-                              ? const Color.fromARGB(255, 32, 71, 48)
-                              : const Color.fromARGB(255, 0, 0, 0),
-                        ),
-                      ),
-                      heightBox4,
-                      selectedIndex == 0
-                          ? Container(
-                              height: 1,
-                              width: 90,
-                              color: const Color.fromARGB(255, 32, 71, 48),
-                            )
-                          : Container(),
-                    ],
-                  ),
-                ),
-
-                GestureDetector(
-                  onTap: () {
-                    selectedIndex = 1;
-                    setState(() {});
-                  },
-                  child: Column(
-                    children: [
-                      Text(
-                        'Pending',
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: selectedIndex == 1
-                              ? const Color.fromARGB(255, 32, 71, 48)
-                              : const Color.fromARGB(255, 0, 0, 0),
-                        ),
-                      ),
-                      heightBox4,
-                      selectedIndex == 1
-                          ? Container(
-                              height: 1,
-                              width: 60,
-                              color: const Color.fromARGB(255, 32, 71, 48),
-                            )
-                          : Container(),
-                    ],
-                  ),
-                ),
-
-                GestureDetector(
-                  onTap: () {
-                    selectedIndex = 2;
-                    setState(() {});
-                  },
-                  child: Column(
-                    children: [
-                      Text(
-                        'Declined',
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: selectedIndex == 2
-                              ? const Color.fromARGB(255, 32, 71, 48)
-                              : const Color.fromARGB(255, 0, 0, 0),
-                        ),
-                      ),
-                      heightBox4,
-                      selectedIndex == 2
-                          ? Container(
-                              height: 1,
-                              width: 70,
-                              color: const Color.fromARGB(255, 32, 71, 48),
-                            )
-                          : Container(),
-                    ],
-                  ),
-                ),
+                _buildTab(title: 'Completed', index: 0),
+                _buildTab(title: 'Pending', index: 1),
+                _buildTab(title: 'Declined', index: 2),
               ],
             ),
 
             heightBox16,
-            if (selectedIndex == 0) ...{
-              CompletedHistory(),
-            } else if (selectedIndex == 1) ...{
-              PendingHistory(),
-            } else if (selectedIndex == 2) ...{
-              DeclinedHistory(),
-            },
+
+            // Content
+            Obx(() {
+              switch (controller.selectedIndex.value) {
+                case 0:
+                  return CompletedHistory();
+                case 1:
+                  return PendingHistory();
+                case 2:
+                  return DeclinedHistory();
+                default:
+                  return SizedBox.shrink();
+              }
+            }),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildTab({required String title, required int index}) {
+    return GestureDetector(
+      onTap: () => controller.changeTab(index),
+      child: Obx(() {
+        final bool isSelected = controller.selectedIndex.value == index;
+        final Color activeColor = const Color.fromARGB(255, 32, 71, 48);
+        final Color inactiveColor = Colors.black;
+
+        return Column(
+          children: [
+            Text(
+              title,
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: isSelected ? activeColor : inactiveColor,
+              ),
+            ),
+            heightBox4,
+            if (isSelected)
+              Container(
+                height: 1,
+                width: title == 'Completed'
+                    ? 90
+                    : title == 'Pending'
+                    ? 60
+                    : 70,
+                color: activeColor,
+              ),
+          ],
+        );
+      }),
     );
   }
 }

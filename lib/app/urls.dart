@@ -31,6 +31,10 @@ class Urls {
   static String myProductUrl = '$_baseUrl/products/my-products';
   static String exchangeUrl = '$_baseUrl/exchanges';
 
+  // =========================================== Product ====================================== //
+  
+  static String myExchangeUrl = '$_baseUrl/exchanges/my-requests';
+
 
   static String grabbedById(String id) {
     return '$_baseUrl/assets/$id/grab';

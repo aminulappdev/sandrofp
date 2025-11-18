@@ -15,6 +15,8 @@ class ProductCart extends StatelessWidget {
   final String? distance;
   final int quantity;
   final Function(int)? onQuantityChanged;
+  final VoidCallback? onDelete;
+  final VoidCallback? onEdit;
 
   const ProductCart({
     super.key,
@@ -26,6 +28,8 @@ class ProductCart extends StatelessWidget {
     this.quantity = 1,
     this.onQuantityChanged,
     this.description,
+    this.onDelete,
+    this.onEdit,
   });
 
   @override
@@ -34,7 +38,7 @@ class ProductCart extends StatelessWidget {
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Container(
-        height: 138,
+        height: 140,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
@@ -143,8 +147,6 @@ class ProductCart extends StatelessWidget {
                     ),
 
                     heightBox8,
-
-                    // Price + Quantity Selector
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -167,6 +169,43 @@ class ProductCart extends StatelessWidget {
                             ),
                           ],
                         ),
+
+                        onEdit == null && onDelete == null
+                            ? widthBox10
+                            : Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                                child: Row(
+                                  children: [
+                                    InkWell(
+                                      onTap: onEdit,
+                                      child: CircleAvatar(
+                                        radius: 13,
+                                        backgroundColor: Colors.grey.shade200,
+                                        child: Icon(
+                                          Icons.edit,
+                                          size: 17,
+                                          color: AppColors.greenColor,
+                                        ),
+                                      ),
+                                    ),
+                                    widthBox10,
+                                    InkWell(
+                                      onTap: onDelete,
+                                      child: CircleAvatar(
+                                        radius: 13,
+                                        backgroundColor: Colors.grey.shade200,
+                                        child: Icon(
+                                          Icons.delete,
+                                          size: 17,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
 
                         // Quantity Selector
                       ],

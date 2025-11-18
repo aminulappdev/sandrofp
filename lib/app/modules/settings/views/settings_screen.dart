@@ -100,7 +100,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     },
                   ),
                   heightBox16,
-                  SettingItemList(
+                  SettingItemList( 
                     iconData: Assets.images.help.keyName,
                     name: 'Help & Support',
                     onTap: () {

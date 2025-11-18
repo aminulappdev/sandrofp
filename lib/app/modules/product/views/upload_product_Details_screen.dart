@@ -25,7 +25,7 @@ class UploadProductDetailsScreen extends GetView<AddProductController> {
     final categoryController = Get.find<CategoryController>();
     final product = controller.product;
 
-    if (product == null) {
+    if (product == null) { 
       return const Scaffold(body: Center(child: Text('No product data')));
     }
 
