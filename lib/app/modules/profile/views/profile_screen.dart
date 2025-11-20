@@ -60,9 +60,10 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                               radius: 102,
                               backgroundColor: Colors.white,
                               child: CircleAvatar(
+                                backgroundColor: Colors.grey,
                                 radius: 94,
-                                backgroundImage: AssetImage(
-                                  Assets.images.onboarding01.keyName,
+                                backgroundImage: NetworkImage(
+                                  profileController.profileData?.profile ?? '',
                                 ),
                               ),
                             ),
@@ -297,10 +298,37 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                     ),
                   ),
                   heightBox10,
-                  ...controller.feedbacks.map(
-                    (fb) => Column(children: [CommentSection(), heightBox10]),
-                  ),
-
+                  Obx(() {
+                    if (controller.myFeedbackController.isLoading.value) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (controller
+                        .myFeedbackController
+                        .myFeedbackItems
+                        .isEmpty) {
+                      return const Center(child: Text('No feedback yet'));
+                    }
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: controller
+                          .myFeedbackController
+                          .myFeedbackItems
+                          .length,
+                      itemBuilder: (context, index) {
+                        var item = controller
+                            .myFeedbackController
+                            .myFeedbackItems[index];
+                        return CommentSection(
+                          imagePath: item.user?.profile,
+                          name: item.user?.name,
+                          comment: item.review,
+                          title: item.title,
+                          rating: item.rating,
+                        );
+                      },
+                    );
+                  }),
                   heightBox100,
                   heightBox100,
                 ],

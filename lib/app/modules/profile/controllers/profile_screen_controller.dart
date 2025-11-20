@@ -1,9 +1,14 @@
 // app/modules/profile/controllers/profile_controller.dart
 import 'package:get/get.dart';
-import 'package:sandrofp/app/modules/profile/controllers/my_product_controller.dart';
+import 'package:sandrofp/app/modules/profile/controllers/my_feedback_controller.dart';
+
 import 'package:sandrofp/app/modules/profile/views/edit_profile_screen.dart';
 
 class ProfileScreenController extends GetxController {
+  final MyFeedbackController myFeedbackController = Get.put(
+    MyFeedbackController(),
+  );
+
   // Profile Data
   final RxMap<String, dynamic> user = {
     'name': 'Sandro Fernando',
@@ -35,19 +40,7 @@ class ProfileScreenController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    loadDummyData();
-
-    
-  }
-
-  void loadDummyData() {
-    clothingItems.assignAll(List.generate(5, (_) => {'title': 'T-Shirt'}.obs));
-    electronicItems.assignAll(List.generate(3, (_) => {'title': 'Phone'}.obs));
-
-    feedbacks.assignAll([
-      FeedbackItem(name: 'Alex', rating: 5, comment: 'Great trader!'),
-      FeedbackItem(name: 'Rina', rating: 4, comment: 'Fast exchange'),
-    ]);
+    myFeedbackController.getMyFeedback();
   }
 
   void goToEditProfile() => Get.to(EditProfileScreen());

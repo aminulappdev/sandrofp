@@ -1,7 +1,6 @@
 // app/modules/exchange/controller/exchange_controller.dart
 import 'package:get/get.dart';
 import 'package:sandrofp/app/get_storage.dart';
-import 'package:sandrofp/app/modules/dashboard/views/dashboard_screen.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
 import 'package:sandrofp/app/services/network_caller/network_caller.dart';
 import 'package:sandrofp/app/urls.dart';

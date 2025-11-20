@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/settings/controller/exchange_history_controller.dart';
-import 'package:sandrofp/app/modules/settings/views/all_history/completed_history.dart';
+import 'package:sandrofp/app/modules/settings/views/all_history/accepted_history.dart';
+import 'package:sandrofp/app/modules/settings/views/all_history/approved_history.dart';
 import 'package:sandrofp/app/modules/settings/views/all_history/declined_history.dart';
-import 'package:sandrofp/app/modules/settings/views/all_history/pending_history.dart';
+import 'package:sandrofp/app/modules/settings/views/all_history/requested_history.dart';
+import 'package:sandrofp/app/modules/settings/views/all_history/rejected_history.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
@@ -16,9 +18,6 @@ class ExchangeHistoryScreen extends GetView<ExchangeHistoryController> {
 
   @override
   Widget build(BuildContext context) {
-    // If you used Binding, controller is already injected
-    // Otherwise you can do: final controller = Get.put(ExchangeHistoryController());
-
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Exchange History',
@@ -46,13 +45,22 @@ class ExchangeHistoryScreen extends GetView<ExchangeHistoryController> {
             heightBox12,
 
             // Tab bar
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildTab(title: 'Completed', index: 0),
-                _buildTab(title: 'Pending', index: 1),
-                _buildTab(title: 'Declined', index: 2),
-              ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildTab(title: 'Approved', index: 0),
+                  widthBox12,
+                  _buildTab(title: 'Accepted', index: 1),
+                  widthBox12,
+                  _buildTab(title: 'Requested', index: 2),
+                  widthBox12,
+                  _buildTab(title: 'Rejected', index: 3),
+                  widthBox12,
+                  _buildTab(title: 'Declined', index: 4),
+                ],
+              ),
             ),
 
             heightBox16,
@@ -61,10 +69,14 @@ class ExchangeHistoryScreen extends GetView<ExchangeHistoryController> {
             Obx(() {
               switch (controller.selectedIndex.value) {
                 case 0:
-                  return CompletedHistory();
+                  return ApprovedHistory();
                 case 1:
-                  return PendingHistory();
+                  return AccepteddHistory();
                 case 2:
+                  return RequestedHistory();
+                case 3:
+                  return RejectedHistory();
+                case 4:
                   return DeclinedHistory();
                 default:
                   return SizedBox.shrink();
@@ -89,7 +101,7 @@ class ExchangeHistoryScreen extends GetView<ExchangeHistoryController> {
             Text(
               title,
               style: GoogleFonts.poppins(
-                fontSize: 14,
+                fontSize: 12,
                 fontWeight: FontWeight.w600,
                 color: isSelected ? activeColor : inactiveColor,
               ),
@@ -98,10 +110,16 @@ class ExchangeHistoryScreen extends GetView<ExchangeHistoryController> {
             if (isSelected)
               Container(
                 height: 1,
-                width: title == 'Completed'
-                    ? 90
-                    : title == 'Pending'
+                width: title == 'Approved'
+                    ? 70
+                    : title == 'Accepted'
                     ? 60
+                    : title == 'Requested'
+                    ? 70
+                    : title == 'Rejected'
+                    ? 70
+                    : title == 'Declined'
+                    ? 70
                     : 70,
                 color: activeColor,
               ),

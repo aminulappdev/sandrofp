@@ -1,11 +1,13 @@
 import 'package:crash_safe_image/crash_safe_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sandrofp/app/modules/product/widgets/status_bar.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
 class StatusCard extends StatelessWidget {
-  const StatusCard({super.key});
+  final String? status;
+  const StatusCard({super.key, this.status});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +15,7 @@ class StatusCard extends StatelessWidget {
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Container(
-        height: 210,
+        height: 200,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: Colors.white,
@@ -59,15 +61,33 @@ class StatusCard extends StatelessWidget {
                 ],
               ),
               heightBox20,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  StageWidget(),
-                  FlowWidget(),
-                  StageWidget(),
-                  FlowWidget(),
-                  StageWidget(),
-                ],
+              StatusBar(
+                firstName: 'You have Exchanged',
+                firstBgColor: const Color(0xffEBF2EE),
+                firtsIconColor: null,
+                firstIconPath: Assets.images.group02.keyName,
+                secondName: status == 'decline'
+                    ? 'Approval denied'
+                    : status == 'rejected'
+                    ? 'Approval rejected'
+                    : 'Waiting for approval',
+                secondBgColor: status == 'decline' || status == 'rejected'
+                    ? Color(0xffFFE6E6)
+                    : status == 'requested'
+                    ? const Color(0xffECECEC)
+                    : const Color(0xffEBF2EE),
+                secondIconColor: status == 'decline' || status == 'rejected'
+                    ? Color(0xffBF0000)
+                    : status == 'requested'
+                    ?  Colors.grey
+                    : null,
+                secondIconPath: Assets.images.group02.keyName,
+                thirdName: 'Let’s get exchange',
+                thirdBgColor: status == 'approved' || status == 'accepted'
+                    ? const Color(0xffEBF2EE)
+                    : Color(0xffECECEC),
+                thirdIconColor: status == 'approved' || status == 'accepted' ? null : Colors.grey,
+                thirdIconPath: Assets.images.group02.keyName,
               ),
             ],
           ),

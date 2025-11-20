@@ -10,15 +10,22 @@ class ExchangeHistoryController extends GetxController {
   final NetworkCaller _networkCaller = NetworkCaller();
 
   // আলাদা আলাদা লিস্ট
-  final RxList<AllExchangeItemModel> completedList =
+  final RxList<AllExchangeItemModel> approvedList =
       <AllExchangeItemModel>[].obs;
-  final RxList<AllExchangeItemModel> pendingList = <AllExchangeItemModel>[].obs;
+  final RxList<AllExchangeItemModel> acceptedList =
+      <AllExchangeItemModel>[].obs;
+  final RxList<AllExchangeItemModel> requestedList =
+      <AllExchangeItemModel>[].obs;
+  final RxList<AllExchangeItemModel> rejectedList =
+      <AllExchangeItemModel>[].obs;
   final RxList<AllExchangeItemModel> declinedList =
       <AllExchangeItemModel>[].obs;
 
   // লোডিং স্টেট প্রতি ট্যাবের জন্য
-  final RxBool isCompletedLoading = true.obs;
-  final RxBool isPendingLoading = true.obs;
+  final RxBool isApprovedLoading = true.obs;
+  final RxBool isAcceptedLoading = true.obs;
+  final RxBool isRequestedLoading = true.obs;
+  final RxBool isRejectedLoading = true.obs;
   final RxBool isDeclinedLoading = true.obs;
 
   final RxInt selectedIndex = 0.obs;
@@ -39,8 +46,10 @@ class ExchangeHistoryController extends GetxController {
 
     String status = '';
     if (index == 0) status = 'approved';
-    if (index == 1) status = 'pending';
-    if (index == 2) status = 'declined';
+    if (index == 1) status = 'accepted';
+    if (index == 2) status = 'requested';
+    if (index == 3) status = 'rejected';
+    if (index == 4) status = 'decline';
 
     // যে ট্যাবে গেলো, সেটার ডাটা লোড করবে (যদি আগে লোড না করা থাকে)
     fetchExchanges(status);
@@ -49,9 +58,11 @@ class ExchangeHistoryController extends GetxController {
   // API কল
   Future<void> fetchExchanges(String status) async {
     // লোডিং স্টেট সেট করা
-    if (status == 'approved') isCompletedLoading(true);
-    if (status == 'requested') isPendingLoading(true);
-    if (status == 'declined') isDeclinedLoading(true);
+    if (status == 'approved') isApprovedLoading(true);
+    if (status == 'accepted') isAcceptedLoading(true);
+    if (status == 'requested') isRequestedLoading(true);
+    if (status == 'rejected') isRejectedLoading(true);
+    if (status == 'decline') isDeclinedLoading(true);
 
     try {
       final response = await _networkCaller.getRequest(
@@ -65,9 +76,11 @@ class ExchangeHistoryController extends GetxController {
         final List<AllExchangeItemModel> data = model.data?.data ?? [];
 
         // সঠিক লিস্টে ডাটা বসাও
-        if (status == 'approved') completedList.assignAll(data);
-        if (status == 'requested') pendingList.assignAll(data);
-        if (status == 'declined') declinedList.assignAll(data);
+        if (status == 'approved') approvedList.assignAll(data);
+        if (status == 'accepted') acceptedList.assignAll(data);
+        if (status == 'requested') requestedList.assignAll(data);
+        if (status == 'rejected') rejectedList.assignAll(data);
+        if (status == 'decline') declinedList.assignAll(data);
       } else {
         showError(response.errorMessage);
         _clearList(status);
@@ -77,16 +90,20 @@ class ExchangeHistoryController extends GetxController {
       _clearList(status);
     } finally {
       // লোডিং বন্ধ
-      if (status == 'approved') isCompletedLoading(false);
-      if (status == 'requested') isPendingLoading(false);
-      if (status == 'declined') isDeclinedLoading(false);
+      if (status == 'approved') isApprovedLoading(false);
+      if (status == 'accepted') isAcceptedLoading(false);
+      if (status == 'requested') isRequestedLoading(false);
+      if (status == 'rejected') isRejectedLoading(false);
+      if (status == 'decline') isDeclinedLoading(false);
     }
   }
 
   void _clearList(String status) {
-    if (status == 'approved') completedList.clear();
-    if (status == 'requested') pendingList.clear();
-    if (status == 'declined') declinedList.clear();
+    if (status == 'approved') approvedList.clear();
+    if (status == 'accepted') acceptedList.clear();
+    if (status == 'requested') requestedList.clear();
+    if (status == 'rejected') rejectedList.clear();
+    if (status == 'decline') declinedList.clear();
   }
 
   // রিফ্রেশ করার জন্য
@@ -97,10 +114,15 @@ class ExchangeHistoryController extends GetxController {
         status = 'approved';
         break;
       case 1:
-        status = 'requested';
+        status = 'accepted';
         break;
       case 2:
-        status = 'declined';
+        status = 'requested';
+      case 3:
+        status = 'rejected';
+      case 4:
+        status = 'decline';
+
         break;
     }
     await fetchExchanges(status);

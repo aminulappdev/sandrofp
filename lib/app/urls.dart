@@ -22,6 +22,8 @@ class Urls {
   static const String profileUrl = '$_baseUrl/users/my-profile';
   static const String updateProfileUrl = '$_baseUrl/users/update-my-profile';
   static const String contentUrl = '$_baseUrl/contents';
+  static const String myFeedbackUrl = '$_baseUrl/reviews';
+
 
   // =========================================== Home ====================================== //
   static String categoryUrl = '$_baseUrl/categories';
@@ -34,6 +36,7 @@ class Urls {
   // =========================================== Product ====================================== //
   
   static String myExchangeUrl = '$_baseUrl/exchanges/my-requests';
+  static String feedbackUrl = '$_baseUrl/reviews';
 
 
   static String grabbedById(String id) {

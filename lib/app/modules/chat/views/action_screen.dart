@@ -17,11 +17,7 @@ class _ActionScreenState extends State<ActionScreen> {
         padding: EdgeInsets.all(16.0.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            heightBox20,
-           
-            
-          ],
+          children: [heightBox20],
         ),
       ),
     );

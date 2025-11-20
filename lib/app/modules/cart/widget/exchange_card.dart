@@ -190,9 +190,7 @@ class ExchangeCard extends StatelessWidget {
                         color: Colors.black,
                         textColor: Colors.white,
                         title: 'View Details',
-                        onPress: () {
-                          onTap;
-                        },
+                        onPress: onTap,
                       ),
                     )
                   : Container(),

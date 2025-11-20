@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sandrofp/app/modules/chat/views/action_screen.dart';
 import 'package:sandrofp/app/modules/chat/widgets/chatting_field.dart';
 import 'package:sandrofp/app/modules/chat/widgets/chatting_header.dart';
-import 'package:sandrofp/app/res/app_const/app_const.dart';
-import 'package:sandrofp/app/res/custom_style/custom_size.dart';
-import 'package:sandrofp/gen/assets.gen.dart';
+
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});

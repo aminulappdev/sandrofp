@@ -17,7 +17,7 @@ class StatusBar extends StatelessWidget {
   final Color? thirdIconColor;
   final String? firstName;
   final String? secondName;
-  final String? thirdName;
+  final String? thirdName; 
   const StatusBar({
     super.key,
     this.firstBgColor,
@@ -53,6 +53,7 @@ class StatusBar extends StatelessWidget {
             ),
             heightBox4,
             SizedBox(
+              width: 60,
               child: Text(
                 firstName ?? '',
 
@@ -81,6 +82,7 @@ class StatusBar extends StatelessWidget {
             ),
             heightBox4,
             SizedBox(
+              width: 60,
               child: Text(
                 secondName ?? '',
                 style: GoogleFonts.poppins(
@@ -107,10 +109,11 @@ class StatusBar extends StatelessWidget {
                 color: thirdIconColor,
               ),
             ),
-            heightBox16,
+            heightBox4,
             SizedBox(
+              width: 60,
               child: Text(
-                'Upload',
+                thirdName ?? '',
                 style: GoogleFonts.poppins(
                   fontSize: 10,
                   fontWeight: FontWeight.w400,

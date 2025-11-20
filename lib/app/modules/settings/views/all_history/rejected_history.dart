@@ -5,25 +5,25 @@ import 'package:sandrofp/app/modules/cart/widget/exchange_card.dart';
 import 'package:sandrofp/app/modules/exchange/views/exchange_process_screen.dart';
 import 'package:sandrofp/app/modules/settings/controller/exchange_history_controller.dart';
 
-class DeclinedHistory extends GetView<ExchangeHistoryController> {
-  const DeclinedHistory({super.key});
+class RejectedHistory extends GetView<ExchangeHistoryController> {
+  const RejectedHistory({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (controller.isDeclinedLoading.value) {
+      if (controller.isRejectedLoading.value) {
         return SizedBox(
           height: 550,
           child: const Center(child: CircularProgressIndicator()),
         );
       }
 
-      if (controller.declinedList.isEmpty) {
+      if (controller.rejectedList.isEmpty) {
         return SizedBox(
           height: 550,
           child: const Center(
             child: Text(
-              "No declined exchanges yet",
+              "No rejected exchanges yet",
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
           ),
@@ -33,9 +33,9 @@ class DeclinedHistory extends GetView<ExchangeHistoryController> {
       return Expanded(
         child: ListView.builder(
           padding: EdgeInsets.zero,
-          itemCount: controller.declinedList.length,
+          itemCount: controller.rejectedList.length,
           itemBuilder: (context, index) {
-            final item = controller.declinedList[index];
+            final item = controller.rejectedList[index];
             return Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: ExchangeCard(

@@ -12,6 +12,7 @@ class CustomElevatedButton extends StatelessWidget {
   final Color? color;
   final Color? textColor;
   final Color? borderColor;
+  final Color? iconColor;
   const CustomElevatedButton({
     super.key,
     required this.title,
@@ -20,6 +21,7 @@ class CustomElevatedButton extends StatelessWidget {
     this.color = AppColors.greenColor,
     this.textColor = Colors.white,
     this.borderColor = Colors.transparent,
+    this.iconColor,
   });
 
   @override
@@ -39,9 +41,11 @@ class CustomElevatedButton extends StatelessWidget {
           children: [
             iconData != null
                 ? CrashSafeImage(
+                    color: iconColor ?? null,
                     iconData!,
                     height: 20.h,
-                    width: 20.w,)
+                    width: 20.w,
+                  )
                 : Container(),
             widthBox10,
             Text(

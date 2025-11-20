@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,11 +6,13 @@ class SettingsHeader extends StatelessWidget {
   final String imagePath;
   final String name;
   final VoidCallback onTap;
+  final String rating;
   const SettingsHeader({
     super.key,
     required this.imagePath,
     required this.name,
     required this.onTap,
+    required this.rating,
   });
 
   @override
@@ -46,7 +46,7 @@ class SettingsHeader extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(width: 8,),
+                  SizedBox(width: 8),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
@@ -59,7 +59,7 @@ class SettingsHeader extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '5.0 Rating',
+                        '$rating Rating',
                         style: GoogleFonts.poppins(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w400,

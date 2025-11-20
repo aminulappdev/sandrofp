@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/get_storage.dart';
 import 'package:sandrofp/app/modules/authentication/views/sign_in_screen.dart';
+import 'package:sandrofp/app/modules/profile/controllers/profile_controller.dart';
 import 'package:sandrofp/app/modules/profile/views/profile_screen.dart';
 import 'package:sandrofp/app/modules/settings/views/change_password_screen.dart';
 import 'package:sandrofp/app/modules/settings/views/content_screen.dart';
@@ -27,10 +28,12 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   // final ContentController contentController = Get.put(ContentController());
+  final ProfileController profileController = Get.find<ProfileController>();
 
   @override
   void initState() {
     super.initState();
+    profileController.getMyProfile();
   }
 
   @override
@@ -47,14 +50,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SettingsHeader(
-                imagePath:
-                    'https://fastly.picsum.photos/id/1/200/300.jpg?hmac=jH5bDkLr6Tgy3oAg5khKCHeunZMHq0ehBZr6vGifPLY',
-                name: 'Md Aminul',
-                onTap: () {
-                  Get.to(() => const ProfileScreen());
-                },
-              ),
+              Obx(() {
+                if (profileController.isLoading.value) {
+                  return SettingsHeader(
+                    imagePath: '',
+                    name: '',
+                    onTap: () {},
+                    rating: '',
+                  );
+                } else {
+                  return SettingsHeader(
+                    imagePath: profileController.profileData?.profile ?? '',
+                    name: profileController.profileData?.name ?? '',
+                    rating:
+                        profileController.profileData?.tokens.toString() ?? '',
+                    onTap: () {
+                      Get.to(() => const ProfileScreen());
+                    },
+                  );
+                }
+              }),
               heightBox30,
               Text(
                 'Other options',
@@ -100,11 +115,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     },
                   ),
                   heightBox16,
-                  SettingItemList( 
+                  SettingItemList(
                     iconData: Assets.images.help.keyName,
                     name: 'Help & Support',
                     onTap: () {
-                      Get.to(const ContentScreen(), arguments: {'title': 'Terms of Service', 'data': 'aboutUs'});
+                      Get.to(
+                        const ContentScreen(),
+                        arguments: {
+                          'title': 'Terms of Service',
+                          'data': 'aboutUs',
+                        },
+                      );
                     },
                   ),
                   heightBox16,
@@ -112,7 +133,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     iconData: Assets.images.terms.keyName,
                     name: 'Terms of Service',
                     onTap: () {
-                      Get.to(const ContentScreen(), arguments: {'title': 'Terms of Service', 'data': 'aboutUs'});
+                      Get.to(
+                        const ContentScreen(),
+                        arguments: {
+                          'title': 'Terms of Service',
+                          'data': 'aboutUs',
+                        },
+                      );
                     },
                   ),
                   heightBox16,

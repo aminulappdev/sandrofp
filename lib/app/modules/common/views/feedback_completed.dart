@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/common/views/feedback_screen.dart';
+import 'package:sandrofp/app/modules/dashboard/views/dashboard_screen.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
@@ -69,7 +70,7 @@ class _FeedbackCompletedScreenState extends State<FeedbackCompletedScreen> {
               child: CustomElevatedButton(
                 title: 'Go Home',
                 onPress: () {
-                  Get.to(() => const FeedbackScreen());
+                  Get.to(() => const DashboardScreen());
                 },
               ),
             ),

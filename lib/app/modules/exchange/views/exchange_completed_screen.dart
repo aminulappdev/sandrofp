@@ -8,7 +8,7 @@ import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
-import 'package:sandrofp/gen/assets.gen.dart';
+import 'package:sandrofp/gen/assets.gen.dart'; 
 
 class ExchangedCompletedScreen extends StatefulWidget {
   //final ProfileData? profileData;

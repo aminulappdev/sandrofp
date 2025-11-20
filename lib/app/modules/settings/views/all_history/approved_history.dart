@@ -2,22 +2,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sandrofp/app/modules/cart/widget/exchange_card.dart';
+import 'package:sandrofp/app/modules/exchange/views/exchange_process_screen.dart';
 import 'package:sandrofp/app/modules/settings/controller/exchange_history_controller.dart';
 
-class CompletedHistory extends GetView<ExchangeHistoryController> {
-  const CompletedHistory({super.key});
+class ApprovedHistory extends GetView<ExchangeHistoryController> {
+  const ApprovedHistory({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (controller.isCompletedLoading.value) {
+      if (controller.isApprovedLoading.value) {
         return SizedBox(
           height: 550,
           child: const Center(child: CircularProgressIndicator()),
         );
       }
 
-      if (controller.completedList.isEmpty) {
+      if (controller.approvedList.isEmpty) {
         return SizedBox(
           height: 550,
           child: const Center(
@@ -32,9 +33,9 @@ class CompletedHistory extends GetView<ExchangeHistoryController> {
       return Expanded(
         child: ListView.builder(
           padding: EdgeInsets.zero,
-          itemCount: controller.completedList.length,
+          itemCount: controller.approvedList.length,
           itemBuilder: (context, index) {
-            final item = controller.completedList[index];
+            final item = controller.approvedList[index];
             return Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: ExchangeCard(
@@ -44,7 +45,12 @@ class CompletedHistory extends GetView<ExchangeHistoryController> {
                 requestsTo: item.requestTo?.name ?? 'N/A',
                 requestsDate: item.createdAt.toString(),
                 approvedDate: item.createdAt.toString(),
-                onTap: () {},
+                onTap: () {              
+                  Get.to(
+                    () => ExchangeProcessScreen(),
+                    arguments: {'data': item},
+                  );
+                },
               ),
             );
           },
