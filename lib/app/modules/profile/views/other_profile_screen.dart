@@ -140,9 +140,16 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
                 ],
               ),
               heightBox10,
-              CustomElevatedButton(title: 'Message', onPress: () {
-                Get.to(()=> ChatScreen());
-              }),
+              CustomElevatedButton(
+                title: 'Message',
+                onPress: () {
+                  Get.to(
+                    () => ChatScreen(
+                     
+                    ),
+                  );
+                },
+              ),
               heightBox20,
               Container(
                 width: double.infinity,

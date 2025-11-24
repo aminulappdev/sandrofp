@@ -1,7 +1,9 @@
 // app/modules/product/controller/add_product_controller.dart
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:sandrofp/app/get_storage.dart';
 import 'package:sandrofp/app/modules/product/model/upload_product_model.dart';
 import 'package:sandrofp/app/modules/product/views/upload_product_Details_screen.dart';
@@ -17,19 +19,23 @@ class AddProductController extends GetxController {
   // Text Controllers
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
-  final locationController = TextEditingController();
   final priceController = TextEditingController();
   final discountController = TextEditingController();
   final materialController = TextEditingController();
   final colorController = TextEditingController();
-  final quantityController = TextEditingController(); // NEW
+  final quantityController = TextEditingController();
 
+  // Loading State
   final RxBool isLoading = false.obs;
 
   // Reactive Variables
-  final RxString selectedSize = ''.obs; // Single Size
-  final RxString selectedCategoryId = ''.obs; // Category ID
+  final RxString selectedSize = ''.obs;
+  final RxString selectedCategoryId = ''.obs;
   final selectedImages = <File>[].obs;
+
+  // Location Picker থেকে আসা ডাটা
+  final Rx<LatLng?> selectedLatLng = Rx<LatLng?>(null);
+  final RxString selectedAddress = ''.obs;
 
   // Final Product Preview
   Product? product;
@@ -38,35 +44,38 @@ class AddProductController extends GetxController {
   void onClose() {
     nameController.dispose();
     descriptionController.dispose();
-    locationController.dispose();
     priceController.dispose();
     discountController.dispose();
     materialController.dispose();
     colorController.dispose();
-    quantityController.dispose(); // NEW
+    quantityController.dispose();
     super.onClose();
   }
 
-  // Toggle Size Selection (Single)
-  void selectSize(String size) {
-    selectedSize.value = size;
-  }
-
-  // Select Category by ID
-  void selectCategory(String categoryId) {
-    selectedCategoryId.value = categoryId;
-  }
+  // Size & Category
+  void selectSize(String size) => selectedSize.value = size;
+  void selectCategory(String categoryId) =>
+      selectedCategoryId.value = categoryId;
 
   // Image Management
   void addImage(File file) {
-    if (!selectedImages.contains(file)) {
-      selectedImages.add(file);
-    }
+    if (!selectedImages.contains(file)) selectedImages.add(file);
   }
 
   void removeImage(File file) {
     selectedImages.remove(file);
-    if (selectedImages.isEmpty) selectedImages.refresh();
+    selectedImages.refresh();
+  }
+
+  // Location Helper
+  void setLocation(LatLng latLng, String address) {
+    selectedLatLng.value = latLng;
+    selectedAddress.value = address;
+  }
+
+  void clearLocation() {
+    selectedLatLng.value = null;
+    selectedAddress.value = '';
   }
 
   // Navigation
@@ -91,14 +100,13 @@ class AddProductController extends GetxController {
       images: selectedImages.map((file) => ImageUrl(url: file.path)).toList(),
       author: Author(profile: 'assets/images/onboarding01.png', name: 'You'),
     );
-
     Get.to(() => const UploadProductDetailsScreen());
   }
 
   void uploadProduct() {
     showLoadingOverLay(
       asyncFunction: performUploadProduct,
-      msg: 'Uploading...',
+      msg: 'Uploading Product...',
     );
   }
 
@@ -110,22 +118,27 @@ class AddProductController extends GetxController {
         return;
       }
 
+      // যদি লোকেশন না পিক করে থাকে → ডিফল্ট ঢাকা দিয়ে দিবে (তোমার ইচ্ছা অনুযায়ী চেঞ্জ করতে পারো)
+      final coordinates = selectedLatLng.value != null
+          ? [
+              selectedLatLng.value!.longitude,
+              selectedLatLng.value!.latitude,
+            ] // GeoJSON → [lng, lat]
+          : [90.3995, 23.7944]; // Dhaka fallback
+
       Map<String, dynamic> jsonFields = {
-        "name": nameController.text,
-        "descriptions": descriptionController.text,
+        "name": nameController.text.trim(),
+        "descriptions": descriptionController.text.trim(),
         "size": selectedSize.value,
-        "materials": materialController.text,
-        "location": {
-          "type": "Point",
-          "coordinates": [40.712776, -74.005974],
-        },
+        "materials": materialController.text.trim(),
+        "location": {"type": "Point", "coordinates": coordinates},
         "tags": ["Casual", "Summer"],
-        "colors": colorController.text,
+        "colors": colorController.text.trim(),
         "category": selectedCategoryId.value,
         "price": int.tryParse(priceController.text) ?? 0,
         "quantity": quantityController.text.isNotEmpty
             ? quantityController.text
-            : '1',
+            : "1",
         "discount": int.tryParse(discountController.text) ?? 0,
       };
 
@@ -140,7 +153,7 @@ class AddProductController extends GetxController {
 
       if (response.isSuccess) {
         showSuccess('Product uploaded successfully!');
-        
+        Get.back(); // অথবা যেখানে যেতে চাও
       } else {
         showError(response.errorMessage);
       }

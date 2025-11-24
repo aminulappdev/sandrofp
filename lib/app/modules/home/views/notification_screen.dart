@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/home/controller/notification_controller.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
-import 'package:sandrofp/app/res/app_const/app_const.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
+import 'package:sandrofp/app/res/common_widgets/date_formatter.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 
 class NotificationScreen extends GetView<NotificationController> {
@@ -36,7 +36,7 @@ class NotificationScreen extends GetView<NotificationController> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: controller.markAllAsRead,
+                  onTap: controller.readAllNotification,
                   child: Text(
                     'Mark as all read',
                     style: GoogleFonts.poppins(
@@ -53,97 +53,106 @@ class NotificationScreen extends GetView<NotificationController> {
               child: Obx(
                 () => ListView.builder(
                   padding: EdgeInsets.zero,
-                  itemCount: controller.notifications.length,
+                  itemCount: controller.notificationItems.length,
                   itemBuilder: (context, index) {
-                    final notification = controller.notifications[index];
-                    return Dismissible(
-                      key: Key(notification['name']),
-                      onDismissed: (direction) {
-                        controller.deleteNotification(index);
-                      },
-                      background: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                        alignment: Alignment.centerRight,
-                        padding: EdgeInsets.only(right: 20.0),
-                        child: Icon(Icons.delete, color: Colors.white),
+                    final notification = controller.notificationItems[index];
+                    DateFormatter dateFormatter = DateFormatter(
+                      notification.createdAt!,
+                    );
+                    return Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.r),
+                        color: Colors.white,
                       ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.r),
-                          color: Colors.white,
-                        ),
-                        margin: EdgeInsets.symmetric(vertical: 4),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: () => controller.markAsRead(index),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CircleAvatar(
-                                  radius: 25.r,
-                                  backgroundImage: NetworkImage(
-                                    DemoImage.demoImage,
-                                  ),
+                      margin: EdgeInsets.symmetric(vertical: 4),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () => controller.readAllNotification(),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CircleAvatar(
+                                radius: 25.r,
+                                backgroundColor: AppColors.greenColor,
+                                child: Icon(
+                                  Icons.notifications,
+                                  color: Colors.white,
                                 ),
-                                SizedBox(width: 8),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          SizedBox(
-                                            width: 220,
-                                            child: Text(
-                                              notification['name'],
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 20.sp,
-                                                fontWeight: FontWeight.w600,
-                                                color: notification['isRead']
-                                                    ? Colors.grey
-                                                    : Colors.black,
-                                              ),
-                                            ),
-                                          ),
-                                          Text(
-                                            notification['time'],
+                              ),
+                              SizedBox(width: 8),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SizedBox(
+                                          width: 180,
+                                          child: Text(
+                                            controller
+                                                    .notificationItems[index]
+                                                    .message ??
+                                                '',
                                             style: GoogleFonts.poppins(
-                                              fontSize: 12.sp,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.black,
+                                              fontSize: 16.sp,
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  controller
+                                                          .notificationItems[index]
+                                                          .read ==
+                                                      true
+                                                  ? Colors.grey
+                                                  : Colors.black,
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        width: 250,
-                                        child: Text(
-                                          notification['message'],
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 2,
+                                        ),
+                                        Text(
+                                          dateFormatter.getRelativeTimeFormat(),
                                           style: GoogleFonts.poppins(
-                                            fontSize: 14.sp,
+                                            fontSize: 12.sp,
                                             fontWeight: FontWeight.w400,
-                                            color: notification['isRead']
+                                            color:
+                                                controller
+                                                        .notificationItems[index]
+                                                        .read ==
+                                                    true
                                                 ? Colors.grey
                                                 : Colors.black,
                                           ),
                                         ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: 250,
+                                      child: Text(
+                                        controller
+                                                .notificationItems[index]
+                                                .description ??
+                                            '',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w400,
+                                          color:
+                                              controller
+                                                      .notificationItems[index]
+                                                      .read ==
+                                                  true
+                                              ? Colors.grey
+                                              : Colors.black,
+                                        ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

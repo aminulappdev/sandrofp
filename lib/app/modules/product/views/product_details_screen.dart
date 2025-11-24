@@ -15,6 +15,7 @@ import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/common_widgets/image_container.dart';
 import 'package:sandrofp/app/res/common_widgets/straight_liner.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
+import 'package:sandrofp/app/services/location/address_fetcher.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
 class ProductDetailsScreen extends GetView<ProductDetailsController> {
@@ -105,13 +106,19 @@ class ProductDetailsScreen extends GetView<ProductDetailsController> {
                       name: controller.product?.name ?? '',
                     ),
                     heightBox20,
-                    ProductStaticData(
-                      title: controller.product?.name ?? '',
-                      price: controller.product?.price.toString() ?? '',
-                      address: controller.product?.name ?? '',
-                      description: controller.product?.descriptions ?? '',
-                      discount: controller.product?.discount.toString() ?? '',
-                    ),
+
+                    Obx(() {
+                      var lat = controller.product?.location?.coordinates[0];
+                      var lng = controller.product?.location?.coordinates[1];
+                      final address$ = AddressHelper.getAddress(lat, lng).obs;
+                      return ProductStaticData(
+                        title: controller.product?.name ?? '',
+                        price: controller.product?.price.toString() ?? '',
+                        address: address$.value,
+                        description: controller.product?.descriptions ?? '',
+                        discount: controller.product?.discount.toString() ?? '',
+                      );
+                    }),
 
                     // Title
                     Text(

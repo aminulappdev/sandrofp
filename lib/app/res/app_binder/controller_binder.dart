@@ -4,6 +4,9 @@ import 'package:sandrofp/app/modules/authentication/controller/otp_verify_contro
 import 'package:sandrofp/app/modules/authentication/controller/reset_password_controller.dart';
 import 'package:sandrofp/app/modules/authentication/controller/sign_in_controller.dart';
 import 'package:sandrofp/app/modules/authentication/controller/sign_up_controller.dart';
+import 'package:sandrofp/app/modules/chat/controller/all_friend_controller.dart';
+import 'package:sandrofp/app/modules/chat/controller/image_decode_controller.dart';
+import 'package:sandrofp/app/modules/chat/controller/message_controller.dart';
 import 'package:sandrofp/app/modules/common/controller/feedback_controller.dart';
 import 'package:sandrofp/app/modules/dashboard/controller/dashboard_controller.dart';
 import 'package:sandrofp/app/modules/home/controller/category_controller.dart';
@@ -26,10 +29,11 @@ class ControllerBinder extends Bindings {
     Get.put(ProfileController());
     Get.put(SignUpController());
     Get.put(SignInController());
+    Get.put(DashboardController());
     Get.lazyPut(() => OtpVerifyController());
     Get.lazyPut(() => ForgotPasswordController());
     Get.lazyPut(() => ResetPasswordController());
-    Get.lazyPut(() => DashboardController());
+    // Get.lazyPut(() => DashboardController());
     Get.lazyPut(() => CategoryController());
     Get.lazyPut(() => AllProductController());
     Get.lazyPut(() => MyProductController());
@@ -38,6 +42,9 @@ class ControllerBinder extends Bindings {
     Get.lazyPut(() => ExchangeHistoryController());
     Get.lazyPut(() => FeedbackController());
     Get.lazyPut(() => MyFeedbackController());
+    Get.lazyPut(() => MessageController());
+    Get.lazyPut(() => ImageDecodeController());
+    Get.lazyPut(() => FriendController());
 
     // এই লাইনটা যোগ করো
     Get.lazyPut<ViewAllItemController>(

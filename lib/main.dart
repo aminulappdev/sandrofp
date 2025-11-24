@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/get_storage.dart';
 import 'package:sandrofp/app/modules/dashboard/views/dashboard_screen.dart';
 import 'package:sandrofp/app/modules/onboarding/views/onboarding_01.dart';
 import 'package:sandrofp/app/res/app_binder/controller_binder.dart';
+import 'package:sandrofp/app/services/socket/socket_service.dart';
 
 void main() async {
-  // await PushNotificationService().init(); // Initialize Push Notifications
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await GetStorage.init();
 
-  //final SocketService socketService = Get.put(SocketService());
-  // await socketService.init();
+  // await PushNotificationService().init();
+
+  // Init FCM token
+  // await _initFCMToken();
+
+  final SocketService socketService = Get.put(SocketService());
+  await socketService.init();
   runApp(const MyApp());
 }
 

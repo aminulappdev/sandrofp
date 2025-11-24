@@ -7,14 +7,29 @@ import 'package:sandrofp/app/modules/cart/views/my_product_card_page.dart';
 import 'package:sandrofp/app/modules/chat/views/chat_screen.dart';
 import 'package:sandrofp/app/modules/dashboard/controller/dashboard_controller.dart';
 import 'package:sandrofp/app/modules/home/views/home_screen.dart';
+import 'package:sandrofp/app/modules/profile/controllers/profile_controller.dart';
 import 'package:sandrofp/app/modules/profile/views/profile_screen.dart';
 import 'package:sandrofp/app/modules/settings/views/settings_screen.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
- 
-class DashboardScreen extends GetView<DashboardController> {
+
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
+
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  final controller = Get.put(DashboardController());
+  final ProfileController profileController = Get.find<ProfileController>();
+
+  @override
+  void initState() {
+    profileController.getMyProfile();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +57,7 @@ class DashboardScreen extends GetView<DashboardController> {
         physics: const NeverScrollableScrollPhysics(),
         children: [
           const MyProductCardScreen(),
-          const ChatListScreen(),
+          ChatListScreen(),
           const HomeScreen(),
           const SettingsScreen(),
           const ProfileScreen(),
@@ -94,4 +109,3 @@ class DashboardScreen extends GetView<DashboardController> {
     ],
   );
 }
- 

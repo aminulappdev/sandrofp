@@ -74,12 +74,15 @@ class ProductStaticData extends StatelessWidget {
               children: [
                 CrashSafeImage(Assets.images.location.keyName, height: 16),
                 widthBox8,
-                Text(
-                  '$address',
-                  style: GoogleFonts.poppins(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff595959),
+                SizedBox(
+                  width: 200,
+                  child: Text(
+                    '$address',
+                    style: GoogleFonts.poppins(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff595959),
+                    ),
                   ),
                 ),
               ],

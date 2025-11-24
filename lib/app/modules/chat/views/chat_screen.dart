@@ -1,11 +1,16 @@
+// ChatListScreen.dart (পুরোপুরি আগের UI, শুধু ডেটা socketFriendList থেকে নেওয়া হচ্ছে)
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sandrofp/app/modules/chat/controller/all_friend_controller.dart';
 import 'package:sandrofp/app/modules/chat/views/message_screen.dart';
 import 'package:sandrofp/app/modules/chat/widgets/chat_list_widget.dart';
+import 'package:sandrofp/app/res/common_widgets/date_formatter.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
+import 'package:sandrofp/app/services/socket/socket_service.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
 class ChatListScreen extends StatefulWidget {
@@ -16,6 +21,31 @@ class ChatListScreen extends StatefulWidget {
 }
 
 class _ChatListScreenState extends State<ChatListScreen> {
+  final SocketService socketService = Get.find<SocketService>();
+  final FriendController friendController = Get.put(FriendController());
+
+  @override
+  void initState() {
+    super.initState();
+    if (friendController.friendList.isEmpty) {
+      friendController.getAllFriends();
+    }
+
+    // Real-time update
+    socketService.sokect.on('updatedChats', (data) {
+      friendController.getAllFriends(); // বা পরে অপটিমাইজ করতে পারো
+    });
+  }
+
+  String _getTime(String? iso) {
+    if (iso == null || iso.isEmpty) return '';
+    try {
+      return DateFormatter(DateTime.parse(iso)).getRelativeTimeFormat();
+    } catch (e) {
+      return '';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,124 +57,207 @@ class _ChatListScreenState extends State<ChatListScreen> {
             children: [
               ChatListHeader(),
               heightBox10,
+              // Chat List – পুরোপুরি আগের ডিজাইন
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ListView.builder(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.zero,
-                      itemCount: 10,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4),
-                          child: InkWell(
-                            onTap: () {
-                              Get.to(() => const ChatScreen());
-                            },
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor: Colors.blue,
-                                      radius: 24.r,
-                                      child: CircleAvatar(
-                                        radius: 22.r,
-                                        backgroundColor: Colors.white,
-                                        child: CircleAvatar(
-                                          radius: 20.r,
-                                          backgroundImage: AssetImage(
-                                            Assets.images.profile.keyName,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            SizedBox(
-                                              width: 220,
-                                              child: Text(
-                                                'Sara',
-                                                style: GoogleFonts.poppins(
-                                                  fontSize: 20.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                            ),
-                                            Text(
-                                              '1 min',
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 12.sp,
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            SizedBox(
-                                              width: 220,
-                                              child: Text(
-                                                'There are many variations of passages of Lorem Ipsum available...',
-                                                style: GoogleFonts.poppins(
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Colors.black,
-                                                ),
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 2,
-                                              ),
-                                            ),
-                                            CircleAvatar(
-                                              radius: 8,
-                                              backgroundColor: Colors.blue,
-                                              child: Text(
-                                                '1',
-                                                style: GoogleFonts.poppins(
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        heightBox12,
-                                        Container(
-                                          height: 1,
-                                          width: 250,
-                                          color: Colors.grey,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                    Obx(() {
+                      if (friendController.inProgress.value) {
+                        return SizedBox(
+                          height: 500.h,
+                          child: Center(
+                            child: LoadingAnimationWidget.staggeredDotsWave(
+                              color: Colors.black,
+                              size: 50,
+                            ),
+                          ),
+                        );
+                      }
+
+                      final list = socketService.socketFriendList;
+
+                      if (list.isEmpty) {
+                        return SizedBox(
+                          height: 400.h,
+                          child: Center(
+                            child: Text(
+                              "No chats yet",
+                              style: GoogleFonts.poppins(
+                                fontSize: 16.sp,
+                                color: Colors.grey,
                               ),
                             ),
                           ),
                         );
-                      },
-                    ),
+                      }
+
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        itemCount: list.length,
+                        itemBuilder: (context, index) {
+                          final friend = list[index];
+
+                          final name = friend['name']?.toString() ?? 'Unknown';
+                          final profileImage =
+                              friend['profileImage']?.toString() ?? '';
+                          final lastMessage =
+                              friend['lastMessage']?.toString() ?? 'No message';
+                          final time = friend['lastMessageTime']?.toString();
+                          final unread = friend['unreadMessageCount'] is int
+                              ? friend['unreadMessageCount']
+                              : int.tryParse(
+                                      friend['unreadMessageCount']
+                                              ?.toString() ??
+                                          '0',
+                                    ) ??
+                                    0;
+                          final receiverId =
+                              friend['receiverId']?.toString() ?? '';
+
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            child: InkWell(
+                              onTap: () {
+                                Get.to(
+                                  () => ChatScreen(
+                                    receiverId: receiverId,
+                                    receiverName: name,
+                                    receiverImageUrl: profileImage,
+                                  ),
+                                );
+                              },
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      // Profile Picture – আগের মতোই ৩ লেয়ার সার্কেল
+                                      CircleAvatar(
+                                        backgroundColor: Colors.blue,
+                                        radius: 24.r,
+                                        child: CircleAvatar(
+                                          radius: 22.r,
+                                          backgroundColor: Colors.white,
+                                          child: CircleAvatar(
+                                            radius: 20.r,
+                                            backgroundImage:
+                                                profileImage.isNotEmpty
+                                                ? NetworkImage(profileImage)
+                                                : AssetImage(
+                                                        Assets
+                                                            .images
+                                                            .profile
+                                                            .path,
+                                                      )
+                                                      as ImageProvider,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+
+                                      // Right Side – নাম, মেসেজ, টাইম, ব্যাজ – সব আগের মতো
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                SizedBox(
+                                                  width: 220.w,
+                                                  child: Text(
+                                                    name,
+                                                    style: GoogleFonts.poppins(
+                                                      fontSize: 20.sp,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  _getTime(time),
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 12.sp,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                SizedBox(
+                                                  width: 220.w,
+                                                  child: Text(
+                                                    lastMessage,
+                                                    style: GoogleFonts.poppins(
+                                                      fontSize: 14.sp,
+                                                      fontWeight: unread > 0
+                                                          ? FontWeight.w600
+                                                          : FontWeight.w400,
+                                                      color: unread > 0
+                                                          ? Colors.black
+                                                          : Colors.grey[600],
+                                                    ),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 2,
+                                                  ),
+                                                ),
+                                                if (unread > 0)
+                                                  CircleAvatar(
+                                                    radius: 8.r,
+                                                    backgroundColor:
+                                                        Colors.blue,
+                                                    child: Text(
+                                                      unread > 99
+                                                          ? '99+'
+                                                          : unread.toString(),
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                            fontSize: 10.sp,
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                    ),
+                                                  ),
+                                              ],
+                                            ),
+
+                                            heightBox12,
+                                            Container(
+                                              height: 1,
+                                              width: 250,
+                                              color: Colors.grey,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }),
                   ],
                 ),
               ),

@@ -17,6 +17,7 @@ import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/app/res/shimmer/category_shimmer.dart';
 import 'package:sandrofp/app/res/shimmer/product_card_shimmer.dart';
+import 'package:sandrofp/app/services/location/address_fetcher.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
 class HomeScreen extends GetView<HomeController> {
@@ -202,6 +203,10 @@ class HomeScreen extends GetView<HomeController> {
                           numberOfCardsDisplayed: items.length >= 2 ? 2 : 1,
                           cardsCount: items.length,
                           cardBuilder: (context, index, _, __) {
+                            var lat = items[index].location?.coordinates[0];
+                            var lng = items[index].location?.coordinates[1];
+
+                            final address = AddressHelper.getAddress(lat, lng);
                             final product = items[index];
                             return HomeProductCard(
                               onTap: () =>
@@ -212,7 +217,7 @@ class HomeScreen extends GetView<HomeController> {
                               price: '৳${product.price}',
                               ownerName: product.author?.name ?? 'Unknown',
                               description: product.descriptions,
-                              address: product.author?.name ?? 'Unknown',
+                              address: address,
                               discount: '${product.discount}% OFF',
                               distance: '2.5 km',
                               rating: '4.5',

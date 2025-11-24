@@ -124,7 +124,11 @@ class BuyerDetails extends StatelessWidget {
                     textColor: Colors.white,
                     title: 'Message',
                     onPress: () {
-                      Get.to(() => const ChatScreen());
+                      Get.to(
+                        () => ChatScreen(
+                       
+                        ),
+                      );
                     },
                   ),
                 ),

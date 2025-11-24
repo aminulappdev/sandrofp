@@ -6,7 +6,7 @@ import 'package:sandrofp/app/modules/profile/controllers/profile_controller.dart
 
 class DashboardController extends GetxController {
   final ProfileController profileController = Get.find<ProfileController>();
-  
+
   final RxInt _tabIndex = 2.obs; // ডিফল্ট Home
   int get tabIndex => _tabIndex.value;
   set tabIndex(int v) => _tabIndex.value = v;
@@ -16,6 +16,7 @@ class DashboardController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    print('ON INIT CALL DASHBOARD');
     profileController.getMyProfile();
     pageController = PageController(initialPage: tabIndex);
     _printUserInfo();

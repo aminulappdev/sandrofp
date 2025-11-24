@@ -25,7 +25,7 @@ class UploadProductDetailsScreen extends GetView<AddProductController> {
     final categoryController = Get.find<CategoryController>();
     final product = controller.product;
 
-    if (product == null) { 
+    if (product == null) {
       return const Scaffold(body: Center(child: Text('No product data')));
     }
 
@@ -115,7 +115,7 @@ class UploadProductDetailsScreen extends GetView<AddProductController> {
                     ProductStaticData(
                       title: product.name,
                       price: product.price.toStringAsFixed(2),
-                      address: controller.locationController.text,
+                      address: controller.selectedAddress.value,
                       description: product.descriptions,
                       discount: product.discount.toStringAsFixed(2),
                     ),

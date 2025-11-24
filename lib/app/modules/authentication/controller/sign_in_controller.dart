@@ -38,7 +38,7 @@ class SignInController extends GetxController {
   Future<void> _performLogin() async {
     final response = await _networkCaller.postRequest(
       Urls.signInUrl,
-      
+
       body: {'email': emailCtrl.text, 'password': passwordCtrl.text},
     );
 
@@ -46,7 +46,9 @@ class SignInController extends GetxController {
       final data = response.responseData['data'];
       if (data != null) {
         StorageUtil.saveData(StorageUtil.userAccessToken, data['accessToken']);
+        print(StorageUtil.getData(StorageUtil.userAccessToken));
         StorageUtil.saveData(StorageUtil.userId, data['user']['_id']);
+        print(StorageUtil.getData(StorageUtil.userId));
 
         Get.offAll(() => DashboardScreen());
       } else {}

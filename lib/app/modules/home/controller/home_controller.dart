@@ -7,7 +7,7 @@ import 'package:sandrofp/app/modules/home/views/view_all_item_screen.dart';
 import 'package:sandrofp/app/modules/product/controller/all_product_controller.dart';
 import 'package:sandrofp/app/modules/product/model/product_model.dart';
 import 'package:sandrofp/app/modules/product/views/product_details_screen.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
+import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart'; 
 
 class HomeController extends GetxController {
   final AllProductController allProductController =

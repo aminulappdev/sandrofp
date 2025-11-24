@@ -65,15 +65,15 @@ class ProfileData {
     final String? profile;
     final dynamic hobby;
     final dynamic language;
-    final int? avgRating;
+    final dynamic avgRating;
     final dynamic sellerType;
     final int? totalReview;
-    final dynamic about;
-    final dynamic customerId;
+    final String? about;
+    final String? customerId;
     final String? role;
     final String? loginWth;
     final dynamic address;
-    final int? tokens;
+    final dynamic tokens;
     final bool? isDeleted;
     final dynamic expireAt;
     final DateTime? createdAt;
@@ -161,7 +161,7 @@ class Verification {
         required this.status,
     });
 
-    final String? otp;
+    final dynamic otp;
     final DateTime? expiresAt;
     final bool? status;
 

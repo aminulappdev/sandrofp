@@ -77,7 +77,7 @@ class HomeProductCard extends StatelessWidget {
                           height: 38,
                           width: 95,
                           decoration: BoxDecoration(
-                             color: Color(0xffEBF2EE),
+                            color: Color(0xffEBF2EE),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Center(
@@ -210,12 +210,16 @@ class HomeProductCard extends StatelessWidget {
                               height: 16,
                             ),
                             widthBox8,
-                            Text(
-                              address ?? '', 
-                              style: GoogleFonts.poppins(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xff595959),
+                            SizedBox(
+                              width: 160,
+                              child: Text(
+                                maxLines: 2,
+                                address ?? '',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xff595959),
+                                ),
                               ),
                             ),
                           ],
@@ -231,10 +235,10 @@ class HomeProductCard extends StatelessWidget {
                             ),
                             child: Center(
                               child: Text(
-                                '$distance km away',
+                                '$distance away',
                                 style: GoogleFonts.poppins(
                                   fontSize: 12,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w500,
                                   color: AppColors.greenColor,
                                 ),
                               ),
@@ -243,7 +247,7 @@ class HomeProductCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    heightBox12,
+                    heightBox8,
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -257,7 +261,7 @@ class HomeProductCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    heightBox8,
+                    heightBox4,
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(

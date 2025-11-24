@@ -1,14 +1,13 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
 class ChatHeader extends StatelessWidget {
-  const ChatHeader({
-    super.key,
-  });
+  final String? name;
+  final String? image;
+  final bool? isOnline;
+  const ChatHeader({super.key, this.name, this.image, this.isOnline});
 
   @override
   Widget build(BuildContext context) {
@@ -38,16 +37,15 @@ class ChatHeader extends StatelessWidget {
                 Row(
                   children: [
                     CircleAvatar(
-            
-                      backgroundImage: AssetImage(
-                          Assets.images.onboarding01.keyName),
-                      radius: 20,),
+                      backgroundImage: NetworkImage(image ?? ''),
+                      radius: 20,
+                    ),
                     widthBox10,
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Aminul Islam',
+                          name ?? '',
                           style: GoogleFonts.poppins(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -55,7 +53,7 @@ class ChatHeader extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'Aminul is typing...',
+                          isOnline == true ? 'Online' : 'Offline',
                           style: GoogleFonts.poppins(
                             fontSize: 10,
                             fontWeight: FontWeight.w400,
@@ -68,14 +66,10 @@ class ChatHeader extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () {},
-                  icon: const Icon(
-                    Icons.more_horiz,
-                    color: Colors.white,
-                  ),
+                  icon: const Icon(Icons.more_horiz, color: Colors.white),
                 ),
               ],
             ),
-           
           ],
         ),
       ),
