@@ -8,7 +8,7 @@ import 'package:sandrofp/app/modules/authentication/views/forgot_password_screen
 import 'package:sandrofp/app/modules/authentication/widget/auth_header_widget.dart';
 import 'package:sandrofp/app/modules/authentication/widget/label_name_widget.dart';
 import 'package:sandrofp/app/modules/authentication/widget/liner_widger.dart';
-import 'package:sandrofp/app/modules/authentication/widget/sign_up_widget.dart';
+import 'package:sandrofp/app/modules/authentication/widget/sign_up_widget.dart'; 
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/app/services/network_caller/validator_service.dart';
@@ -16,7 +16,7 @@ import 'package:sandrofp/gen/assets.gen.dart';
 
 class SignInScreen extends GetView<SignInController> {
   const SignInScreen({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,6 +28,7 @@ class SignInScreen extends GetView<SignInController> {
             children: [
               heightBox30,
               AuthHeaderWidget(
+                showBackButton: false,
                 title: 'Login',
                 subtitle:
                     'There are many variations of passages of Lorem Ipsum available, but the majority...',

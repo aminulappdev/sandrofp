@@ -7,7 +7,7 @@ import 'package:sandrofp/app/modules/home/views/view_all_item_screen.dart';
 import 'package:sandrofp/app/modules/product/controller/all_product_controller.dart';
 import 'package:sandrofp/app/modules/product/model/product_model.dart';
 import 'package:sandrofp/app/modules/product/views/product_details_screen.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart'; 
+import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
 
 class HomeController extends GetxController {
   final AllProductController allProductController =
@@ -64,7 +64,7 @@ class HomeController extends GetxController {
     Get.to(
       () => ViewAllItemScreen(),
       arguments: {
-        'title': title, 
+        'title': title,
         'category': categoryId,
         'type': 'category', // new flag
       },
@@ -76,6 +76,26 @@ class HomeController extends GetxController {
     Get.to(
       () => ViewAllItemScreen(),
       arguments: {'title': 'All Products', 'type': 'all'},
+    );
+  }
+
+  void goToAllProductsByFilter(
+    
+    String? categoryId,
+    String? color,
+    String? size,
+  ) {
+
+    print('categoryId: $categoryId, color: $color, size: $size');
+    Get.to(
+      () => ViewAllItemScreen(),
+      arguments: {
+        'title': 'Filter Products',
+        'type': 'filter',
+        'categoryId': categoryId,
+        'color': color,
+        'size': size,
+      },
     );
   }
 

@@ -47,10 +47,9 @@ class ProfileScreen extends GetView<ProfileScreenController> {
 
                   // Avatar + Level Badge
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(width: 40),
                       Stack(
                         children: [
                           CircleAvatar(
@@ -100,10 +99,10 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                           ),
                         ],
                       ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.more_horiz, size: 40),
-                      ),
+                      // IconButton(
+                      //   onPressed: () {},
+                      //   icon: const Icon(Icons.more_horiz, size: 40),
+                      // ),
                     ],
                   ),
 
@@ -138,7 +137,7 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                       ),
                       widthBox8,
                       Text(
-                        '(${controller.user['reviews']})',
+                        '()',
                         style: GoogleFonts.poppins(fontWeight: FontWeight.w400),
                       ),
                     ],
@@ -248,6 +247,18 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                             return const Center(
                               child: CircularProgressIndicator(),
                             );
+                          } else if (myProductController
+                              .allProductItems
+                              .isEmpty) {
+                            return const Center(
+                              child: Text(
+                                'No products found',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            );
                           } else {
                             var items = myProductController.allProductItems;
                             return ListView.builder(
@@ -259,7 +270,8 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                                   width: 300,
                                   child: HomeProductCard(
                                     onTap: () {},
-                                    price: product.price.toString(),
+                                    price: (product.price - product.discount)
+                                        .toString(),
                                     imagePath: product.images.isEmpty
                                         ? ''
                                         : product.images[0].url,
@@ -267,7 +279,7 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                                     description: product.descriptions,
                                     discount: product.discount.toString(),
                                     rating: product.name.toString(),
-                                    distance: product.name.toString(),
+                                    distance: 1.toString(),
                                     profile: product.author?.profile.toString(),
                                     ownerName: product.author?.name.toString(),
                                     address: product.author?.name.toString(),

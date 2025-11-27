@@ -69,6 +69,7 @@ dependencies:
   geolocator: ^14.0.2
   latlong2: 
   flutter_map: 
+  webview_flutter:
   # dependencies:
 
 

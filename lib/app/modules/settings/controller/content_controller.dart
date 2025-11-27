@@ -1,4 +1,6 @@
 // app/modules/authentication/controller/content_controller.dart
+// অথবা যেখানে আছে সেখানে
+
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:sandrofp/app/get_storage.dart';
@@ -10,22 +12,21 @@ class ContentController extends GetxController {
   final RxBool isLoading = false.obs;
   final NetworkCaller _networkCaller = NetworkCaller();
 
-  late String? token; // OTP token (optional)
+  late String? token;
   late String? title;
-  final RxString content = ''.obs; // API response body
+  final RxString content = ''.obs; // এটা সবসময় String থাকবে
 
   @override
   void onInit() {
     super.onInit();
-    // Get arguments from previous screen
     final args = Get.arguments as Map<String, dynamic>?;
     token = args?['data'] as String?;
     title = args?['title'] as String?;
 
-    _fetchContent(token ?? '');
+    fetchContent(token ?? '');
   }
 
-  Future<void> _fetchContent(String key) async {
+  Future<void> fetchContent(String key) async {
     try {
       isLoading(true);
 
@@ -36,15 +37,29 @@ class ContentController extends GetxController {
       );
 
       if (response.isSuccess) {
-        // Assuming the API returns a JSON with a field `content` (adjust if different)
-        content.value = response.responseData['data'];
-        showSuccess('Password changed successfully!');
+        final dynamic data = response.responseData['data'];
+
+        if (data == null) {
+          content.value = '';
+        } else if (data is String) {
+          content.value = data;
+        } else if (data is num) {
+          content.value = data.toString();
+        } else if (data is Map<String, dynamic>) {
+          final price = data['perTokenPrice'];
+          content.value = price?.toString() ?? '';
+        } else {
+          content.value = data.toString();
+        }
+
+        if (key != 'perTokenPrice') {}
       } else {
         showError(response.errorMessage);
       }
     } catch (e) {
       debugPrint('Content Error: $e');
       showError('Something went wrong');
+      content.value = '';
     } finally {
       isLoading(false);
     }

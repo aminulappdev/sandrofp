@@ -113,6 +113,42 @@ class AllProductController extends GetxController {
     }
   }
 
+  Future<void> getAllProductByFilter(
+    String categoryId,
+    String color,
+    String size,
+  
+  ) async {
+    isLoading(true);
+    try {
+      final Map<String, dynamic> params = {
+        'category': categoryId,
+        'color': color,
+        'size': size,
+      };
+
+      final response = await _networkCaller.getRequest(
+        Urls.productUrl,
+        accessToken: StorageUtil.getData(StorageUtil.userAccessToken),
+        queryParams: params,
+      );
+
+      if (response.isSuccess && response.responseData != null) {
+        _allProductModel.value = AllProductModel.fromJson(
+          response.responseData,
+        );
+      } else {
+        showError(response.errorMessage);
+        _allProductModel.value = null;
+      }
+    } catch (e) {
+      showError('Network error: $e');
+      _allProductModel.value = null;
+    } finally {
+      isLoading(false);
+    }
+  }
+
   // lib/app/modules/product/controller/all_product_controller.dart
   void goToProductDetails(AllProductItemModel data) {
     Get.find<HomeController>().goToProductDetails(data);

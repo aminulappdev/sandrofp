@@ -95,7 +95,7 @@ class ValidatorService {
     // Remove leading and trailing whitespace
     final words = value.trim();
 
-    if (words.length < 2) {
+    if (words.isEmpty) {
       return 'Field Required';
     }
     return null;

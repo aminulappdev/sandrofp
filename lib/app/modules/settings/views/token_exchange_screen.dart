@@ -1,8 +1,9 @@
 import 'package:crash_safe_image/crash_safe_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_intl_phone_field/flutter_intl_phone_field.dart'
-    show IntlPhoneField;
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sandrofp/app/modules/payment/controller/payment_services.dart';
+import 'package:sandrofp/app/modules/settings/controller/content_controller.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
@@ -19,35 +20,108 @@ class TokenExchangeScreen extends StatefulWidget {
 }
 
 class _TokenExchangeScreenState extends State<TokenExchangeScreen> {
+  final TextEditingController amountController = TextEditingController();
+  final PaymentService paymentService = PaymentService();
+  final ContentController contentController = Get.put(ContentController());
+
+  double tokenToUSD = 0.0;
+  double dollarAmount = 0.0;
+
+  // লোডিং স্টেট যোগ করলাম
+  bool _isExchanging = false;
+
+  @override
+  void initState() {
+    super.initState();
+    contentController.fetchContent('perTokenPrice');
+    amountController.text = "1";
+    amountController.addListener(_calculateUSD);
+  }
+
+  void _calculateUSD() {
+    if (!mounted) return;
+    final text = amountController.text.replaceAll(',', '').trim();
+    final tokens = double.tryParse(text) ?? 0.0;
+    setState(() {
+      dollarAmount = tokens * tokenToUSD;
+    });
+  }
+
+  @override
+  void dispose() {
+    amountController.removeListener(_calculateUSD);
+    amountController.dispose();
+    super.dispose();
+  }
+
+  double _getSafeTokenPrice() {
+    dynamic value = contentController.content.value;
+
+    if (value == null) return 0.0;
+    if (value is num) return value.toDouble();
+    if (value is Map<String, dynamic>) {
+      final price = value['perTokenPrice'];
+      return price is num
+          ? price.toDouble()
+          : (double.tryParse(price?.toString() ?? '0') ?? 0.0);
+    }
+    if (value is String) return double.tryParse(value) ?? 0.0;
+
+    return 0.0;
+  }
+
+  // Exchange বাটনের কাজ – লোডিং + এরর হ্যান্ডলিং
+  Future<void> _exchangeNow() async {
+    final input = amountController.text.trim();
+    final tokens = double.tryParse(input.replaceAll(',', ''));
+
+    if (input.isEmpty || tokens == null || tokens <= 0) {
+      showError('Please enter a valid token amount');
+      return;
+    }
+    if (tokenToUSD <= 0) {
+      showError('Token price not loaded yet. Please wait.');
+      return;
+    }
+
+    setState(() {
+      _isExchanging = true;
+    });
+
+    try {
+      await paymentService.payment(context, dollarAmount.toStringAsFixed(2));
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isExchanging = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Exchange Process',
-        leading: Row(
-          children: [
-            CircleIconWidget(
-              radius: 20,
-              iconRadius: 20,
-              color: Color(0xffFFFFFF).withValues(alpha: 0.05),
-              imagePath: Assets.images.notification.keyName,
-              onTap: () {},
-            ),
-            widthBox10,
-            CircleAvatar(
-              backgroundImage: AssetImage(Assets.images.onboarding01.keyName),
-            ),
-          ],
-        ),
-      ),
+      appBar: CustomAppBar(title: 'Exchange Process', leading: Container()),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
           children: [
             heightBox12,
-            SingleChildScrollView(
-              child: Padding(
+            Obx(() {
+              if (contentController.isLoading.value) {
+                return const SizedBox(
+                  height: 550,
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
+
+              tokenToUSD = _getSafeTokenPrice();
+
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (mounted) _calculateUSD();
+              });
+
+              return Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,9 +133,8 @@ class _TokenExchangeScreenState extends State<TokenExchangeScreen> {
                           height: 16,
                         ),
                         widthBox10,
-
                         Text(
-                          '100 banana token equals',
+                          '1 token equals',
                           style: GoogleFonts.poppins(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -70,15 +143,15 @@ class _TokenExchangeScreenState extends State<TokenExchangeScreen> {
                         ),
                       ],
                     ),
-
+                    heightBox8,
                     RichText(
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: '1.00',
+                            text: '\$${tokenToUSD.toStringAsFixed(2)}',
                             style: GoogleFonts.poppins(
                               fontSize: 32,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.bold,
                               color: Colors.black,
                             ),
                           ),
@@ -93,69 +166,132 @@ class _TokenExchangeScreenState extends State<TokenExchangeScreen> {
                         ],
                       ),
                     ),
+                    heightBox12,
                     Text(
-                      'Lorem ipsum dolor sit amet, consectetur our adipiscing elit. Maecenas hendrerit luctus libero accused vulputate.',
+                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                       style: GoogleFonts.poppins(
                         fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black,
+                        color: Colors.black54,
                       ),
                     ),
-                    heightBox16,
+                    heightBox40,
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 140,
-                          child: IntlPhoneField(
-                            decoration: InputDecoration(
-                              fillColor: Color.fromARGB(255, 255, 255, 255),
-                              labelText: '10',
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(),
+                    Center(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: 280,
+                            child: TextField(
+                              controller: amountController,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                    decimal: true,
+                                  ),
+                              decoration: InputDecoration(
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: CrashSafeImage(
+                                    Assets.images.banana.keyName,
+                                    height: 24,
+                                  ),
+                                ),
+                                labelText: 'Token Amount',
+                                hintText: 'Enter tokens',
+                                filled: true,
+                                fillColor: Colors.white,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey.shade400,
+                                    width: 1.5,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey.shade400,
+                                    width: 1.5,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                  borderSide: const BorderSide(
+                                    color: AppColors.greenColor,
+                                    width: 2,
+                                  ),
+                                ),
                               ),
                             ),
-                            initialCountryCode: 'IN',
-                            onChanged: (phone) {
-                              print(phone.completeNumber);
-                            },
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          child: CrashSafeImage(
+                          heightBox20,
+                          CrashSafeImage(
                             Assets.images.exchange.keyName,
-                            height: 24,
+                            height: 50,
                           ),
-                        ),
-                        SizedBox(
-                          width: 140,
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              fillColor: Color.fromARGB(255, 255, 255, 255),
-                              labelText: '100',
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(),
+                          heightBox20,
+                          Container(
+                            width: 280,
+                            height: 70,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: Colors.grey.shade400,
+                                width: 1.5,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '\$${dollarAmount.toStringAsFixed(2)}',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.greenColor,
+                                    ),
+                                  ),
+                                  widthBox8,
+                                  Text(
+                                    'USD',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
+                    heightBox50,
 
-                    heightBox20,
-                    CustomElevatedButton(
-                      title: 'Exchange ',
-                      onPress: () {
-                        showSuccess('Successfully Exchange');
-                      },
-                    ),
+                    _isExchanging
+                        ? const Center(
+                            child: CustomElevatedButton(
+                              color: Color.fromARGB(255, 103, 161, 128),
+                              title: 'Loading...',
+                              onPress: null,
+                            ),
+                          )
+                        : CustomElevatedButton(
+                            title: 'Exchange Now',
+                            onPress: _exchangeNow,
+                          ),
                   ],
                 ),
-              ),
-            ),
+              );
+            }),
           ],
         ),
       ),

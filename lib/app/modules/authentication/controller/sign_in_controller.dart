@@ -9,12 +9,8 @@ import 'package:sandrofp/app/urls.dart';
 
 class SignInController extends GetxController {
   late final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final TextEditingController emailCtrl = TextEditingController(
-    text: 'rafi@gmail.com',
-  );
-  final TextEditingController passwordCtrl = TextEditingController(
-    text: '112233',
-  );
+  final TextEditingController emailCtrl = TextEditingController();
+  final TextEditingController passwordCtrl = TextEditingController();
   final RxBool obscureText = true.obs;
   final NetworkCaller _networkCaller = NetworkCaller();
 

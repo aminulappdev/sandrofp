@@ -1,6 +1,7 @@
 // app/modules/exchange/controller/exchange_controller.dart
 import 'package:get/get.dart';
 import 'package:sandrofp/app/get_storage.dart';
+import 'package:sandrofp/app/modules/dashboard/views/dashboard_screen.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
 import 'package:sandrofp/app/services/network_caller/network_caller.dart';
 import 'package:sandrofp/app/urls.dart';
@@ -11,6 +12,7 @@ class Product {
   final String title;
   final String price;
   final String? description;
+  final String? userId;
 
   Product({
     required this.id,
@@ -18,6 +20,7 @@ class Product {
     required this.title,
     required this.price,
     this.description,
+    this.userId,
   });
 }
 
@@ -44,12 +47,19 @@ class ExchangeController extends GetxController {
   void _loadArguments() {
     final args = Get.arguments as Map<String, dynamic>?;
     if (args == null) {
-      exchangeProduct = Product(id: '0', image: '', title: 'Unknown', price: '0');
+      exchangeProduct = Product(
+        userId: '',
+        id: '0',
+        image: '',
+        title: 'Unknown',
+        price: '0',
+      );
       return;
     }
 
     final ex = args['exchangeProduct'] as Map<String, dynamic>;
     exchangeProduct = Product(
+      userId: ex['userId'] ?? '',
       id: ex['id'].toString(),
       image: ex['image'] ?? '',
       title: ex['title'] ?? 'Unknown',
@@ -58,13 +68,18 @@ class ExchangeController extends GetxController {
     );
 
     final List<dynamic> list = args['selectedProducts'] ?? [];
-    selectedProducts.assignAll(list.map((e) => Product(
+    selectedProducts.assignAll(
+      list.map(
+        (e) => Product(
+          userId: e['userId'] ?? '',
           id: e['id'].toString(),
           image: e['image'] ?? '',
           title: e['title'] ?? '',
           price: e['price']?.toString() ?? '0',
           description: e['description'],
-        )));
+        ),
+      ),
+    );
 
     selectedTotal.value = (args['selectedTotal'] as num).toDouble();
     remainingToken.value = (args['remainingToken'] as num).toDouble();
@@ -82,7 +97,9 @@ class ExchangeController extends GetxController {
   }
 
   // Change Your Product
-  Product get currentYourProduct => selectedProducts.isNotEmpty ? selectedProducts[_yourIndex] : exchangeProduct;
+  Product get currentYourProduct => selectedProducts.isNotEmpty
+      ? selectedProducts[_yourIndex]
+      : exchangeProduct;
 
   void changeYourProduct() {
     if (selectedProducts.isEmpty) return;
@@ -106,11 +123,11 @@ class ExchangeController extends GetxController {
       isLoading(true);
 
       final body = {
-        "requestTo": StorageUtil.getData(StorageUtil.userId),
-        "products": selectedProducts.map((p) => p.id).toList(), 
+        "requestTo": exchangeProduct.userId,
+        "products": selectedProducts.map((p) => p.id).toList(),
         "exchangeWith": [exchangeProduct.id],
-        "extraToken": remainingToken.value, 
-        "totalToken": selectedTotal.value, 
+        "extraToken": remainingToken.value,
+        "totalToken": selectedTotal.value,
       };
 
       print('Exchange Request Body: $body');
@@ -122,9 +139,7 @@ class ExchangeController extends GetxController {
       );
 
       if (response.isSuccess) {
-        showSuccess('Exchange request sent successfully!');
-        
-
+        Get.offAll(() => DashboardScreen());
       } else {
         showError(response.errorMessage);
       }

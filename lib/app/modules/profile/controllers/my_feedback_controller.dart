@@ -1,4 +1,4 @@
-// lib/app/modules/product/controller/all_product_controller.dart
+// app/modules/profile/controllers/my_feedback_controller.dart
 import 'package:get/get.dart';
 import 'package:sandrofp/app/get_storage.dart';
 import 'package:sandrofp/app/modules/profile/model/my_seller_model.dart';
@@ -13,36 +13,34 @@ class MyFeedbackController extends GetxController {
   List<MyFeedbackItemModel> get myFeedbackItems =>
       _myFeedbackModel.value?.data?.data ?? [];
 
-  // লোডিং স্টেট
   final RxBool isLoading = true.obs;
+
+  // এই লাইনটা আছে বলেই আমরা পরে id চেঞ্জ করতে পারবো
+  String sellerId = StorageUtil.getData(StorageUtil.userId) ?? '';
 
   @override
   void onInit() {
     super.onInit();
-    getMyFeedback();
+    getMyFeedback(); // প্রথমবার নিজের ফিডব্যাক লোড করে
   }
 
-  // API কল
   Future<void> getMyFeedback() async {
     isLoading(true);
     try {
       final response = await _networkCaller.getRequest(
         Urls.myFeedbackUrl,
         accessToken: StorageUtil.getData(StorageUtil.userAccessToken),
-        queryParams: {"seller": StorageUtil.getData(StorageUtil.userId)},
-        // queryParams: {"seller": '6918182fa7f19a573dad8d91'},
+        queryParams: {"seller": sellerId}, // এখানে যে id থাকবে সেই অনুযায়ী লোড হবে
       );
 
       if (response.isSuccess && response.responseData != null) {
-        _myFeedbackModel.value = MyFeedbackModel.fromJson(
-          response.responseData,
-        );
+        _myFeedbackModel.value = MyFeedbackModel.fromJson(response.responseData);
       } else {
-        showError(response.errorMessage);
+        showError(response.errorMessage ?? "No feedback found");
         _myFeedbackModel.value = null;
       }
     } catch (e) {
-      showError('Network error: $e');
+      print("Feedback Error: $e");
       _myFeedbackModel.value = null;
     } finally {
       isLoading(false);

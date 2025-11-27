@@ -33,6 +33,7 @@ class BuyerDetails extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -124,11 +125,7 @@ class BuyerDetails extends StatelessWidget {
                     textColor: Colors.white,
                     title: 'Message',
                     onPress: () {
-                      Get.to(
-                        () => ChatScreen(
-                       
-                        ),
-                      );
+                      Get.to(() => ChatScreen());
                     },
                   ),
                 ),

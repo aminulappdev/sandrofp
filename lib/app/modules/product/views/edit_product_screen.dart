@@ -1,7 +1,7 @@
 // app/modules/product/views/edit_product_screen.dart
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart'; 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/home/controller/category_controller.dart';
 import 'package:sandrofp/app/modules/home/widget/feature_row.dart';

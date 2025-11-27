@@ -28,7 +28,7 @@ class ProfileController extends GetxController {
         print('PROFILE DATA: ${_profileModel.value?.data}');
       } else {}
     } else {
-      showError(response.errorMessage);
+      // showError(response.errorMessage);
     }
   }
 }

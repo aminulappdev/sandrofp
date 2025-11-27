@@ -72,7 +72,7 @@ class SignUpController extends GetxController {
         }
 
         print('TOKEN পাঠানো হচ্ছে: $token');
-        showSuccess(message);
+        // showSuccess(message);
 
         // FIXED: Get.off() → Get.to()
         Get.to(

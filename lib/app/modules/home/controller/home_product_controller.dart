@@ -11,11 +11,13 @@ class HomeProductController extends GetxController {
 
   // শুধু হোম পেজের জন্য আলাদা ডেটা
   final Rx<AllProductModel?> _allProducts = Rx<AllProductModel?>(null);
-  List<AllProductItemModel> get allProducts => _allProducts.value?.data?.data ?? [];
+  List<AllProductItemModel> get allProducts =>
+      _allProducts.value?.data?.data ?? [];
 
   final Rx<AllProductModel?> _nearbyProducts = Rx<AllProductModel?>(null);
-  List<AllProductItemModel> get nearbyProducts => _nearbyProducts.value?.data?.data ?? [];
-
+  List<AllProductItemModel> get nearbyProducts =>
+      _nearbyProducts.value?.data?.data ?? [];
+ 
   final RxBool isLoadingAll = true.obs;
   final RxBool isLoadingNearby = true.obs;
 
@@ -23,7 +25,7 @@ class HomeProductController extends GetxController {
   void onInit() {
     super.onInit();
     getAllProducts();
-    getNearbyProducts(); // অ্যাপ ওপেন করলেই লোকেশন নিয়ে নিবে
+    getNearbyProducts();
   }
 
   Future<void> getAllProducts() async {

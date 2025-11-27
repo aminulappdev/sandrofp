@@ -12,7 +12,7 @@ import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 class OtpVerifyScreen extends GetView<OtpVerifyController> {
   const OtpVerifyScreen({super.key});
 
-  @override
+  @override 
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
@@ -31,7 +31,7 @@ class OtpVerifyScreen extends GetView<OtpVerifyController> {
                 key: controller.formKey,
                 child: Column(
                   children: [
-                    heightBox10,
+                    heightBox10, 
                     PinCodeTextField(
                       length: 6,
                       controller: controller.pinCtrl,

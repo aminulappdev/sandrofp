@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sandrofp/app/get_storage.dart';
 import 'package:sandrofp/app/modules/cart/views/cart_screen.dart';
 import 'package:sandrofp/app/modules/home/widget/buyer_details.dart';
 import 'package:sandrofp/app/modules/home/widget/feature_row.dart';
@@ -25,25 +26,7 @@ class ProductDetailsScreen extends GetView<ProductDetailsController> {
   Widget build(BuildContext context) {
     var productLength = controller.product?.images.length ?? 0;
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Back',
-        leading: Row(
-          children: [
-            CircleIconWidget(
-              radius: 20,
-              iconRadius: 20,
-              color: const Color(0xffFFFFFF).withValues(alpha: 0.05),
-              imagePath: Assets.images.notification.keyName,
-              onTap: () {},
-            ),
-            widthBox10,
-            CircleAvatar(
-              radius: 20,
-              backgroundImage: AssetImage(Assets.images.onboarding01.keyName),
-            ),
-          ],
-        ),
-      ),
+      appBar: CustomAppBar(title: 'Back', leading: Container()),
       body: Column(
         children: [
           // Scrollable Content
@@ -98,22 +81,31 @@ class ProductDetailsScreen extends GetView<ProductDetailsController> {
                         : Container(),
 
                     heightBox10,
-                    BuyerDetails(
-                      image: controller.product!.author?.profile ?? '',
-                      description: controller.product?.descriptions ?? '',
-                      rating: 5,
-                      id: controller.product?.id ?? '',
-                      name: controller.product?.name ?? '',
-                    ),
-                    heightBox20,
+                    controller.product!.author?.id !=
+                            StorageUtil.getData(StorageUtil.userId)
+                        ? BuyerDetails(
+                            image: controller.product!.author?.profile ?? '',
+                            description: controller.product?.descriptions ?? '',
+                            rating: 5,
+                            id: controller.product?.id ?? '',
+                            name: controller.product?.name ?? '',
+                          )
+                        : Container(),
+                    controller.product!.author?.id !=
+                            StorageUtil.getData(StorageUtil.userId)
+                        ? heightBox20
+                        : heightBox4,
 
                     Obx(() {
                       var lat = controller.product?.location?.coordinates[0];
                       var lng = controller.product?.location?.coordinates[1];
                       final address$ = AddressHelper.getAddress(lat, lng).obs;
+                      var updatePrice =
+                          controller.product?.price -
+                          controller.product?.discount;
                       return ProductStaticData(
                         title: controller.product?.name ?? '',
-                        price: controller.product?.price.toString() ?? '',
+                        price: updatePrice.toString(),
                         address: address$.value,
                         description: controller.product?.descriptions ?? '',
                         discount: controller.product?.discount.toString() ?? '',
@@ -211,42 +203,48 @@ class ProductDetailsScreen extends GetView<ProductDetailsController> {
           ),
 
           // Bottom Action Buttons
-          Card(
-            elevation: 3,
-            margin: EdgeInsets.zero,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-            ),
-            child: Container(
-              height: 80,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: CustomElevatedButton(
-                      color: AppColors.greenColor,
-                      textColor: Colors.white,
-                      title: 'Request Exchange',
-                      onPress: () => Get.to(
-                        () => CartScreen(),
-                        arguments: {'data': controller.product},
-                      ),
+          controller.product!.author?.id ==
+                  StorageUtil.getData(StorageUtil.userId)
+              ? Container()
+              : Card(
+                  elevation: 3,
+                  margin: EdgeInsets.zero,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
+                  child: Container(
+                    height: 80,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: CustomElevatedButton(
+                            color: AppColors.greenColor,
+                            textColor: Colors.white,
+                            title: 'Request Exchange',
+                            onPress: () => Get.to(
+                              () => CartScreen(),
+                              arguments: {'data': controller.product},
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
         ],
       ),
     );

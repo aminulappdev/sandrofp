@@ -26,13 +26,12 @@ class HomeScreen extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     // Controllers
-    final HomeController homeController = Get.put(HomeController());
+    final HomeController homeController = Get.find<HomeController>();
     final ProfileController profileController = Get.find<ProfileController>();
     final CategoryController categoryController =
         Get.find<CategoryController>();
-    final HomeProductController homeProductController = Get.put(
-      HomeProductController(),
-    );
+    final HomeProductController homeProductController =
+        Get.find<HomeProductController>();
 
     return Scaffold(
       body: RefreshIndicator(
@@ -65,7 +64,8 @@ class HomeScreen extends GetView<HomeController> {
                     );
                   }
                   return HomepageHeader(
-                    imagePath: Assets.images.profile.keyName,
+                    imageOnTap: () {},
+                    imagePath: profileController.profileData?.profile ?? '',
                     name: profileController.profileData?.name ?? 'User',
                     ammount:
                         profileController.profileData?.tokens.toString() ?? '0',
@@ -208,17 +208,19 @@ class HomeScreen extends GetView<HomeController> {
 
                             final address = AddressHelper.getAddress(lat, lng);
                             final product = items[index];
+                            var updatePrice =
+                                items[index].price - items[index].discount;
                             return HomeProductCard(
                               onTap: () =>
                                   homeController.goToProductDetails(product),
                               imagePath: product.images.isNotEmpty
                                   ? product.images.first.url
                                   : '',
-                              price: '৳${product.price}',
+                              price: '\$$updatePrice',
                               ownerName: product.author?.name ?? 'Unknown',
                               description: product.descriptions,
                               address: address,
-                              discount: '${product.discount}% OFF',
+                              discount: '${product.discount}\$',
                               distance: '2.5 km',
                               rating: '4.5',
                               profile: product.author?.profile,
@@ -269,17 +271,19 @@ class HomeScreen extends GetView<HomeController> {
                           cardsCount: items.length,
                           cardBuilder: (context, index, _, __) {
                             final product = items[index];
+                            var updatePrice =
+                                items[index].price - items[index].discount;
                             return HomeProductCard(
                               onTap: () =>
                                   homeController.goToProductDetails(product),
                               imagePath: product.images.isNotEmpty
                                   ? product.images.first.url
                                   : '',
-                              price: '৳${product.price}',
+                              price: '\$$updatePrice',
                               ownerName: product.author?.name ?? 'Unknown',
                               description: product.descriptions,
                               address: product.author?.name ?? 'Nearby',
-                              discount: '${product.discount}% OFF',
+                              discount: '${product.discount}',
                               distance: '2.5 km',
                               rating: '4.5',
                               profile: product.author?.profile,

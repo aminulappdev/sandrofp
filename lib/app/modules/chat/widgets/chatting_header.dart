@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sandrofp/app/modules/profile/views/other_profile_screen.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
+// ==================== Profile View Page (Optional) ====================
+
+// =============================
+// তোমার ফাইনাল ChatHeader (100% কাজ করবে)
+// =============================
 class ChatHeader extends StatelessWidget {
+  final String? id;
   final String? name;
   final String? image;
   final bool? isOnline;
-  const ChatHeader({super.key, this.name, this.image, this.isOnline});
+
+  const ChatHeader({super.key, this.name, this.image, this.isOnline, this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +31,7 @@ class ChatHeader extends StatelessWidget {
         ),
         image: DecorationImage(
           image: AssetImage(Assets.images.background.keyName),
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
         ),
       ),
       child: Padding(
@@ -34,18 +44,28 @@ class ChatHeader extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
+                // Left Side: Avatar + Name + Online Status
                 Row(
                   children: [
                     CircleAvatar(
-                      backgroundImage: NetworkImage(image ?? ''),
-                      radius: 20,
+                      radius: 22,
+                      backgroundColor: Colors.white,
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundImage: (image != null && image!.isNotEmpty)
+                            ? NetworkImage(image!)
+                            : const AssetImage(
+                                    "assets/images/default_avatar.png",
+                                  )
+                                  as ImageProvider,
+                      ),
                     ),
                     widthBox10,
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          name ?? '',
+                          name ?? 'User',
                           style: GoogleFonts.poppins(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -55,18 +75,52 @@ class ChatHeader extends StatelessWidget {
                         Text(
                           isOnline == true ? 'Online' : 'Offline',
                           style: GoogleFonts.poppins(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xffFFDD3A),
+                            fontSize: 11,
+                            fontWeight: FontWeight.w500,
+                            color: const Color(0xffFFDD3A),
                           ),
                         ),
                       ],
                     ),
                   ],
                 ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.more_horiz, color: Colors.white),
+
+                // Right Side: More Options (Dropdown)
+                PopupMenuButton<String>(
+                  icon: const Icon(
+                    Icons.more_horiz,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                  color: Colors.white,
+                  elevation: 10,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  offset: const Offset(0, 10), // নিচে সামান্য গ্যাপ
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 'view_profile',
+                      child: Row(
+                        children: const [
+                          Icon(Icons.person_outline, color: Colors.deepPurple),
+                          SizedBox(width: 12),
+                          Text(
+                            "View Profile",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                  onSelected: (value) {
+                    if (value == 'view_profile') {
+                      Get.to(() => OtherProfileScreen(), arguments: {'id': id});
+                    }
+                  },
                 ),
               ],
             ),
@@ -76,125 +130,3 @@ class ChatHeader extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-// import 'package:flutter/material.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:sandrofp/app/res/custom_style/custom_size.dart';
-
-// class CustomChatAppBar extends StatefulWidget {
-//   final String name;
-//   final String activeStatus;
-//   final String imagePath;
-//   final bool isActive;
-//   final VoidCallback actionOntap;
-//   const CustomChatAppBar({
-//     super.key,
-//     required this.name,
-//     required this.activeStatus,
-//     required this.imagePath,
-//     required this.isActive,
-//     required this.actionOntap,
-//   });
-
-//   @override
-//   State<CustomChatAppBar> createState() => _CustomChatAppBarState();
-// }
-
-// class _CustomChatAppBarState extends State<CustomChatAppBar> {
-//   @override
-//   void initState() {
-//     super.initState();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Row(
-//           crossAxisAlignment: CrossAxisAlignment.center,
-//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//           children: [
-//             Row(
-//               children: [
-//                 SizedBox(width: 8),
-//                 GestureDetector(
-//                   onTap: () {
-//                     Navigator.pop(context);
-//                   },
-//                   child: CircleAvatar(
-//                     backgroundColor: Colors.grey.shade200,
-//                     radius: 14,
-//                     child: Icon(
-//                       Icons.arrow_back_ios,
-//                       color: Colors.black,
-//                       size: 16,
-//                     ),
-//                   ),
-//                 ),
-//                 SizedBox(width: 10),
-//                 InkWell(
-//                   onTap: () {},
-//                   child: Row(
-//                     children: [
-//                       CircleAvatar(
-//                         backgroundColor: Colors.transparent,
-//                         backgroundImage: AssetImage(widget.imagePath),
-//                         radius: 24.r,
-//                       ),
-//                       widthBox5,
-//                       Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           Text(
-//                             'Sara',
-//                             style: GoogleFonts.poppins(
-//                               fontSize: 16.sp,
-//                               fontWeight: FontWeight.w600,
-//                               color: Colors.black,
-//                             ),
-//                           ),
-//                           Row(
-//                             children: [
-//                               Text(
-//                                 'Active now  ',
-//                                 style: GoogleFonts.poppins(
-//                                   fontSize: 12.sp,
-//                                   fontWeight: FontWeight.w400,
-//                                   color: Colors.black,
-//                                 ),
-//                               ),
-//                               SizedBox(width: 8),
-//                               CircleAvatar(
-//                                 radius: 4,
-//                                 backgroundColor: widget.isActive
-//                                     ? Colors.green
-//                                     : Colors.red,
-//                               ),
-//                             ],
-//                           ),
-//                         ],
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               ],
-//             ),
-//             InkWell(
-//               onTap: widget.actionOntap,
-//               child: Icon(Icons.more_vert, size: 30.h, color: Colors.black),
-//             ),
-//           ],
-//         ),
-//         heightBox10,
-        
-//       ],
-//     );
-//   }
-// }

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:sandrofp/app/modules/cart/widget/exchange_card.dart';
 import 'package:sandrofp/app/modules/exchange/views/exchange_process_screen.dart';
 import 'package:sandrofp/app/modules/settings/controller/exchange_history_controller.dart';
+import 'package:sandrofp/app/res/common_widgets/date_formatter.dart';
 
 class DeclinedHistory extends GetView<ExchangeHistoryController> {
   const DeclinedHistory({super.key});
@@ -36,6 +37,7 @@ class DeclinedHistory extends GetView<ExchangeHistoryController> {
           itemCount: controller.declinedList.length,
           itemBuilder: (context, index) {
             final item = controller.declinedList[index];
+            DateFormatter dateFormatter = DateFormatter(item.createdAt!);
             return Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: ExchangeCard(
@@ -43,7 +45,7 @@ class DeclinedHistory extends GetView<ExchangeHistoryController> {
                 exchangeName: item.exchangeWith.first.name ?? 'N/A',
                 requestsForm: item.user?.name ?? 'N/A',
                 requestsTo: item.requestTo?.name ?? 'N/A',
-                requestsDate: item.createdAt.toString(),
+                requestsDate: dateFormatter.getFullDateFormat(),
                 approvedDate: item.createdAt.toString(),
                 onTap: () {
                    Get.to(

@@ -17,6 +17,7 @@ class ProductCart extends StatelessWidget {
   final Function(int)? onQuantityChanged;
   final VoidCallback? onDelete;
   final VoidCallback? onEdit;
+  final VoidCallback? onTap;
 
   const ProductCart({
     super.key,
@@ -30,6 +31,7 @@ class ProductCart extends StatelessWidget {
     this.description,
     this.onDelete,
     this.onEdit,
+    this.onTap,
   });
 
   @override
@@ -37,184 +39,190 @@ class ProductCart extends StatelessWidget {
     return Card(
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Container(
-        height: 140,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
-          children: [
-            // Product Image
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(12),
-                bottomLeft: Radius.circular(12),
-              ),
-              child: Image.network(
-                productImage ?? '',
-                height: 138,
-                width: 100,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(
-                  color: Colors.grey[300],
-                  child: const Icon(Icons.broken_image, color: Colors.grey),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          height: 140,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            children: [
+              // Product Image
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  bottomLeft: Radius.circular(12),
+                ),
+                child: Image.network(
+                  productImage ?? '',
+                  height: 138,
+                  width: 100,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Container(
+                    color: Colors.grey[300],
+                    child: const Icon(Icons.broken_image, color: Colors.grey),
+                  ),
                 ),
               ),
-            ),
 
-            widthBox12,
+              widthBox12,
 
-            // Product Details
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Address + Distance
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Row(
+              // Product Details
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 4,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Address + Distance
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Row(
+                              children: [
+                                CrashSafeImage(
+                                  Assets.images.location.keyName,
+                                  height: 12,
+                                  width: 12,
+                                ),
+                                widthBox8,
+                                Expanded(
+                                  child: Text(
+                                    address ?? 'Unknown location',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600,
+                                      color: const Color(0xff595959),
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0xffEBF2EE),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              '${distance ?? '0'} km',
+                              style: GoogleFonts.poppins(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.greenColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      heightBox8,
+
+                      // Product Name
+                      Text(
+                        productName ?? 'Unknown Product',
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      heightBox4,
+                      Text(
+                        description ?? '',
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+
+                      heightBox8,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Price with Banana
+                          Row(
                             children: [
                               CrashSafeImage(
-                                Assets.images.location.keyName,
-                                height: 12,
-                                width: 12,
+                                Assets.images.banana.keyName,
+                                height: 16,
+                                width: 16,
                               ),
                               widthBox8,
-                              Expanded(
-                                child: Text(
-                                  address ?? 'Unknown location',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w600,
-                                    color: const Color(0xff595959),
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
+                              Text(
+                                '($productPrice)',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: const Color(0xffBFA62C),
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xffEBF2EE),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            '${distance ?? '0'} km',
-                            style: GoogleFonts.poppins(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.greenColor,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
 
-                    heightBox8,
-
-                    // Product Name
-                    Text(
-                      productName ?? 'Unknown Product',
-                      style: GoogleFonts.poppins(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    heightBox4,
-                    Text(
-                      description ?? '',
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-
-                    heightBox8,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Price with Banana
-                        Row(
-                          children: [
-                            CrashSafeImage(
-                              Assets.images.banana.keyName,
-                              height: 16,
-                              width: 16,
-                            ),
-                            widthBox8,
-                            Text(
-                              '($productPrice)',
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xffBFA62C),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        onEdit == null && onDelete == null
-                            ? widthBox10
-                            : Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                ),
-                                child: Row(
-                                  children: [
-                                    InkWell(
-                                      onTap: onEdit,
-                                      child: CircleAvatar(
-                                        radius: 13,
-                                        backgroundColor: Colors.grey.shade200,
-                                        child: Icon(
-                                          Icons.edit,
-                                          size: 17,
-                                          color: AppColors.greenColor,
+                          onEdit == null && onDelete == null
+                              ? widthBox10
+                              : Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: onEdit,
+                                        child: CircleAvatar(
+                                          radius: 13,
+                                          backgroundColor: Colors.grey.shade200,
+                                          child: Icon(
+                                            Icons.edit,
+                                            size: 17,
+                                            color: AppColors.greenColor,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    widthBox10,
-                                    InkWell(
-                                      onTap: onDelete,
-                                      child: CircleAvatar(
-                                        radius: 13,
-                                        backgroundColor: Colors.grey.shade200,
-                                        child: Icon(
-                                          Icons.delete,
-                                          size: 17,
-                                          color: Colors.red,
+                                      widthBox10,
+                                      InkWell(
+                                        onTap: onDelete,
+                                        child: CircleAvatar(
+                                          radius: 13,
+                                          backgroundColor: Colors.grey.shade200,
+                                          child: Icon(
+                                            Icons.delete,
+                                            size: 17,
+                                            color: Colors.red,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
 
-                        // Quantity Selector
-                      ],
-                    ),
-                  ],
+                          // Quantity Selector
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

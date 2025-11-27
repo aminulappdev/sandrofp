@@ -9,7 +9,6 @@ import 'package:sandrofp/app/modules/home/widget/feature_row.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/bottom_card.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/common_widgets/straight_liner.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
@@ -24,25 +23,7 @@ class ExchangeView extends GetView<ExchangeController> {
 
     return Scaffold(
       backgroundColor: const Color(0xffFBFBFD),
-      appBar: CustomAppBar(
-        title: 'Exchange',
-        leading: Row(
-          children: [
-            CircleIconWidget(
-              radius: 20,
-              iconRadius: 20,
-              color: const Color(0xffFFFFFF).withValues(alpha: 0.05),
-              imagePath: Assets.images.notification.keyName,
-              onTap: () {},
-            ),
-            widthBox10,
-            CircleAvatar(
-              radius: 20,
-              backgroundImage: AssetImage(Assets.images.onboarding01.keyName),
-            ),
-          ],
-        ),
-      ),
+      appBar: CustomAppBar(title: 'Exchange', leading: Container()),
       body: Column(
         children: [
           heightBox12,
@@ -54,7 +35,10 @@ class ExchangeView extends GetView<ExchangeController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Exchange Product
-                    _sectionHeader('Exchange Product', ctrl.changeExchangeProduct),
+                    _sectionHeader(
+                      'Exchange Product',
+                      ctrl.changeExchangeProduct,
+                    ),
                     heightBox4,
                     ProductCart(
                       productImage: ctrl.exchangeProduct.image,
@@ -64,30 +48,36 @@ class ExchangeView extends GetView<ExchangeController> {
                       address: '',
                       quantity: 1,
                       onQuantityChanged: (_) {},
-                    ), 
+                    ),
                     heightBox20,
 
                     // Exchange Icon
                     Center(
-                      child: CrashSafeImage(Assets.images.exchange.keyName, height: 50, color: AppColors.greenColor),
+                      child: CrashSafeImage(
+                        Assets.images.exchange.keyName,
+                        height: 50,
+                        color: AppColors.greenColor,
+                      ),
                     ),
                     heightBox20,
 
                     // Your Products
                     _sectionHeader('Your Product', ctrl.changeYourProduct),
                     heightBox8,
-                    ...ctrl.selectedProducts.map((p) => Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: ProductCart(
-                            productImage: p.image,
-                            productName: p.title,
-                            productPrice: p.price,
-                            description: p.description,
-                            address: '',
-                            quantity: 1,
-                            onQuantityChanged: (_) {},
-                          ),
-                        )),
+                    ...ctrl.selectedProducts.map(
+                      (p) => Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: ProductCart(
+                          productImage: p.image,
+                          productName: p.title,
+                          productPrice: p.price,
+                          description: p.description,
+                          address: '',
+                          quantity: 1,
+                          onQuantityChanged: (_) {},
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -98,56 +88,87 @@ class ExchangeView extends GetView<ExchangeController> {
           BottomCard(
             child: GetBuilder<ExchangeController>(
               builder: (ctrl) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12.0,
+                  vertical: 8.0,
+                ),
                 child: Column(
                   children: [
                     FeatureRow(
                       title: 'Exch Product Value',
-                      widget: Text('Rs. ${ctrl.exchangeProduct.price}',
-                          style: GoogleFonts.poppins(fontWeight: FontWeight.w600, color: Colors.blue)),
+                      widget: Text(
+                        'Rs. ${ctrl.exchangeProduct.price}',
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.blue,
+                        ),
+                      ),
                     ),
                     heightBox8,
                     FeatureRow(
                       title: 'Selected Total (Token)',
                       widget: Row(
                         children: [
-                          CrashSafeImage(Assets.images.banana.keyName, height: 16, width: 16),
+                          CrashSafeImage(
+                            Assets.images.banana.keyName,
+                            height: 16,
+                            width: 16,
+                          ),
                           widthBox5,
-                          Text(ctrl.selectedTotal.value.toStringAsFixed(2),
-                              style: GoogleFonts.poppins(fontWeight: FontWeight.w600, color: AppColors.yellowColor)),
+                          Text(
+                            ctrl.selectedTotal.value.toStringAsFixed(2),
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.yellowColor,
+                            ),
+                          ),
                         ],
                       ),
                     ),
                     heightBox8,
                     FeatureRow(
                       title: 'Remaining (Extra Token)',
-                      widget: Text('Rs. ${ctrl.remainingToken.value.toStringAsFixed(2)}',
-                          style: GoogleFonts.poppins(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: ctrl.remainingToken.value > 0 ? Colors.orange : Colors.red)),
+                      widget: Text(
+                        'Rs. ${ctrl.remainingToken.value.toStringAsFixed(2)}',
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: ctrl.remainingToken.value > 0
+                              ? Colors.orange
+                              : Colors.red,
+                        ),
+                      ),
                     ),
                     heightBox12,
                     const StraightLiner(),
                     heightBox10,
                     FeatureRow(
                       title: 'Total',
-                      widget: Text('Rs. ${ctrl.exchangeProduct.price}',
-                          style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w600)),
+                      widget: Text(
+                        'Rs. ${ctrl.exchangeProduct.price}',
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                     heightBox10,
 
                     // Exchange Button with Loading
-                    Obx(() => CustomElevatedButton(
-                          title: ctrl.isLoading.value ? 'Processing...' : 'Exchange',
-                          onPress: ctrl.isLoading.value
-                              ? null
-                              : () async {
-                                  await ctrl.exchangeFunction();
-                                },
-                          color: AppColors.greenColor,
-                          textColor: Colors.white,
-                        )),
+                    Obx(
+                      () => CustomElevatedButton(
+                        title: ctrl.isLoading.value
+                            ? 'Processing...'
+                            : 'Exchange',
+                        onPress: ctrl.isLoading.value
+                            ? null
+                            : () async {
+                                await ctrl.exchangeFunction();
+                              },
+                        color: AppColors.greenColor,
+                        textColor: Colors.white,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -164,8 +185,13 @@ class ExchangeView extends GetView<ExchangeController> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Text(title, style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w600)),
-         
+          Text(
+            title,
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ],
       ),
     );

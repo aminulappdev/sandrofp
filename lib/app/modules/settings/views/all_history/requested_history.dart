@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:sandrofp/app/modules/cart/widget/exchange_card.dart';
 import 'package:sandrofp/app/modules/exchange/views/exchange_process_screen.dart';
 import 'package:sandrofp/app/modules/settings/controller/exchange_history_controller.dart';
+import 'package:sandrofp/app/res/common_widgets/date_formatter.dart';
 
 class RequestedHistory extends GetView<ExchangeHistoryController> {
   const RequestedHistory({super.key});
@@ -18,7 +19,7 @@ class RequestedHistory extends GetView<ExchangeHistoryController> {
         );
       }
 
-      if (controller.approvedList.isEmpty) {
+      if (controller.requestedList.isEmpty) {
         return SizedBox(
           height: 550,
           child: const Center(
@@ -36,6 +37,7 @@ class RequestedHistory extends GetView<ExchangeHistoryController> {
           itemCount: controller.requestedList.length,
           itemBuilder: (context, index) {
             final item = controller.requestedList[index];
+            DateFormatter dateFormatter = DateFormatter(item.createdAt!);
             return Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: ExchangeCard(
@@ -43,10 +45,10 @@ class RequestedHistory extends GetView<ExchangeHistoryController> {
                 exchangeName: item.exchangeWith.first.name ?? 'N/A',
                 requestsForm: item.user?.name ?? 'N/A',
                 requestsTo: item.requestTo?.name ?? 'N/A',
-                requestsDate: item.createdAt.toString(),
+                requestsDate: dateFormatter.getFullDateFormat(),
                 approvedDate: item.createdAt.toString(),
                 onTap: () {
-                   Get.to(
+                  Get.to(
                     () => ExchangeProcessScreen(),
                     arguments: {'data': item},
                   );

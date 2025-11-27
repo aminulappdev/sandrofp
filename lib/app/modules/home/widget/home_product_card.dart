@@ -2,7 +2,6 @@ import 'package:crash_safe_image/crash_safe_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart' show Assets;
@@ -148,6 +147,7 @@ class HomeProductCard extends StatelessWidget {
                             child: Text(
                               '($discount)',
                               style: GoogleFonts.poppins(
+                                decoration: TextDecoration.lineThrough,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                                 color: Color(0xff998523),
@@ -200,35 +200,35 @@ class HomeProductCard extends StatelessWidget {
                       ],
                     ),
                     heightBox10,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            CrashSafeImage(
-                              Assets.images.location.keyName,
-                              height: 16,
-                            ),
-                            widthBox8,
-                            SizedBox(
-                              width: 160,
-                              child: Text(
-                                maxLines: 2,
-                                address ?? '',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xff595959),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              CrashSafeImage(
+                                Assets.images.location.keyName,
+                                height: 16,
+                              ),
+                              widthBox8,
+                              SizedBox(
+                                width: 140,
+                                child: Text(
+                                  maxLines: 2,
+                                  address ?? '',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xff595959),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        InkWell(
-                          onTap: () {},
-                          child: Container(
+                            ],
+                          ),
+                          Container(
                             height: 30,
-                            width: 95,
+                            width: 80,
                             decoration: BoxDecoration(
                               color: Color(0xffEBF2EE),
                               borderRadius: BorderRadius.circular(20),
@@ -244,8 +244,8 @@ class HomeProductCard extends StatelessWidget {
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     heightBox8,
                     Align(
@@ -291,25 +291,25 @@ class HomeProductCard extends StatelessWidget {
                           ),
                         ),
 
-                        Row(
-                          children: [
-                            CircleIconWidget(
-                              imagePath: Assets.images.share.keyName,
-                              onTap: shareTap ?? () {},
-                              radius: 20,
-                              iconRadius: 16,
-                              color: Color(0xffEBF2EE),
-                            ),
-                            widthBox8,
-                            CircleIconWidget(
-                              iconRadius: 20,
-                              imagePath: Assets.images.heart.keyName,
-                              onTap: reactTap ?? () {},
-                              radius: 20,
-                              color: Color(0xffFFE6E6),
-                            ),
-                          ],
-                        ),
+                        // Row(
+                        //   children: [
+                        //     CircleIconWidget(
+                        //       imagePath: Assets.images.share.keyName,
+                        //       onTap: shareTap ?? () {},
+                        //       radius: 20,
+                        //       iconRadius: 16,
+                        //       color: Color(0xffEBF2EE),
+                        //     ),
+                        //     widthBox8,
+                        //     CircleIconWidget(
+                        //       iconRadius: 20,
+                        //       imagePath: Assets.images.heart.keyName,
+                        //       onTap: reactTap ?? () {},
+                        //       radius: 20,
+                        //       color: Color(0xffFFE6E6),
+                        //     ),
+                        //   ],
+                        // ),
                       ],
                     ),
                   ],

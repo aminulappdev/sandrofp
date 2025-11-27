@@ -35,42 +35,44 @@ class EditProfileScreen extends GetView<EditProfileController> {
 
               // Profile Picture with Camera Button
               Center(
-                child: Obx(() => Stack(
-                      children: [
-                        CircleAvatar(
-                          radius: 80,
-                          backgroundColor: const Color(0xffF3F3F5),
+                child: Obx(
+                  () => Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 80,
+                        backgroundColor: const Color(0xffF3F3F5),
+                        child: CircleAvatar(
+                          radius: 76,
+                          backgroundColor: Colors.white,
                           child: CircleAvatar(
-                            radius: 76,
-                            backgroundColor: Colors.white,
-                            child: CircleAvatar(
-                              radius: 72,
-                              backgroundImage: _getImageProvider(),
+                            radius: 72,
+                            backgroundImage: _getImageProvider(),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: GestureDetector(
+                          onTap: controller
+                              .pickImage, // তোমার ImagePickerHelper কল হচ্ছে
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColors.greenColor,
+                            ),
+                            child: const Icon(
+                              Icons.camera_alt,
+                              color: Colors.white,
+                              size: 22,
                             ),
                           ),
                         ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: GestureDetector(
-                            onTap: controller.pickImage, // তোমার ImagePickerHelper কল হচ্ছে
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColors.greenColor,
-                               
-                              ),
-                              child: const Icon(
-                                Icons.camera_alt,
-                                color: Colors.white,
-                                size: 22,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )),
+                      ),
+                    ],
+                  ),
+                ),
               ),
 
               heightBox40,
@@ -80,7 +82,8 @@ class EditProfileScreen extends GetView<EditProfileController> {
               heightBox8,
               TextFormField(
                 controller: controller.usernameCtrl,
-                validator: (value) => value!.trim().isEmpty ? 'Enter username' : null,
+                validator: (value) =>
+                    value!.trim().isEmpty ? 'Enter username' : null,
                 decoration: const InputDecoration(
                   hintText: 'Enter your username',
                   border: OutlineInputBorder(),
@@ -95,7 +98,8 @@ class EditProfileScreen extends GetView<EditProfileController> {
               TextFormField(
                 controller: controller.emailCtrl,
                 keyboardType: TextInputType.emailAddress,
-                validator: (value) => value!.trim().isEmpty ? 'Enter email' : null,
+                validator: (value) =>
+                    value!.trim().isEmpty ? 'Enter email' : null,
                 decoration: const InputDecoration(
                   hintText: 'Enter your email',
                   border: OutlineInputBorder(),
@@ -110,7 +114,8 @@ class EditProfileScreen extends GetView<EditProfileController> {
               TextFormField(
                 controller: controller.phoneCtrl,
                 keyboardType: TextInputType.phone,
-                validator: (value) => value!.trim().isEmpty ? 'Enter phone' : null,
+                validator: (value) =>
+                    value!.trim().isEmpty ? 'Enter phone' : null,
                 decoration: const InputDecoration(
                   hintText: 'Enter your phone number',
                   border: OutlineInputBorder(),
@@ -134,11 +139,15 @@ class EditProfileScreen extends GetView<EditProfileController> {
               heightBox40,
 
               // Save Button
-              Obx(() => CustomElevatedButton(
-                    title: 'Save Changes',
-                  
-                    onPress: controller.isLoading.value ? null : controller.editProfile,
-                  )),
+              Obx(
+                () => CustomElevatedButton(
+                  title: 'Save Changes',
+
+                  onPress: controller.isLoading.value
+                      ? null
+                      : controller.editProfile,
+                ),
+              ),
 
               heightBox30,
             ],
@@ -155,7 +164,7 @@ class EditProfileScreen extends GetView<EditProfileController> {
     } else if (controller.networkImageUrl.value.isNotEmpty) {
       return NetworkImage(controller.networkImageUrl.value);
     } else {
-      return AssetImage(Assets.images.onboarding01.keyName);
+      return AssetImage(Assets.images.profile.path);
     }
   }
 }

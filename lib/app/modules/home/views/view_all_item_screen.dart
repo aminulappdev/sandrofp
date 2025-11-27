@@ -5,9 +5,6 @@ import 'package:sandrofp/app/modules/home/controller/home_controller.dart';
 import 'package:sandrofp/app/modules/home/controller/view_all_item_controller.dart';
 import 'package:sandrofp/app/modules/home/widget/home_product_card.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
-import 'package:sandrofp/app/res/custom_style/custom_size.dart';
-import 'package:sandrofp/gen/assets.gen.dart';
 
 class ViewAllItemScreen extends GetView<ViewAllItemController> {
   const ViewAllItemScreen({super.key});
@@ -17,21 +14,7 @@ class ViewAllItemScreen extends GetView<ViewAllItemController> {
     return Scaffold(
       appBar: CustomAppBar(
         title: controller.title ?? 'All Items',
-        leading: Row(
-          children: [
-            CircleIconWidget(
-              radius: 20,
-              iconRadius: 20,
-              color: const Color(0xffFFFFFF).withOpacity(0.05),
-              imagePath: Assets.images.notification.keyName,
-              onTap: () {},
-            ),
-            widthBox10,
-            CircleAvatar(
-              backgroundImage: AssetImage(Assets.images.onboarding01.keyName),
-            ),
-          ],
-        ),
+        leading: Container(),
       ),
       body: RefreshIndicator(
         onRefresh: controller.refresh, // <-- এটাই Pull to Refresh
@@ -41,6 +24,22 @@ class ViewAllItemScreen extends GetView<ViewAllItemController> {
 
           if (allProductController.isLoading.value) {
             return const Center(child: CircularProgressIndicator());
+          }
+
+          if (allProductController.allProductItems.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.inbox_outlined, size: 80, color: Colors.grey),
+                  const SizedBox(height: 16),
+                  Text(
+                    'No products found',
+                    style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                  ),
+                ],
+              ),
+            );
           }
 
           final items = allProductController.allProductItems;
@@ -65,18 +64,21 @@ class ViewAllItemScreen extends GetView<ViewAllItemController> {
             itemCount: items.length,
             itemBuilder: (context, index) {
               final product = items[index];
+              var updatePrice = product.price - product.discount!;
               return Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: HomeProductCard(
                   onTap: () {
                     Get.find<HomeController>().goToProductDetails(product);
                   },
-                  imagePath: product.images.isNotEmpty ? product.images.first.url : '',
-                  price: '৳${product.price}',
+                  imagePath: product.images.isNotEmpty
+                      ? product.images.first.url
+                      : '',
+                  price: '\$$updatePrice',
                   ownerName: product.name,
                   description: product.descriptions,
                   address: product.author?.name ?? 'Unknown',
-                  discount: '${product.discount}% OFF',
+                  discount: '${product.discount}',
                   distance: '2.5 km',
                   rating: '4.5',
                   profile: product.author?.profile,

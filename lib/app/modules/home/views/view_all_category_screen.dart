@@ -6,9 +6,7 @@ import 'package:sandrofp/app/modules/home/controller/category_controller.dart';
 import 'package:sandrofp/app/modules/home/views/view_all_item_screen.dart';
 import 'package:sandrofp/app/modules/home/widget/category_image.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
-import 'package:sandrofp/gen/assets.gen.dart';
 
 class ViewAllCategoryScreen extends GetView<CategoryController> {
   const ViewAllCategoryScreen({super.key});
@@ -16,24 +14,7 @@ class ViewAllCategoryScreen extends GetView<CategoryController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Category',
-        leading: Row(
-          children: [
-            CircleIconWidget(
-              radius: 20,
-              iconRadius: 20,
-              color: const Color(0xffFFFFFF).withValues(alpha: 0.05),
-              imagePath: Assets.images.notification.keyName,
-              onTap: () {},
-            ),
-            widthBox10,
-            CircleAvatar(
-              backgroundImage: AssetImage(Assets.images.onboarding01.keyName),
-            ),
-          ],
-        ),
-      ),
+      appBar: CustomAppBar(title: 'Category', leading: Container()),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
@@ -51,6 +32,13 @@ class ViewAllCategoryScreen extends GetView<CategoryController> {
             Obx(() {
               if (controller.isLoading.value) {
                 return const Center(child: CircularProgressIndicator());
+              } else if (controller.categoryData?.data.isEmpty ?? false) {
+                return const Center(
+                  child: Text(
+                    "No category yet",
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                );
               } else {
                 return Expanded(
                   child: ListView.builder(

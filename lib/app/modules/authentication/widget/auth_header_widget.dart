@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
-import 'package:sandrofp/app/res/custom_style/custom_size.dart' ;
+import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
 class AuthHeaderWidget extends StatelessWidget {
   final String title;
   final String subtitle;
+  final bool? showBackButton;
 
   const AuthHeaderWidget({
     super.key,
     required this.title,
     required this.subtitle,
+    this.showBackButton = true,
   });
 
   @override
@@ -21,13 +23,15 @@ class AuthHeaderWidget extends StatelessWidget {
       children: [
         Row(
           children: [
-            CircleIconWidget(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              imagePath: Assets.images.arrowBack.path,
-            ),
-            widthBox10,
+            showBackButton == true
+                ? CircleIconWidget(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    imagePath: Assets.images.arrowBack.path,
+                  )
+                : const SizedBox.shrink(),
+            showBackButton == true ? widthBox10 : widthBox4,
             Text(
               title,
               style: GoogleFonts.poppins(

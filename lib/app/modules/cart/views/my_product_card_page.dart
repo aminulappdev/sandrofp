@@ -4,15 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/cart/widget/product_cart.dart';
 import 'package:sandrofp/app/modules/product/controller/delete_product_controller.dart';
 import 'package:sandrofp/app/modules/product/views/edit_product_screen.dart';
+import 'package:sandrofp/app/modules/product/views/product_details_screen.dart';
 import 'package:sandrofp/app/modules/product/views/upload_product_info_screen.dart';
 import 'package:sandrofp/app/modules/profile/controllers/my_product_controller.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_dialog.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
-import 'package:sandrofp/gen/assets.gen.dart';
 
 class MyProductCardScreen extends StatefulWidget {
   const MyProductCardScreen({super.key});
@@ -31,25 +30,7 @@ class _MyProductCardScreenState extends State<MyProductCardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Product Card',
-        leading: Row(
-          children: [
-            CircleIconWidget(
-              radius: 20,
-              iconRadius: 20,
-              color: const Color(0xffFFFFFF).withValues(alpha: 0.05),
-              imagePath: Assets.images.notification.keyName,
-              onTap: () {},
-            ),
-            widthBox10,
-            CircleAvatar(
-              radius: 20,
-              backgroundImage: AssetImage(Assets.images.onboarding01.keyName),
-            ),
-          ],
-        ),
-      ),
+      appBar: CustomAppBar(title: 'Product Card', leading: Container()),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -110,6 +91,8 @@ class _MyProductCardScreenState extends State<MyProductCardScreen> {
             child: Obx(() {
               if (myProductController.isLoading.value) {
                 return const Center(child: CircularProgressIndicator());
+              } else if (myProductController.allProductItems.isEmpty) {
+                return const Center(child: Text("No products available"));
               } else {
                 return ListView.builder(
                   padding: const EdgeInsets.symmetric(
@@ -122,6 +105,12 @@ class _MyProductCardScreenState extends State<MyProductCardScreen> {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 6.0),
                       child: ProductCart(
+                        onTap: () {
+                          Get.to(
+                            () => ProductDetailsScreen(),
+                            arguments: {'data': product},
+                          );
+                        },
                         onDelete: () {
                           _showLogoutDialog(
                             context,

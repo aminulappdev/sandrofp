@@ -1,354 +1,192 @@
+// app/modules/home/views/filter_screen.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sandrofp/app/modules/home/controller/category_controller.dart';
 import 'package:sandrofp/app/modules/home/controller/filter_controller.dart';
-import 'package:sandrofp/app/res/app_colors/app_colors.dart';
-import 'package:sandrofp/app/res/common_widgets/category_widget.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
-import 'package:sandrofp/app/res/common_widgets/straight_liner.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
-import 'package:sandrofp/gen/assets.gen.dart';
-import 'package:syncfusion_flutter_sliders/sliders.dart';
 
-class FilterScreen extends GetView<FilterController> {
+class FilterScreen extends StatelessWidget {
   const FilterScreen({super.key});
+
+  final List<String> sizes = const ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  final List<String> colors = const [
+    'Black', 'White', 'Red', 'Blue', 'Green', 'Yellow', 'Gray', 'Pink',
+  ];
 
   @override
   Widget build(BuildContext context) {
-    // Initialize controller
-    Get.put(FilterController());
+    final filterController = Get.put(FilterController());
+    final categoryController = Get.find<CategoryController>();
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              heightBox40,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      appBar: AppBar(
+        title: Text("Filter", style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+        centerTitle: false,
+        actions: [
+          TextButton(
+            onPressed: () => filterController.clearFilters(),
+            child: const Text("Clear", style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600)),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+            // ==================== CATEGORY SECTION ====================
+            Text("Category", style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600)),
+            heightBox10,
+
+            Obx(() {
+              final categories = categoryController.categoryData?.data ?? [];
+              final selectedCatId = filterController.selectedCategoryId.value;
+
+              // Debug: দেখি ক্যাটাগরি লোড হয়েছে কিনা
+              if (categories.isEmpty) {
+                return const Text("No categories found");
+              }
+
+              return Wrap(
+                spacing: 10,
+                runSpacing: 12,
                 children: [
-                  Text(
-                    'Filter',
-                    style: GoogleFonts.poppins(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
+                  // All Categories
+                  _buildFilterChip(
+                    label: "All",
+                    isSelected: selectedCatId.isEmpty,
+                    onTap: () {
+                      filterController.selectedCategoryId.value = '';
+                      debugPrint("Selected: All Categories");
+                    },
                   ),
-                  CircleIconWidget(
-                    imagePath: Assets.images.cross.path,
-                    onTap: controller.closeFilter,
-                  ),
+
+                  // Dynamic Categories from API
+                  ...categories.map((cat) {
+                    final String catId = cat.id.toString();  // int হলেও String হয়ে যাবে
+                    final String catName = cat.name ?? "No Name";
+
+                    return _buildFilterChip(
+                      label: catName,
+                      isSelected: selectedCatId == catId,
+                      onTap: () {
+                        filterController.selectedCategoryId.value = catId;
+                        debugPrint("Selected Category → ID: $catId | Name: $catName");
+                      },
+                    );
+                  }).toList(),
                 ],
-              ),
-              heightBox4,
-              Text(
-                'Please choose categories so that app can suggests you to find er appropriate products',
-                style: GoogleFonts.poppins(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                ),
-              ),
-              heightBox20,
-              Text(
-                'Location',
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                ),
-              ),
-              heightBox8,
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Search',
-                  suffixIcon: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(
-                      'Change',
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.greenColor,
-                        fontSize: 12,
-                      ),
-                    ),
+              );
+            }),
+            heightBox30,
+
+            // ==================== COLOR SECTION ====================
+            Text("Color", style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600)),
+            heightBox10,
+
+            Obx(() {
+              final selectedColor = filterController.selectedColor.value;
+
+              return Wrap(
+                spacing: 12,
+                runSpacing: 12,
+                children: [
+                  _buildFilterChip(
+                    label: "All",
+                    isSelected: selectedColor.isEmpty,
+                    onTap: () {
+                      filterController.selectedColor.value = '';
+                      debugPrint("Selected Color: All");
+                    },
                   ),
-                ),
-              ),
-              heightBox40,
+                  ...colors.map((color) => _buildFilterChip(
+                    label: color,
+                    isSelected: selectedColor == color,
+                    onTap: () {
+                      filterController.selectedColor.value = color;
+                      debugPrint("Selected Color: $color");
+                    },
+                  )),
+                ],
+              );
+            }),
+            heightBox30,
 
-              // Dynamic distance text
-              Obx(
-                () => Text(
-                  '${controller.sliderValue.value.toStringAsFixed(1)}km',
-                  style: GoogleFonts.poppins(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
+            // ==================== SIZE SECTION ====================
+            Text("Size", style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600)),
+            heightBox10,
+
+            Obx(() {
+              final selectedSize = filterController.selectedSize.value;
+
+              return Wrap(
+                spacing: 12,
+                runSpacing: 12,
+                children: [
+                  _buildFilterChip(
+                    label: "All",
+                    isSelected: selectedSize.isEmpty,
+                    onTap: () {
+                      filterController.selectedSize.value = '';
+                      debugPrint("Selected Size: All");
+                    },
                   ),
-                ),
-              ),
+                  ...sizes.map((size) => _buildFilterChip(
+                    label: size,
+                    isSelected: selectedSize == size,
+                    onTap: () {
+                      filterController.selectedSize.value = size;
+                      debugPrint("Selected Size: $size");
+                    },
+                  )),
+                ],
+              );
+            }),
+            heightBox40,
 
-              Obx(
-                () => SfSlider(
-                  activeColor: AppColors.greenColor,
-                  min: 0.0,
-                  max: 100.0,
-                  value: controller.sliderValue.value,
-                  interval: 20,
-                  showTicks: false,
-                  showLabels: false,
-                  enableTooltip: true,
-                  minorTicksPerInterval: 1,
-                  onChanged: (dynamic value) {
-                    controller.updateSlider(value);
-                  },
-                ),
-              ),
+            // ==================== APPLY BUTTON ====================
+            CustomElevatedButton(
+              title: "Apply Filter",
+              onPress: () {
+                filterController.applyFilter();
+              },
+            ),
+            heightBox20,
+          ],
+        ),
+      ),
+    );
+  }
 
-              heightBox20,
-              Text(
-                'Categories',
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                ),
-              ),
-              heightBox8,
-              Obx(
-                () => Row(
-                  children: [
-                    CategoryWidget(
-                      onTap: () => controller.selectCategory(0),
-                      label: 'All',
-                      bgColor: controller.selectedCategoryIndex.value == 0
-                          ? Colors.black
-                          : null,
-                      textColor: controller.selectedCategoryIndex.value == 0
-                          ? Colors.white
-                          : null,
-                    ),
-                    widthBox10,
-                    CategoryWidget(
-                      onTap: () => controller.selectCategory(1),
-                      label: 'Furniture',
-                      bgColor: controller.selectedCategoryIndex.value == 1
-                          ? Colors.black
-                          : null,
-                      textColor: controller.selectedCategoryIndex.value == 1
-                          ? Colors.white
-                          : null,
-                    ),
-                    widthBox10,
-                    CategoryWidget(
-                      onTap: () => controller.selectCategory(2),
-                      label: 'Clothing',
-                      bgColor: controller.selectedCategoryIndex.value == 2
-                          ? Colors.black
-                          : null,
-                      textColor: controller.selectedCategoryIndex.value == 2
-                          ? Colors.white
-                          : null,
-                    ),
-                  ],
-                ),
-              ),
-
-              heightBox20,
-              StraightLiner(),
-              heightBox20,
-
-              Text(
-                'Collection Type',
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                ),
-              ),
-              heightBox8,
-              Obx(
-                () => Row(
-                  children: [
-                    CategoryWidget(
-                      onTap: () => controller.selectCollectionType(0),
-                      label: 'All',
-                      bgColor: controller.selectedCollectionTypeIndex.value == 0
-                          ? Colors.black
-                          : null,
-                      textColor:
-                          controller.selectedCollectionTypeIndex.value == 0
-                          ? Colors.white
-                          : null,
-                    ),
-                    widthBox10,
-                    CategoryWidget(
-                      onTap: () => controller.selectCollectionType(1),
-                      label: 'Men',
-                      bgColor: controller.selectedCollectionTypeIndex.value == 1
-                          ? Colors.black
-                          : null,
-                      textColor:
-                          controller.selectedCollectionTypeIndex.value == 1
-                          ? Colors.white
-                          : null,
-                    ),
-                    widthBox10,
-                    CategoryWidget(
-                      onTap: () => controller.selectCollectionType(2),
-                      label: 'Women',
-                      bgColor: controller.selectedCollectionTypeIndex.value == 2
-                          ? Colors.black
-                          : null,
-                      textColor:
-                          controller.selectedCollectionTypeIndex.value == 2
-                          ? Colors.white
-                          : null,
-                    ),
-                    widthBox10,
-                    CategoryWidget(
-                      onTap: () => controller.selectCollectionType(3),
-                      label: 'Other',
-                      bgColor: controller.selectedCollectionTypeIndex.value == 3
-                          ? Colors.black
-                          : null,
-                      textColor:
-                          controller.selectedCollectionTypeIndex.value == 3
-                          ? Colors.white
-                          : null,
-                    ),
-                  ],
-                ),
-              ),
-
-              heightBox20,
-              StraightLiner(),
-              heightBox20,
-
-              Text(
-                'Collection',
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                ),
-              ),
-              heightBox8,
-              Obx(
-                () => Row(
-                  children: [
-                    CategoryWidget(
-                      onTap: () => controller.selectCollection(0),
-                      label: 'All',
-                      bgColor: controller.selectedCollectionIndex.value == 0
-                          ? Colors.black
-                          : null,
-                      textColor: controller.selectedCollectionIndex.value == 0
-                          ? Colors.white
-                          : null,
-                    ),
-                    widthBox10,
-                    CategoryWidget(
-                      onTap: () => controller.selectCollection(1),
-                      label: 'Furniture',
-                      bgColor: controller.selectedCollectionIndex.value == 1
-                          ? Colors.black
-                          : null,
-                      textColor: controller.selectedCollectionIndex.value == 1
-                          ? Colors.white
-                          : null,
-                    ),
-                    widthBox10,
-                    CategoryWidget(
-                      onTap: () => controller.selectCollection(2),
-                      label: 'Clothing',
-                      bgColor: controller.selectedCollectionIndex.value == 2
-                          ? Colors.black
-                          : null,
-                      textColor: controller.selectedCollectionIndex.value == 2
-                          ? Colors.white
-                          : null,
-                    ),
-                  ],
-                ),
-              ),
-
-              heightBox20,
-              StraightLiner(),
-              heightBox20,
-
-              Text(
-                'Brand',
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                ),
-              ),
-              heightBox8,
-              Obx(
-                () => Row(
-                  children: [
-                    CategoryWidget(
-                      onTap: () => controller.selectBrand(0),
-                      label: 'All',
-                      bgColor: controller.selectedBrandIndex.value == 0
-                          ? Colors.black
-                          : null,
-                      textColor: controller.selectedBrandIndex.value == 0
-                          ? Colors.white
-                          : null,
-                    ),
-                    widthBox10,
-                    CategoryWidget(
-                      onTap: () => controller.selectBrand(1),
-                      label: 'Men',
-                      bgColor: controller.selectedBrandIndex.value == 1
-                          ? Colors.black
-                          : null,
-                      textColor: controller.selectedBrandIndex.value == 1
-                          ? Colors.white
-                          : null,
-                    ),
-                    widthBox10,
-                    CategoryWidget(
-                      onTap: () => controller.selectBrand(2),
-                      label: 'Women',
-                      bgColor: controller.selectedBrandIndex.value == 2
-                          ? Colors.black
-                          : null,
-                      textColor: controller.selectedBrandIndex.value == 2
-                          ? Colors.white
-                          : null,
-                    ),
-                    widthBox10,
-                    CategoryWidget(
-                      onTap: () => controller.selectBrand(3),
-                      label: 'Other',
-                      bgColor: controller.selectedBrandIndex.value == 3
-                          ? Colors.black
-                          : null,
-                      textColor: controller.selectedBrandIndex.value == 3
-                          ? Colors.white
-                          : null,
-                    ),
-                  ],
-                ),
-              ),
-
-              heightBox40,
-              CustomElevatedButton(
-                title: 'Filter',
-                onPress: controller.applyFilter,
-              ),
-            ],
+  // Reusable Chip
+  Widget _buildFilterChip({
+    required String label,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Chip(
+        label: Text(
+          label,
+          style: TextStyle(
+            color: isSelected ? Colors.white : Colors.black87,
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
           ),
         ),
+        backgroundColor: isSelected ? Colors.black : Colors.grey[200],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+          side: BorderSide(
+            color: isSelected ? Colors.black : Colors.grey.shade400,
+            width: 1.5,
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       ),
     );
   }

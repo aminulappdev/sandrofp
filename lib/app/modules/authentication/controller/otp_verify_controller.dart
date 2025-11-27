@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:sandrofp/app/modules/authentication/views/reset_password_screen.dart';
 import 'package:sandrofp/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
 import 'package:sandrofp/app/services/network_caller/custom.dart';
@@ -111,8 +112,13 @@ class OtpVerifyController extends GetxController {
       );
 
       if (resp.isSuccess) {
-        showSuccess('Verified!');
-        Get.offAll(() => SignInScreen());
+        // showSuccess('Verified!');
+        isVerify
+            ? Get.offAll(() => SignInScreen())
+            : Get.to(
+                () => ResetPasswordScreen(),
+                arguments: {'email': email, 'token': token},
+              );
       } else {
         showError(resp.errorMessage);
       }
@@ -124,7 +130,6 @@ class OtpVerifyController extends GetxController {
   @override
   void onClose() {
     _timer?.cancel();
-    pinCtrl.dispose();
     super.onClose();
   }
 }

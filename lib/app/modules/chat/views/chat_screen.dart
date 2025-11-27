@@ -1,4 +1,4 @@
-// ChatListScreen.dart (পুরোপুরি আগের UI, শুধু ডেটা socketFriendList থেকে নেওয়া হচ্ছে)
+// ChatListScreen.dart (ফ্রন্টএন্ড সার্চ সহ – UI একদম আগের মতো)
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,17 +24,48 @@ class _ChatListScreenState extends State<ChatListScreen> {
   final SocketService socketService = Get.find<SocketService>();
   final FriendController friendController = Get.put(FriendController());
 
+  // সার্চ কন্ট্রোলার ও ফিল্টার করা লিস্ট
+  final TextEditingController _searchController = TextEditingController();
+  List<Map<String, dynamic>> _filteredList = [];
+
   @override
   void initState() {
     super.initState();
+
     if (friendController.friendList.isEmpty) {
       friendController.getAllFriends();
     }
 
-    // Real-time update
+    // রিয়েল-টাইম আপডেট
     socketService.sokect.on('updatedChats', (data) {
-      friendController.getAllFriends(); // বা পরে অপটিমাইজ করতে পারো
+      friendController.getAllFriends(); // পরে অপটিমাইজ করা যাবে
     });
+
+    // সার্চ টেক্সট চেঞ্জ হলে ফিল্টার করা
+    _searchController.addListener(_performSearch);
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_performSearch);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _performSearch() {
+    final query = _searchController.text.trim().toLowerCase();
+    final originalList = socketService.socketFriendList;
+
+    if (query.isEmpty) {
+      _filteredList = originalList;
+    } else {
+      _filteredList = originalList.where((friend) {
+        final name = (friend['name']?.toString() ?? '').toLowerCase();
+        return name.contains(query);
+      }).toList();
+    }
+
+    setState(() {}); // UI রিফ্রেশ
   }
 
   String _getTime(String? iso) {
@@ -55,9 +86,10 @@ class _ChatListScreenState extends State<ChatListScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ChatListHeader(),
+              ChatListHeader(searchController: _searchController), // পাস করলাম
               heightBox10,
-              // Chat List – পুরোপুরি আগের ডিজাইন
+
+              // Chat List
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
@@ -70,20 +102,25 @@ class _ChatListScreenState extends State<ChatListScreen> {
                           child: Center(
                             child: LoadingAnimationWidget.staggeredDotsWave(
                               color: Colors.black,
-                              size: 50,
+                              size: 26,
                             ),
                           ),
                         );
                       }
 
-                      final list = socketService.socketFriendList;
+                      // যদি সার্চ না থাকে তাহলে অরিজিনাল লিস্ট, থাকলে ফিল্টার করা লিস্ট
+                      final displayList = _searchController.text.isEmpty
+                          ? socketService.socketFriendList
+                          : _filteredList;
 
-                      if (list.isEmpty) {
+                      if (displayList.isEmpty) {
                         return SizedBox(
                           height: 400.h,
                           child: Center(
                             child: Text(
-                              "No chats yet",
+                              _searchController.text.isEmpty
+                                  ? "No chats yet"
+                                  : "No chat found",
                               style: GoogleFonts.poppins(
                                 fontSize: 16.sp,
                                 color: Colors.grey,
@@ -97,9 +134,9 @@ class _ChatListScreenState extends State<ChatListScreen> {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         padding: EdgeInsets.zero,
-                        itemCount: list.length,
+                        itemCount: displayList.length,
                         itemBuilder: (context, index) {
-                          final friend = list[index];
+                          final friend = displayList[index];
 
                           final name = friend['name']?.toString() ?? 'Unknown';
                           final profileImage =
@@ -138,7 +175,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      // Profile Picture – আগের মতোই ৩ লেয়ার সার্কেল
+                                      // Profile Picture
                                       CircleAvatar(
                                         backgroundColor: Colors.blue,
                                         radius: 24.r,
@@ -162,7 +199,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                       ),
                                       const SizedBox(width: 8),
 
-                                      // Right Side – নাম, মেসেজ, টাইম, ব্যাজ – সব আগের মতো
+                                      // Right Side
                                       Expanded(
                                         child: Column(
                                           crossAxisAlignment:
@@ -195,7 +232,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                                 ),
                                               ],
                                             ),
-
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -239,7 +275,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                                   ),
                                               ],
                                             ),
-
                                             heightBox12,
                                             Container(
                                               height: 1,

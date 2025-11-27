@@ -12,7 +12,7 @@ class Urls {
   static const String googleAuthUrl = '$_baseUrl/auth/google-login';
   static const String otpVerifyUrl = '$_baseUrl/otp/verify-otp';
   static const String resendUrl = '$_baseUrl/otp/resend-otp';
-  static const String forgetPasswordUrl = '$_baseUrl/auth/forgot-password'; 
+  static const String forgetPasswordUrl = '$_baseUrl/auth/forgot-password';
   static const String resetPasswordUrl = '$_baseUrl/auth/reset-password';
   static const String changePasswordUrl = '$_baseUrl/auth/change-password';
 
@@ -24,36 +24,38 @@ class Urls {
   static const String contentUrl = '$_baseUrl/contents';
   static const String myFeedbackUrl = '$_baseUrl/reviews';
   static const String notificationUrl = '$_baseUrl/notifications';
-
+  static String otherProfile(String id) {
+    return '$_baseUrl/users/$id';
+  }
 
   // =========================================== Home ====================================== //
   static String categoryUrl = '$_baseUrl/categories';
 
-   // =========================================== Product ====================================== //
+  // =========================================== Product ====================================== //
   static String productUrl = '$_baseUrl/products';
   static String myProductUrl = '$_baseUrl/products/my-products';
   static String exchangeUrl = '$_baseUrl/exchanges';
+  static String paymentsUrl = '$_baseUrl/payments/checkout';
 
   // =========================================== Product ====================================== //
-  
+
   static String myExchangeUrl = '$_baseUrl/exchanges/my-requests';
   static String feedbackUrl = '$_baseUrl/reviews';
 
-   // =========================================== Chat Block =========================================== //
+  // =========================================== Chat Block =========================================== //
   static const String allFriendsChatnUrl = '$_baseUrl/chats/my-chat-list';
   static const String lastGrappedUrl = '$_baseUrl/assets/last-grabbed';
   static const String createChatUrl = '$_baseUrl/chats';
   static const String imageDecodeUrl = '$_baseUrl/uploads/single';
   static const String messageSeenUrl = '$_baseUrl/upload-files';
 
-  static String messagesById(String id) { 
+  static String messagesById(String id) {
     return '$_baseUrl/messages/get-by-recovered/$id';
   }
 
-   static String messagesSeenById(String id) {
+  static String messagesSeenById(String id) {
     return '$_baseUrl/messages/seen/$id';
   }
-
 
   static String grabbedById(String id) {
     return '$_baseUrl/assets/$id/grab';

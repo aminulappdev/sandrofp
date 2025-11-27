@@ -29,21 +29,7 @@ class ExchangeProcessScreen extends GetView<ExchangeProcessController> {
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Exchange Process',
-        leading: Row(
-          children: [
-            CircleIconWidget(
-              radius: 20,
-              iconRadius: 20,
-              color: const Color(0xffFFFFFF).withValues(alpha: 0.05),
-              imagePath: Assets.images.notification.keyName,
-              onTap: () {},
-            ),
-            widthBox10,
-            CircleAvatar(
-              backgroundImage: AssetImage(Assets.images.onboarding01.keyName),
-            ),
-          ],
-        ),
+        leading: Container()
       ),
       body: SingleChildScrollView(
         child: Column(

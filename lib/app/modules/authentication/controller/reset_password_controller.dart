@@ -66,7 +66,7 @@ class ResetPasswordController extends GetxController {
       );
 
       if (response.isSuccess) {
-        showSuccess('Password reset successfully!');
+        // showSuccess('Password reset successfully!');
         Get.offAll(() => SignInScreen());
       } else {
         showError(response.errorMessage);

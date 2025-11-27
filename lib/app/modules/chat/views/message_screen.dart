@@ -10,6 +10,8 @@ import 'package:sandrofp/app/modules/chat/controller/image_decode_controller.dar
 import 'package:sandrofp/app/modules/chat/controller/message_controller.dart';
 import 'package:sandrofp/app/modules/chat/widgets/chatting_header.dart';
 import 'package:sandrofp/app/modules/chat/widgets/message_input_field.dart';
+import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
+import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/app/services/socket/socket_service.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -191,6 +193,7 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70.h),
         child: ChatHeader(
+          id: widget.receiverId,
           name: widget.receiverName,
           image: widget.receiverImageUrl,
           isOnline: true,
@@ -198,6 +201,7 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: Column(
         children: [
+          heightBox12,
           Expanded(
             child: Obx(() {
               final messages = socketService.messageList
@@ -294,16 +298,72 @@ class _ChatScreenState extends State<ChatScreen> {
                               ),
                             ),
 
+                          if (messageCtrl.messageList[index].exchanges !=
+                              null) ...{
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  width: 80.w,
+                                  height: 30.w,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    color: Colors.white,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      'Yes',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 12.sp,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                SizedBox(width: 10.w),
+                                Container(
+                                  width: 80.w,
+                                  height: 30.w,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    color: Colors.red,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      'No',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 12.sp,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          },
+
                           // Text
                           if (msg['text']?.toString().isNotEmpty == true)
-                            Text(
-                              msg['text'],
-                              style: GoogleFonts.poppins(
-                                fontSize: 15.5.sp,
-                                color: isMe ? Colors.white : Colors.black87,
-                              ),
-                            ),
-
+                            messageCtrl.messageList[index].exchanges == null
+                                ? Text(
+                                    msg['text'],
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 15.5.sp,
+                                      color: isMe
+                                          ? Colors.white
+                                          : Colors.black87,
+                                    ),
+                                  )
+                                : Text(
+                                    '',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 15.5.sp,
+                                      color: isMe
+                                          ? Colors.white
+                                          : Colors.black87,
+                                    ),
+                                  ),
                           SizedBox(height: 4.h),
                           Row(
                             mainAxisSize: MainAxisSize.min,

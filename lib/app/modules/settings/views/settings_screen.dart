@@ -40,7 +40,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Profile',
+        title: 'Settings',
         leading: Container(),
         isBack: false,
       ),
@@ -142,17 +142,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       );
                     },
                   ),
-                  heightBox16,
+                  // heightBox16,
 
-                  SettingItemList(
-                    color: Color(0xffB50012),
-                    iconData: Assets.images.delete.keyName,
-                    iconSize: 16,
-                    name: 'Delete account',
-                    onTap: () {},
-                  ),
+                  // SettingItemList(
+                  //   color: Color(0xffB50012),
+                  //   iconData: Assets.images.delete.keyName,
+                  //   iconSize: 16,
+                  //   name: 'Delete account',
+                  //   onTap: () {},
+                  // ),
                   heightBox16,
                   SettingItemList(
+                    color: Color.fromARGB(255, 212, 67, 81),
                     iconData: Assets.images.logOut.keyName,
                     name: 'Logout',
                     onTap: () {

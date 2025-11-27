@@ -41,13 +41,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               children: [
                 GestureDetector(
                   onTap: isBack == true ? () => Navigator.pop(context) : null,
-                  child: CrashSafeImage(
-                    Assets.images.rreturn.keyName,
-                    height: 22,
-                    width: 22,
-                  ),
+                  child: isBack == true
+                      ? CrashSafeImage(
+                          Assets.images.rreturn.keyName,
+                          height: 22,
+                          width: 22,
+                        )
+                      : const SizedBox.shrink(),
                 ),
-                widthBox10,
+                isBack == false ? widthBox10 : widthBox4,
                 Text(
                   title,
                   style: GoogleFonts.poppins(

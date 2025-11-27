@@ -15,7 +15,7 @@ class ExchangeCard extends StatelessWidget {
   final String? requestsTo;
   final String? requestsDate;
   final String? approvedDate;
-  final VoidCallback? onTap;
+  final VoidCallback? onTap; 
   const ExchangeCard({
     super.key,
     this.isShowButton = false,

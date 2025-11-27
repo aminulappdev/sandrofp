@@ -13,6 +13,7 @@ class HomepageHeader extends StatelessWidget {
   final VoidCallback notificationAction;
   final VoidCallback settingsAction;
   final VoidCallback arrowAction;
+  final VoidCallback imageOnTap;
 
   const HomepageHeader({
     super.key,
@@ -22,6 +23,7 @@ class HomepageHeader extends StatelessWidget {
     required this.notificationAction,
     required this.settingsAction,
     required this.arrowAction,
+    required this.imageOnTap,
   });
 
   @override
@@ -37,9 +39,17 @@ class HomepageHeader extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  CircleAvatar(
-                    radius: 20,
-                    child: CrashSafeImage(imagePath, height: 50),
+                  GestureDetector(
+                    onTap: imageOnTap,
+                    child: CircleAvatar(
+                      radius: 20,
+                      backgroundImage: imagePath == ''
+                          ? null
+                          : NetworkImage(imagePath),
+                      child: imagePath == ''
+                          ? const Icon(Icons.person, size: 30)
+                          : Container(),
+                    ),
                   ),
                   widthBox8,
                   Column(
@@ -190,10 +200,10 @@ class HomepageHeader extends StatelessWidget {
                   ),
                 ],
               ),
-            ), 
+            ),
           ),
           // heightBox20,
-          
+
           // TextFormField(
           //   decoration: InputDecoration(
           //     prefixIcon: Icon(Icons.search, color: Colors.black, size: 28),

@@ -9,11 +9,9 @@ import 'package:sandrofp/app/modules/home/widget/product_static_data.dart';
 import 'package:sandrofp/app/modules/product/controller/add_product_controller.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/common_widgets/straight_liner.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
-import 'package:sandrofp/gen/assets.gen.dart';
 import 'dart:io';
 
 class UploadProductDetailsScreen extends GetView<AddProductController> {
@@ -40,26 +38,7 @@ class UploadProductDetailsScreen extends GetView<AddProductController> {
     }
 
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Back',
-
-        leading: Row(
-          children: [
-            CircleIconWidget(
-              radius: 20,
-              iconRadius: 20,
-              color: const Color(0xffFFFFFF).withValues(alpha: 0.05),
-              imagePath: Assets.images.notification.keyName,
-              onTap: () {},
-            ),
-            widthBox10,
-            CircleAvatar(
-              radius: 20,
-              backgroundImage: AssetImage(Assets.images.onboarding01.keyName),
-            ),
-          ],
-        ),
-      ),
+      appBar: CustomAppBar(title: 'Back', leading: Container()),
       body: Column(
         children: [
           Expanded(
@@ -114,7 +93,9 @@ class UploadProductDetailsScreen extends GetView<AddProductController> {
                     heightBox10,
                     ProductStaticData(
                       title: product.name,
-                      price: product.price.toStringAsFixed(2),
+                      price: (product.price - product.discount).toStringAsFixed(
+                        2,
+                      ),
                       address: controller.selectedAddress.value,
                       description: product.descriptions,
                       discount: product.discount.toStringAsFixed(2),

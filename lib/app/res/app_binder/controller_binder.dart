@@ -11,6 +11,7 @@ import 'package:sandrofp/app/modules/common/controller/feedback_controller.dart'
 import 'package:sandrofp/app/modules/dashboard/controller/dashboard_controller.dart';
 import 'package:sandrofp/app/modules/home/controller/category_controller.dart';
 import 'package:sandrofp/app/modules/home/controller/home_controller.dart';
+import 'package:sandrofp/app/modules/home/controller/home_product_controller.dart';
 import 'package:sandrofp/app/modules/home/controller/view_all_item_controller.dart';
 import 'package:sandrofp/app/modules/product/controller/all_product_controller.dart';
 import 'package:sandrofp/app/modules/product/controller/cart_controller.dart';
@@ -45,6 +46,7 @@ class ControllerBinder extends Bindings {
     Get.lazyPut(() => MessageController());
     Get.lazyPut(() => ImageDecodeController());
     Get.lazyPut(() => FriendController());
+    Get.lazyPut(() => HomeProductController());
 
     // এই লাইনটা যোগ করো
     Get.lazyPut<ViewAllItemController>(

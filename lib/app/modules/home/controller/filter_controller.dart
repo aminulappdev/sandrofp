@@ -1,45 +1,40 @@
+// app/modules/home/controller/filter_controller.dart
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:sandrofp/app/modules/home/controller/home_controller.dart';
 
 class FilterController extends GetxController {
-  // Slider value
-  var sliderValue = 50.0.obs;
+  // Get.find() দিয়ে নিলে বারবার put করতে হবে না
+  final HomeController homeController = Get.find<HomeController>();
 
-  // Selected categories (example: index based selection)
-  var selectedCategoryIndex = (-1).obs;
-  var selectedCollectionTypeIndex = (-1).obs;
-  var selectedCollectionIndex = (-1).obs;
-  var selectedBrandIndex = (-1).obs;
+  var selectedCategoryId =
+      ''.obs; // String রাখলাম (int আসলেও toString() করা হয়েছে)
+  var selectedColor = ''.obs;
+  var selectedSize = ''.obs;
 
-  void updateSlider(double value) {
-    sliderValue.value = value;
-  }
-
-  void selectCategory(int index) {
-    selectedCategoryIndex.value = index;
-  }
-
-  void selectCollectionType(int index) {
-    selectedCollectionTypeIndex.value = index;
-  }
-
-  void selectCollection(int index) {
-    selectedCollectionIndex.value = index;
-  }
-
-  void selectBrand(int index) {
-    selectedBrandIndex.value = index;
+  void clearFilters() {
+    selectedCategoryId.value = '';
+    selectedColor.value = '';
+    selectedSize.value = '';
+    debugPrint("All filters cleared");
   }
 
   void applyFilter() {
-    // TODO: Apply filter logic
-    Get.back(result: {
-      'distance': sliderValue.value,
-      'category': selectedCategoryIndex.value,
-      // Add others as needed
-    });
-  }
+    final String catId = selectedCategoryId.value;
+    final String color = selectedColor.value;
+    final String size = selectedSize.value;
 
-  void closeFilter() {
-    Get.back();
+    debugPrint("Applying Filters:");
+    debugPrint("   Category ID: '$catId'");
+    debugPrint("   Color: '$color'");
+    debugPrint("   Size: '$size'");
+
+    homeController.goToAllProductsByFilter(
+      catId.isEmpty ? null : catId,
+      color.isEmpty ? null : color,
+      size.isEmpty ? null : size,
+    );
+
+    // Get.back(); // অপশনাল: Apply করার পর Filter Screen বন্ধ
   }
 }

@@ -125,7 +125,7 @@ class SignUpScreen extends GetView<SignUpController> {
                           controller.obscureConfirmPassword.value
                               ? Icons.visibility
                               : Icons.visibility_off,
-                        ),
+                        ), 
                         onPressed: controller.toggleConfirmPasswordVisibility,
                       ),
                     ),

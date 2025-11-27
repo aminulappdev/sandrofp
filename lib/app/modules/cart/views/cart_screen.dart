@@ -7,12 +7,10 @@ import 'package:sandrofp/app/modules/cart/widget/product_cart.dart';
 import 'package:sandrofp/app/modules/exchange/views/exchange_screen.dart';
 import 'package:sandrofp/app/modules/home/widget/feature_row.dart';
 import 'package:sandrofp/app/modules/product/controller/cart_controller.dart';
-
 import 'package:sandrofp/app/modules/profile/controllers/my_product_controller.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/bottom_card.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/common_widgets/straight_liner.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
@@ -31,22 +29,7 @@ class CartScreen extends GetView<CartController> {
       backgroundColor: const Color(0xffFBFBFD),
       appBar: CustomAppBar(
         title: 'Back',
-        leading: Row(
-          children: [
-            CircleIconWidget(
-              radius: 20,
-              iconRadius: 20,
-              color: const Color(0xffFFFFFF).withValues(alpha: 0.05),
-              imagePath: Assets.images.notification.keyName,
-              onTap: () {},
-            ),
-            widthBox10,
-            CircleAvatar(
-              radius: 20,
-              backgroundImage: AssetImage(Assets.images.onboarding01.keyName),
-            ),
-          ],
-        ),
+        leading: Container(),
       ),
       body: Column(
         children: [
@@ -165,6 +148,7 @@ class CartScreen extends GetView<CartController> {
                                 'title': controller.productData?.name ?? 'Unknown',
                                 'price': controller.productData?.price ?? 0,
                                 'description': controller.productData?.descriptions,
+                                'userId': controller.productData!.author?.id ?? '0',
                               },
                               'selectedProducts': selectedMaps,
                               'selectedTotal': controller.selectedTotal.value,

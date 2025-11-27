@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:sandrofp/app/get_storage.dart';
+import 'package:sandrofp/app/modules/dashboard/views/dashboard_screen.dart';
 import 'package:sandrofp/app/modules/product/model/upload_product_model.dart';
 import 'package:sandrofp/app/modules/product/views/upload_product_Details_screen.dart';
 import 'package:sandrofp/app/modules/product/views/uplpad_product_description_screen.dart';
@@ -92,8 +93,10 @@ class AddProductController extends GetxController {
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       name: nameController.text,
       descriptions: descriptionController.text,
-      price: double.tryParse(priceController.text) ?? 0.0,
-      discount: double.tryParse(discountController.text) ?? 0.0,
+      price:
+          (double.tryParse(priceController.text) ?? 0.0) -
+          (double.tryParse(discountController.text) ?? 0.0),
+      discount: (double.tryParse(discountController.text) ?? 0.0),
       size: selectedSize.value,
       colors: colorController.text,
       brands: materialController.text,
@@ -152,8 +155,7 @@ class AddProductController extends GetxController {
           );
 
       if (response.isSuccess) {
-        showSuccess('Product uploaded successfully!');
-        Get.back(); // অথবা যেখানে যেতে চাও
+        Get.offAll(() => const DashboardScreen());
       } else {
         showError(response.errorMessage);
       }

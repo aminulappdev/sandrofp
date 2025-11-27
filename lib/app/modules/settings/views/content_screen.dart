@@ -21,6 +21,13 @@ class ContentScreen extends GetView<ContentController> {
         // -----------------------------------------------------------------
         if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
+        } else if (controller.content.value.isEmpty) {
+          return const Center(
+            child: Text(
+              'No additional content available.',
+              style: TextStyle(color: Colors.grey),
+            ),
+          );
         }
 
         return Padding(

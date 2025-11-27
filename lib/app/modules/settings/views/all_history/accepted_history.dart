@@ -1,9 +1,11 @@
 // completed_history.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:sandrofp/app/modules/cart/widget/exchange_card.dart';
 import 'package:sandrofp/app/modules/exchange/views/exchange_process_screen.dart';
 import 'package:sandrofp/app/modules/settings/controller/exchange_history_controller.dart';
+import 'package:sandrofp/app/res/common_widgets/date_formatter.dart';
 
 class AccepteddHistory extends GetView<ExchangeHistoryController> {
   const AccepteddHistory({super.key});
@@ -36,6 +38,7 @@ class AccepteddHistory extends GetView<ExchangeHistoryController> {
           itemCount: controller.acceptedList.length,
           itemBuilder: (context, index) {
             final item = controller.acceptedList[index];
+            DateFormatter dateFormatter = DateFormatter(item.createdAt!);
             return Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: ExchangeCard(
@@ -43,10 +46,10 @@ class AccepteddHistory extends GetView<ExchangeHistoryController> {
                 exchangeName: item.exchangeWith.first.name ?? 'N/A',
                 requestsForm: item.user?.name ?? 'N/A',
                 requestsTo: item.requestTo?.name ?? 'N/A',
-                requestsDate: item.createdAt.toString(),
-                approvedDate: item.createdAt.toString(),
+                requestsDate: dateFormatter.getFullDateFormat(),
+                approvedDate: dateFormatter.getFullDateFormat(),
                 onTap: () {
-                   Get.to(
+                  Get.to(
                     () => ExchangeProcessScreen(),
                     arguments: {'data': item},
                   );

@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:sandrofp/app/modules/product/controller/all_product_controller.dart';
 
 class ViewAllItemController extends GetxController {
-  final AllProductController allProductController = Get.find<AllProductController>();
+  final AllProductController allProductController =
+      Get.find<AllProductController>();
 
   String? title;
   String? type; // 'all', 'category', 'nearby'
@@ -27,6 +28,15 @@ class ViewAllItemController extends GetxController {
         if (lat != null && lng != null) {
           allProductController.getAllProductByLocation(lat, lng);
         }
+      } else if (type == 'filter') {
+        final categoryId = args?['categoryId'] as String?;
+        final color = args?['color'] as String?;
+        final size = args?['size'] as String?;
+        allProductController.getAllProductByFilter(
+          categoryId ?? '',
+          color ?? '',
+          size ?? '',
+        );
       } else {
         // Default: All products
         allProductController.getAllProduct();
