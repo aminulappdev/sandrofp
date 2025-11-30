@@ -42,7 +42,7 @@ class ProductCart extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          height: 140,
+          height: address != '' ? 140 : 100,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(12),
@@ -81,54 +81,56 @@ class ProductCart extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       // Address + Distance
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Row(
+                      address != ''
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                CrashSafeImage(
-                                  Assets.images.location.keyName,
-                                  height: 12,
-                                  width: 12,
-                                ),
-                                widthBox8,
                                 Expanded(
+                                  child: Row(
+                                    children: [
+                                      CrashSafeImage(
+                                        Assets.images.location.keyName,
+                                        height: 12,
+                                        width: 12,
+                                      ),
+                                      widthBox8,
+                                      Expanded(
+                                        child: Text(
+                                          address ?? 'Unknown location',
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w600,
+                                            color: const Color(0xff595959),
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xffEBF2EE),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
                                   child: Text(
-                                    address ?? 'Unknown location',
+                                    '${distance ?? '0'} km',
                                     style: GoogleFonts.poppins(
                                       fontSize: 10,
                                       fontWeight: FontWeight.w600,
-                                      color: const Color(0xff595959),
+                                      color: AppColors.greenColor,
                                     ),
-                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ],
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: const Color(0xffEBF2EE),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                              '${distance ?? '0'} km',
-                              style: GoogleFonts.poppins(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.greenColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                            )
+                          : Container(),
 
-                      heightBox8,
+                      address != '' ? heightBox8 : Container(),
 
                       // Product Name
                       Text(

@@ -24,7 +24,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
   final SocketService socketService = Get.find<SocketService>();
   final FriendController friendController = Get.put(FriendController());
 
-  // সার্চ কন্ট্রোলার ও ফিল্টার করা লিস্ট
   final TextEditingController _searchController = TextEditingController();
   List<Map<String, dynamic>> _filteredList = [];
 

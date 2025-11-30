@@ -11,13 +11,11 @@ import 'package:sandrofp/app/modules/home/widget/product_static_data.dart';
 import 'package:sandrofp/app/modules/product/controller/product_details_controller.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/common_widgets/image_container.dart';
 import 'package:sandrofp/app/res/common_widgets/straight_liner.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/app/services/location/address_fetcher.dart';
-import 'package:sandrofp/gen/assets.gen.dart';
 
 class ProductDetailsScreen extends GetView<ProductDetailsController> {
   const ProductDetailsScreen({super.key});
@@ -86,9 +84,9 @@ class ProductDetailsScreen extends GetView<ProductDetailsController> {
                         ? BuyerDetails(
                             image: controller.product!.author?.profile ?? '',
                             description: controller.product?.descriptions ?? '',
-                            rating: 5,
-                            id: controller.product?.id ?? '',
-                            name: controller.product?.name ?? '',
+                            rating: controller.product?.author?.avgRating ?? 0,
+                            id: controller.product?.author?.id ?? '',
+                            name: controller.product?.author?.name ?? '',
                           )
                         : Container(),
                     controller.product!.author?.id !=
@@ -101,7 +99,7 @@ class ProductDetailsScreen extends GetView<ProductDetailsController> {
                       var lng = controller.product?.location?.coordinates[1];
                       final address$ = AddressHelper.getAddress(lat, lng).obs;
                       var updatePrice =
-                          controller.product?.price -
+                          controller.product!.price! -
                           controller.product?.discount;
                       return ProductStaticData(
                         title: controller.product?.name ?? '',
@@ -139,11 +137,11 @@ class ProductDetailsScreen extends GetView<ProductDetailsController> {
 
                     // Brand Selection
                     FeatureRow(
-                      title: 'Brand:',
+                      title: 'Material:',
                       widget: LabelData(
                         onTap: () {},
                         bgColor: const Color(0xffF3F3F5),
-                        title: controller.product?.brands ?? '',
+                        title: controller.product?.materials ?? '',
                         titleColor: Colors.black,
                       ),
                     ),
@@ -155,7 +153,7 @@ class ProductDetailsScreen extends GetView<ProductDetailsController> {
                     FeatureRow(
                       title: 'Category:',
                       widget: Text(
-                        'T-shirt',
+                        controller.product?.category?.name ?? '',
                         style: GoogleFonts.poppins(
                           fontSize: 13,
                           fontWeight: FontWeight.w400,

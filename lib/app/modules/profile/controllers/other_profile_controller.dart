@@ -52,7 +52,7 @@ class OtherProfileController extends GetxController {
         _profileModel.value = ProfileModel.fromJson(response.responseData);
         print('PROFILE DATA: ${_profileModel.value?.data}');
       } else {
-        showError(response.errorMessage ?? "Profile not found");
+        showError(response.errorMessage);
       }
     } catch (e) {
       showError("Failed to load profile");
@@ -62,9 +62,9 @@ class OtherProfileController extends GetxController {
   }
 
   // আপনার পুরোনো সব Rx ভ্যারিয়েবল ঠিক আগের মতোই আছে
-  var userName = 'Sandro Fernando'.obs;
-  var rating = 4.5.obs;
-  var reviewCount = 100.obs;
+  var userName = ''.obs;
+  var rating = 0.0.obs;
+  var reviewCount = 0.obs;
   var level = 'Beginner'.obs;
   var location = 'New York'.obs;
   var age = '25'.obs;

@@ -209,7 +209,7 @@ class HomeScreen extends GetView<HomeController> {
                             final address = AddressHelper.getAddress(lat, lng);
                             final product = items[index];
                             var updatePrice =
-                                items[index].price - items[index].discount;
+                                items[index].price! - items[index].discount;
                             return HomeProductCard(
                               onTap: () =>
                                   homeController.goToProductDetails(product),
@@ -222,7 +222,7 @@ class HomeScreen extends GetView<HomeController> {
                               address: address,
                               discount: '${product.discount}\$',
                               distance: '2.5 km',
-                              rating: '4.5',
+                              rating: product.author?.avgRating.toString(),
                               profile: product.author?.profile,
                               title: product.name,
                             );
@@ -272,7 +272,7 @@ class HomeScreen extends GetView<HomeController> {
                           cardBuilder: (context, index, _, __) {
                             final product = items[index];
                             var updatePrice =
-                                items[index].price - items[index].discount;
+                                items[index].price! - items[index].discount;
                             return HomeProductCard(
                               onTap: () =>
                                   homeController.goToProductDetails(product),
@@ -285,7 +285,7 @@ class HomeScreen extends GetView<HomeController> {
                               address: product.author?.name ?? 'Nearby',
                               discount: '${product.discount}',
                               distance: '2.5 km',
-                              rating: '4.5',
+                              rating: product.author?.avgRating.toString(),
                               profile: product.author?.profile,
                               title: product.name,
                             );

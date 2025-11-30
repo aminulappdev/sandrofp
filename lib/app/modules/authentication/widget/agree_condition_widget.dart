@@ -1,5 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:sandrofp/app/modules/settings/views/content_screen.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 
 class AgreeConditionCheck extends StatefulWidget {
@@ -40,12 +43,13 @@ class _AgreeConditionCheckState extends State<AgreeConditionCheck> {
                 TextSpan(
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      // Navigator.pushNamed(context, InfoScreen.routeName,
-                      //     arguments: {
-                      //       'appBarTitle': 'Terms & Conditions',
-                      //       'data':
-                      //           '${controller.contentlist?[0].termsAndConditions}'
-                      //     });
+                      Get.to(
+                        const ContentScreen(),
+                        arguments: {
+                          'title': 'Terms of Service',
+                          'data': 'aboutUs',
+                        },
+                      );
                     },
                   text: 'Terms & Conditions ',
                   style: TextStyle(

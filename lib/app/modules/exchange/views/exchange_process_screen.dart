@@ -10,7 +10,6 @@ import 'package:sandrofp/app/modules/common/views/feedback_screen.dart';
 import 'package:sandrofp/app/modules/exchange/controller/exchange_process_controller.dart';
 import 'package:sandrofp/app/modules/exchange/model/all_exchange_model.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';

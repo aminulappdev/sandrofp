@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/chat/controller/image_decode_controller.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
 import 'package:sandrofp/app/res/common_widgets/image_picker_controller.dart';
 
 class ChattingFieldWidget extends StatefulWidget {
@@ -20,7 +19,8 @@ class ChattingFieldWidget extends StatefulWidget {
 }
 
 class _ChattingFieldWidgetState extends State<ChattingFieldWidget> {
-  final ImageDecodeController imageDecodeController = Get.find<ImageDecodeController>();
+  final ImageDecodeController imageDecodeController =
+      Get.find<ImageDecodeController>();
   final ImagePickerHelper _imagePickerHelper = ImagePickerHelper();
 
   File? _image;
@@ -44,7 +44,9 @@ class _ChattingFieldWidgetState extends State<ChattingFieldWidget> {
   }
 
   Future<void> _pickAndDecodeImage() async {
-    await _imagePickerHelper.showMultiImagePicker(context, (File pickedImage) async {
+    await _imagePickerHelper.showMultiImagePicker(context, (
+      File pickedImage,
+    ) async {
       setState(() {
         _image = pickedImage;
         _isImageSelected = true;
@@ -59,11 +61,11 @@ class _ChattingFieldWidgetState extends State<ChattingFieldWidget> {
       _isImageSelected = false;
     });
     imageDecodeController.imageUrl = '';
-    
   }
 
   void _sendMessage() {
-    if (widget.controller!.text.trim().isNotEmpty || imageDecodeController.imageUrl.isNotEmpty) {
+    if (widget.controller!.text.trim().isNotEmpty ||
+        imageDecodeController.imageUrl.isNotEmpty) {
       _focusNode.unfocus();
     }
   }
@@ -85,20 +87,32 @@ class _ChattingFieldWidgetState extends State<ChattingFieldWidget> {
               controller: widget.controller,
               focusNode: _focusNode,
               decoration: InputDecoration(
-                hintText: imageDecodeController.imageUrl.isNotEmpty ? 'Write a caption' : 'Write message',
-                hintStyle: GoogleFonts.poppins(fontSize: 14.sp, color: Colors.grey.shade600),
-                prefixIcon: Obx(() => imageDecodeController.inProgress
-                    ? const Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: SizedBox(
-                          width: 20, height: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
+                hintText: imageDecodeController.imageUrl.isNotEmpty
+                    ? 'Write a caption'
+                    : 'Write message',
+                hintStyle: GoogleFonts.poppins(
+                  fontSize: 14.sp,
+                  color: Colors.grey.shade600,
+                ),
+                prefixIcon: Obx(
+                  () => imageDecodeController.inProgress
+                      ? const Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                        )
+                      : InkWell(
+                          onTap: imageDecodeController.inProgress
+                              ? null
+                              : _pickAndDecodeImage,
+                          child: Icon(
+                            Icons.attach_file,
+                            color: Colors.grey.shade600,
+                          ),
                         ),
-                      )
-                    : InkWell(
-                        onTap: imageDecodeController.inProgress ? null : _pickAndDecodeImage,
-                        child: Icon(Icons.attach_file, color: Colors.grey.shade600),
-                      ),
                 ),
                 filled: true,
                 fillColor: const Color.fromARGB(137, 255, 255, 255),
@@ -106,7 +120,10 @@ class _ChattingFieldWidgetState extends State<ChattingFieldWidget> {
                   borderRadius: BorderRadius.circular(50.r),
                   borderSide: BorderSide.none,
                 ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: 16.w,
+                  vertical: 12.h,
+                ),
               ),
               style: GoogleFonts.poppins(fontSize: 16.sp, color: Colors.black),
               maxLines: 5,

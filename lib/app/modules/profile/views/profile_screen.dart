@@ -270,7 +270,7 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                                   width: 300,
                                   child: HomeProductCard(
                                     onTap: () {},
-                                    price: (product.price - product.discount)
+                                    price: (product.price! - product.discount)
                                         .toString(),
                                     imagePath: product.images.isEmpty
                                         ? ''

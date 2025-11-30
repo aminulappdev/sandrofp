@@ -126,7 +126,7 @@ class ProfileViewPage extends StatelessWidget {
                   ),
                 ],
               ),
-
+ 
               heightBox10,
               CustomElevatedButton(
                 title: 'View Profile',

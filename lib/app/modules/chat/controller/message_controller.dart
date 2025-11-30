@@ -33,7 +33,11 @@ class MessageController extends GetxController {
       String token = await StorageUtil.getData(StorageUtil.userAccessToken);
 
       final NetworkResponse response = await Get.find<NetworkCaller>()
-          .getRequest(Urls.messagesById('6918182fa7f19a573dad8d91'), accessToken: token, queryParams: {"sort": "createdAt", "limit": "9999"});
+          .getRequest(
+            Urls.messagesById(chatId),
+            accessToken: token,
+            queryParams: {"sort": "createdAt", "limit": "9999"},
+          );
 
       if (response.isSuccess && response.responseData != null) {
         messageResponse.value = ChatMessageModel.fromJson(
@@ -59,7 +63,6 @@ class MessageController extends GetxController {
               "createdAt":
                   msg.createdAt?.toIso8601String() ??
                   DateTime.now().toIso8601String(),
-              "exchanges": null,
             };
 
             // ডুপ্লিকেট চেক করে যোগ করো

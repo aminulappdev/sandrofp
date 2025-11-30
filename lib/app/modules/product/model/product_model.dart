@@ -35,7 +35,7 @@ class Data {
         );
     }
 
-} 
+}
 
 class AllProductItemModel {
     AllProductItemModel({
@@ -78,7 +78,7 @@ class AllProductItemModel {
     final bool? isVerified;
     final Category? category;
     final dynamic price;
-    final String? quantity;
+    final dynamic quantity;
     final dynamic discount;
     final bool? isDeleted;
     final DateTime? createdAt;
@@ -118,12 +118,14 @@ class Author {
         required this.name,
         required this.email,
         required this.profile,
+        required this.avgRating,
     });
 
     final String? id;
     final String? name;
     final String? email;
     final String? profile;
+    final dynamic avgRating;
 
     factory Author.fromJson(Map<String, dynamic> json){ 
         return Author(
@@ -131,6 +133,7 @@ class Author {
             name: json["name"],
             email: json["email"],
             profile: json["profile"],
+            avgRating: json["avgRating"],
         );
     }
 

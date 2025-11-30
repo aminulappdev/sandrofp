@@ -188,7 +188,7 @@ class HomeProductCard extends StatelessWidget {
                             ),
                             widthBox4,
                             Text(
-                              '$rating (20)',
+                              '$rating (5)',
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,

@@ -78,10 +78,20 @@ class BuyerDetails extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CrashSafeImage(Assets.images.star.keyName, height: 24),
+                if (rating == 0) ...[
+                  CrashSafeImage(
+                    Assets.images.star.keyName,
+                    height: 24,
+                    color: Colors.grey,
+                  ),
+                ] else ...{
+                  for (int i = 0; i < rating!; i++) ...[
+                    CrashSafeImage(Assets.images.star.keyName, height: 24),
+                  ],
+                },
                 widthBox4,
                 Text(
-                  '$rating (20 Reviews)',
+                  '$rating (5 Stars)',
                   style: GoogleFonts.poppins(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -113,7 +123,10 @@ class BuyerDetails extends StatelessWidget {
                     textColor: Colors.black,
                     title: 'View profile',
                     onPress: () {
-                      Get.to(() => const OtherProfileScreen());
+                      Get.to(
+                        () => const OtherProfileScreen(),
+                        arguments: {'id': id},
+                      );
                     },
                   ),
                 ),
@@ -125,7 +138,13 @@ class BuyerDetails extends StatelessWidget {
                     textColor: Colors.white,
                     title: 'Message',
                     onPress: () {
-                      Get.to(() => ChatScreen());
+                      Get.to(
+                        () => ChatScreen(
+                          receiverId: id,
+                          receiverImageUrl: image,
+                          receiverName: name,
+                        ),
+                      );
                     },
                   ),
                 ),

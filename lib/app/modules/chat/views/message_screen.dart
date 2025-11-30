@@ -1,17 +1,19 @@
 // app/modules/chat/views/chat_screen.dart
-// FULLY FIXED – NO MORE List<dynamic> ERROR
+// FINAL VERSION – Exchange শুধু MessageController থেকে, কোনো RangeError নেই
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:sandrofp/app/get_storage.dart';
+import 'package:sandrofp/app/modules/chat/controller/change_exchange_status_con.dart';
 import 'package:sandrofp/app/modules/chat/controller/image_decode_controller.dart';
 import 'package:sandrofp/app/modules/chat/controller/message_controller.dart';
 import 'package:sandrofp/app/modules/chat/widgets/chatting_header.dart';
 import 'package:sandrofp/app/modules/chat/widgets/message_input_field.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
+import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
+import 'package:sandrofp/app/services/network_caller/custom.dart';
 import 'package:sandrofp/app/services/socket/socket_service.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -30,16 +32,18 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final ChangeExchangeStatusController changeExchangeStatusController = Get.put(
+    ChangeExchangeStatusController(),
+  );
   final MessageController messageCtrl = Get.put(MessageController());
-  final SocketService socketService = Get.find<SocketService>();
-  final TextEditingController messageController = TextEditingController();
+  final SocketService socketService = Get.put(SocketService());
+  final TextEditingController textCtrl = TextEditingController();
   final ScrollController scrollController = ScrollController();
   final ImageDecodeController imageDecodeController = Get.put(
     ImageDecodeController(),
   );
 
   late final String userAuthId;
-  // final String recieverId = '6918182fa7f19a573dad8d91';
   String recieverId = '';
 
   @override
@@ -49,7 +53,7 @@ class _ChatScreenState extends State<ChatScreen> {
     recieverId = widget.receiverId ?? '';
 
     messageCtrl.getMessages(chatId: recieverId).then((_) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
+      _scrollToBottom();
     });
 
     socketService.sokect.on('new_message', _handleIncomingMessage);
@@ -65,7 +69,6 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  // এই ফাংশনটা সবচেয়ে গুরুত্বপূর্ণ – List হলে প্রথমটা নেবে
   String _safeImageUrl(dynamic file) {
     if (file == null || file.toString() == 'null') return "";
     if (file is String) return file.trim();
@@ -74,13 +77,11 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void _handleIncomingMessage(dynamic data) {
-    print('✅✅ new message arrived: $data');
     try {
       Map<String, dynamic> msg = {};
 
       if (data is Map && data['message'] != null) {
         final m = data['message'] as Map<String, dynamic>;
-
         final String imageUrl = _safeImageUrl(m['file'] ?? m['imageUrl']);
 
         msg = {
@@ -92,21 +93,15 @@ class _ChatScreenState extends State<ChatScreen> {
           "imageUrl": imageUrl,
           "seen": m['seen'] ?? false,
           "senderId": m['sender'].toString(),
-          "senderName": m['senderName']?.toString() ?? "",
-          "receiverId": m['receiver'].toString(),
-          "chat": m['chat'].toString(),
           "createdAt": (m['createdAt'] ?? DateTime.now()).toString(),
         };
-      } else if (data is Map &&
-          (data['text'] != null ||
-              data['file'] != null ||
-              data['imageUrl'] != null)) {
+      } else if (data is Map) {
         final String imageUrl = _safeImageUrl(data['file'] ?? data['imageUrl']);
-
         msg = {
           "id": data['_id'] ?? DateTime.now().millisecondsSinceEpoch.toString(),
           "text": data['text']?.toString() ?? "",
           "imageUrl": imageUrl,
+          "seen": data['seen'] ?? false,
           "senderId":
               data['sender']?.toString() ?? data['senderId']?.toString() ?? "",
           "createdAt":
@@ -116,15 +111,13 @@ class _ChatScreenState extends State<ChatScreen> {
         return;
       }
 
-      // ডুপ্লিকেট চেক
       if (socketService.messageList.any((e) => e['id'] == msg['id'])) return;
 
       socketService.messageList.add(msg);
+      if (mounted) setState(() {});
       WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
-      setState(() {});
     } catch (e) {
       print("Socket parse error: $e");
-      print("Raw data: $data");
     }
   }
 
@@ -139,18 +132,29 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  void _handleFocusChange(bool hasFocus) {
-    // if (hasFocus) {
-    //   socketService.sokect.emit('typing', {
-    //     'chatId': chatId,
-    //     'userId': userAuthId,
-    //   });
-    // } else {
-    //   socketService.sokect.emit('stopTyping', {
-    //     'chatId': chatId,
-    //     'userId': userAuthId,
-    //   });
-    // }
+  // এটা সবচেয়ে গুরুত্বপূর্ণ ফাংশন – id দিয়ে exchange খুঁজে দেবে
+  dynamic _findExchangeByMessageId(String messageId) {
+    if (messageCtrl.messageResponse.value.data?.data == null) return null;
+    try {
+      final found = messageCtrl.messageResponse.value.data!.data.firstWhere(
+        (m) => m.id == messageId || m.id.toString() == messageId,
+      );
+      return found.exchanges;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  dynamic _findExchangeStatusByMessageId(String messageId) {
+    if (messageCtrl.messageResponse.value.data?.data == null) return null;
+    try {
+      final found = messageCtrl.messageResponse.value.data!.data.firstWhere(
+        (m) => m.id == messageId || m.id.toString() == messageId,
+      );
+      return found.exchanges?.status;
+    } catch (_) {
+      return null;
+    }
   }
 
   Future<void> sendMessageBTN(
@@ -158,30 +162,51 @@ class _ChatScreenState extends State<ChatScreen> {
     String text,
     String receiverId,
   ) async {
-    print('Send message button pressed');
-    print('text: $text');
+    print('BUTTON CLICKED');
+    print('Chat ID: $chatId');
+    print('Text: $text');
+    print('Receiver ID: $receiverId');
     if (text.trim().isEmpty && imageDecodeController.imageUrl.isEmpty) {
       Get.snackbar('Error', 'Message or image cannot be empty');
       return;
     }
 
     socketService.sokect.emit('send_message', {
-      "chat": messageCtrl.messageResponse.value.data!.data.first.chat,
       "receiver": receiverId,
       "text": text.trim(),
-      "imageUrl": [imageDecodeController.imageUrl],
+      "imageUrl": imageDecodeController.imageUrl.isNotEmpty
+          ? [imageDecodeController.imageUrl]
+          : [],
     });
 
-    messageController.clear();
+    textCtrl.clear();
     imageDecodeController.imageUrl = '';
+  }
 
-    Future.delayed(const Duration(milliseconds: 100), _scrollToBottom);
+  void changeStatus(String status, String exchangeId) {
+    showLoadingOverLay(
+      asyncFunction: () async => await _performStatusChange(status, exchangeId),
+      msg: 'Please wait...',
+    );
+  }
+
+  Future<void> _performStatusChange(String status, String exchangeId) async {
+    final success = await changeExchangeStatusController.changeStatus(
+      status: status,
+      exchangeId: exchangeId,
+    );
+    if (success) {
+      await messageCtrl.getMessages(chatId: recieverId);
+      showSuccess('Status changed successfully');
+    } else {
+      showError('Failed to change status');
+    }
   }
 
   @override
   void dispose() {
-    socketService.sokect.off('new_message');
-    messageController.dispose();
+    socketService.sokect.off('new_message', _handleIncomingMessage);
+    textCtrl.dispose();
     scrollController.dispose();
     super.dispose();
   }
@@ -204,15 +229,11 @@ class _ChatScreenState extends State<ChatScreen> {
           heightBox12,
           Expanded(
             child: Obx(() {
-              final messages = socketService.messageList
-                  .toList()
-                  .reversed
-                  .toList();
+              final messages = socketService.messageList.reversed.toList();
 
-              if (messageCtrl.isLoading.value && messages.isEmpty) {
+              if (messages.isEmpty && messageCtrl.isLoading.value) {
                 return const Center(child: CircularProgressIndicator());
               }
-
               if (messages.isEmpty) {
                 return Center(
                   child: Text(
@@ -234,6 +255,14 @@ class _ChatScreenState extends State<ChatScreen> {
                   final msg = messages[index];
                   final isMe = _isMe(msg);
                   final String imageUrl = _safeImageUrl(msg['imageUrl']);
+                  final String messageId = msg['id'].toString();
+
+                  // এখানে exchanges খুঁজছি id দিয়ে → কখনো RangeError আসবে না
+                  final exchangeData = _findExchangeByMessageId(messageId);
+                  final exchangeStatus = _findExchangeStatusByMessageId(
+                    messageId,
+                  );
+                  print('EXCHANGE DATA: $exchangeStatus');
 
                   return Align(
                     alignment: isMe
@@ -284,87 +313,163 @@ class _ChatScreenState extends State<ChatScreen> {
                                   height: 160.h,
                                   width: double.infinity,
                                   fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Container(
-                                      height: 160.h,
-                                      color: Colors.grey[300],
-                                      child: const Icon(
-                                        Icons.broken_image,
-                                        color: Colors.grey,
-                                      ),
-                                    );
-                                  },
+                                  errorBuilder: (_, __, ___) => Container(
+                                    height: 160.h,
+                                    color: Colors.grey[300],
+                                    child: const Icon(
+                                      Icons.broken_image,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
 
-                          if (messageCtrl.messageList[index].exchanges !=
-                              null) ...{
-                            Row(
+                          // Exchange Card (Yes/No buttons)
+                          if (exchangeData != null)
+                            Column(
                               mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  width: 80.w,
-                                  height: 30.w,
+                                  width: 300.w,
+                                  height: 200.w,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10.r),
-                                    color: Colors.white,
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'Yes',
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 12.sp,
-                                        color: Colors.black,
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                        (exchangeData.exchangeWith as List)
+                                                .isNotEmpty
+                                            ? exchangeData
+                                                      .exchangeWith
+                                                      .first
+                                                      .images
+                                                      .first
+                                                      .url ??
+                                                  ''
+                                            : '',
                                       ),
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
                                 ),
-
-                                SizedBox(width: 10.w),
-                                Container(
-                                  width: 80.w,
-                                  height: 30.w,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.r),
-                                    color: Colors.red,
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'No',
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 12.sp,
-                                        color: Colors.white,
+                                heightBox10,
+                                exchangeStatus == 'accepted'
+                                    ? Container(
+                                        width: 120.w,
+                                        height: 40.h,
+                                        decoration: BoxDecoration(
+                                          color: Colors.green,
+                                          borderRadius: BorderRadius.circular(
+                                            10.r,
+                                          ),
+                                          border: Border.all(
+                                            color: Colors.grey.shade300,
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            'Accepted',
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 14.sp,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : exchangeStatus == 'decline'
+                                    ? Container(
+                                        width: 120.w,
+                                        height: 40.h,
+                                        decoration: BoxDecoration(
+                                          color: Colors.redAccent,
+                                          borderRadius: BorderRadius.circular(
+                                            10.r,
+                                          ),
+                                          border: Border.all(
+                                            color: Colors.grey.shade300,
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            'Declined',
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 14.sp,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Row(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () => changeStatus(
+                                              'accepted',
+                                              exchangeData.id,
+                                            ),
+                                            child: Container(
+                                              width: 120.w,
+                                              height: 40.h,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(10.r),
+                                                border: Border.all(
+                                                  color: Colors.grey.shade300,
+                                                ),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  'Yes',
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 14.sp,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 10.w),
+                                          GestureDetector(
+                                            onTap: () => changeStatus(
+                                              'decline',
+                                              exchangeData.id,
+                                            ),
+                                            child: Container(
+                                              width: 120.w,
+                                              height: 40.h,
+                                              decoration: BoxDecoration(
+                                                color: Colors.red,
+                                                borderRadius:
+                                                    BorderRadius.circular(10.r),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  'No',
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 14.sp,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                  ),
-                                ),
                               ],
                             ),
-                          },
 
-                          // Text
-                          if (msg['text']?.toString().isNotEmpty == true)
-                            messageCtrl.messageList[index].exchanges == null
-                                ? Text(
-                                    msg['text'],
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 15.5.sp,
-                                      color: isMe
-                                          ? Colors.white
-                                          : Colors.black87,
-                                    ),
-                                  )
-                                : Text(
-                                    '',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 15.5.sp,
-                                      color: isMe
-                                          ? Colors.white
-                                          : Colors.black87,
-                                    ),
-                                  ),
+                          // Text Message
+                          if (msg['text']?.toString().isNotEmpty == true &&
+                              exchangeData == null)
+                            Text(
+                              msg['text'],
+                              style: GoogleFonts.poppins(
+                                fontSize: 15.5.sp,
+                                color: isMe ? Colors.white : Colors.black87,
+                              ),
+                            ),
+
                           SizedBox(height: 4.h),
+
+                          // Time + Seen Icon
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -399,12 +504,11 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
 
           MessageInputWidget(
-            controller: messageController,
+            controller: textCtrl,
             isSending: false,
-            chatId: recieverId,
-            receiverId: '6918182fa7f19a573dad8d91',
+            chatId: widget.receiverId ?? '',
+            receiverId: widget.receiverId ?? '',
             onSendMessage: sendMessageBTN,
-            onFocusChange: _handleFocusChange,
             imageUrl: imageDecodeController.imageUrl,
           ),
         ],

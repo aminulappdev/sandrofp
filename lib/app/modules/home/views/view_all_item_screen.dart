@@ -5,6 +5,7 @@ import 'package:sandrofp/app/modules/home/controller/home_controller.dart';
 import 'package:sandrofp/app/modules/home/controller/view_all_item_controller.dart';
 import 'package:sandrofp/app/modules/home/widget/home_product_card.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
+import 'package:sandrofp/app/services/location/address_fetcher.dart';
 
 class ViewAllItemScreen extends GetView<ViewAllItemController> {
   const ViewAllItemScreen({super.key});
@@ -64,7 +65,11 @@ class ViewAllItemScreen extends GetView<ViewAllItemController> {
             itemCount: items.length,
             itemBuilder: (context, index) {
               final product = items[index];
-              var updatePrice = product.price - product.discount!;
+              var updatePrice = product.price! - product.discount!;
+              var lat = product.location?.coordinates[0];
+              var lng = product.location?.coordinates[1];
+
+              final address = AddressHelper.getAddress(lat, lng);
               return Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: HomeProductCard(
@@ -77,10 +82,10 @@ class ViewAllItemScreen extends GetView<ViewAllItemController> {
                   price: '\$$updatePrice',
                   ownerName: product.name,
                   description: product.descriptions,
-                  address: product.author?.name ?? 'Unknown',
+                  address: address,
                   discount: '${product.discount}',
                   distance: '2.5 km',
-                  rating: '4.5',
+                  rating: product.author?.avgRating.toString(),
                   profile: product.author?.profile,
                   title: product.brands,
                 ),

@@ -9,8 +9,7 @@ import 'package:sandrofp/app/services/network_caller/network_caller.dart';
 import 'package:sandrofp/app/urls.dart';
 
 class CartController extends GetxController {
-
-   final TextEditingController passwordCtrl = TextEditingController();
+  final TextEditingController passwordCtrl = TextEditingController();
   final TextEditingController confirmPasswordCtrl = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -22,8 +21,9 @@ class CartController extends GetxController {
   late String? token; // OTP token (optional)
 
   final NetworkCaller _networkCaller = NetworkCaller();
-  
-  final MyProductController myProductController = Get.find<MyProductController>();
+
+  final MyProductController myProductController =
+      Get.find<MyProductController>();
 
   AllProductItemModel? productData;
 
@@ -43,13 +43,16 @@ class CartController extends GetxController {
 
     final args = Get.arguments as Map<String, dynamic>?;
     productData = args?['data'] as AllProductItemModel?;
-    exchangePrice.value = productData?.price?.toDouble() ?? 0.0;
-    remainingPrice.value = exchangePrice.value;
+    final price = productData?.price?.toDouble() ?? 0.0;
+    final discount = productData?.discount?.toDouble() ?? 0.0;
+    final updatePrice = price - discount;
+    exchangePrice.value = updatePrice;
+    remainingPrice.value = updatePrice;
 
     // Listen to selection changes and update totals
     ever(selectedProductIds, (_) => _calculateTotals());
 
-    print('EXCHANGE PRICE: ${exchangePrice.value}');
+    print('EXCHANGE PRICE: ${updatePrice}');
   }
 
   void _calculateTotals() {
@@ -59,17 +62,25 @@ class CartController extends GetxController {
     for (var id in selectedProductIds) {
       final product = products.firstWhereOrNull((p) => p.id.toString() == id);
       if (product != null) {
-        total += (product.price?.toDouble() ?? 0.0);
+        var price = product.price?.toDouble() ?? 0.0;
+        var discount = product.discount?.toDouble() ?? 0.0;
+        var updatePrice = price - discount;
+        total += updatePrice;
       }
     }
 
     selectedTotal.value = total;
-    remainingPrice.value = (exchangePrice.value - total).clamp(0.0, double.infinity);
+    remainingPrice.value = (exchangePrice.value - total).clamp(
+      0.0,
+      double.infinity,
+    );
   }
 
   void toggleSelection(String productId) {
     final products = myProductController.allProductItems;
-    final product = products.firstWhereOrNull((p) => p.id.toString() == productId);
+    final product = products.firstWhereOrNull(
+      (p) => p.id.toString() == productId,
+    );
     if (product == null) return;
 
     final newPrice = product.price?.toDouble() ?? 0.0;

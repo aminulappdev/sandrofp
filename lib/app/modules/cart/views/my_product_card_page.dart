@@ -12,6 +12,7 @@ import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_dialog.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
+import 'package:sandrofp/app/services/location/address_fetcher.dart';
 
 class MyProductCardScreen extends StatefulWidget {
   const MyProductCardScreen({super.key});
@@ -102,6 +103,13 @@ class _MyProductCardScreenState extends State<MyProductCardScreen> {
                   itemCount: myProductController.allProductItems.length,
                   itemBuilder: (context, index) {
                     var product = myProductController.allProductItems[index];
+                    var price = product.price;
+                    var discount = product.discount;
+                    var updatePrice = price! - discount;
+                    var lat = product.location?.coordinates[0];
+                    var lng = product.location?.coordinates[0];
+
+                    final address = AddressHelper.getAddress(lat, lng);
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 6.0),
                       child: ProductCart(
@@ -124,9 +132,9 @@ class _MyProductCardScreenState extends State<MyProductCardScreen> {
                           );
                         },
                         productImage: product.images.first.url,
-                        address: product.name,
+                        address: address,
                         productName: product.name,
-                        productPrice: product.price.toString(),
+                        productPrice: updatePrice.toString(),
                         description: product.descriptions,
                       ),
                     );

@@ -9,7 +9,7 @@ class MessageInputWidget extends StatelessWidget {
   final String chatId; 
   final String receiverId;
   final Function(String, String, String) onSendMessage;
-  final Function(bool) onFocusChange;
+ 
   final String imageUrl;
 
   const MessageInputWidget({
@@ -19,7 +19,7 @@ class MessageInputWidget extends StatelessWidget {
     required this.chatId,
     required this.receiverId,
     required this.onSendMessage,
-    required this.onFocusChange,
+  
     required this.imageUrl,
   });
 
@@ -34,7 +34,7 @@ class MessageInputWidget extends StatelessWidget {
           Expanded(
             child: ChattingFieldWidget(
               controller: controller,
-              onFocusChange: onFocusChange,
+            
             ),
           ),
           SizedBox(width: 12.w),
