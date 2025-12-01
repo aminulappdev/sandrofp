@@ -27,7 +27,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  // final ContentController contentController = Get.put(ContentController());
+
   final ProfileController profileController = Get.find<ProfileController>();
 
   @override
@@ -120,7 +120,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     name: 'Help & Support',
                     onTap: () {
                       Get.to(
-                        const ContentScreen(),
+                         ContentScreen(),
                         arguments: {
                           'title': 'Terms of Service',
                           'data': 'aboutUs',
@@ -134,7 +134,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     name: 'Terms of Service',
                     onTap: () {
                       Get.to(
-                        const ContentScreen(),
+                         ContentScreen(),
                         arguments: {
                           'title': 'Terms of Service',
                           'data': 'aboutUs',

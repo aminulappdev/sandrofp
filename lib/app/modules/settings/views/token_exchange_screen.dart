@@ -6,7 +6,6 @@ import 'package:sandrofp/app/modules/payment/controller/payment_services.dart';
 import 'package:sandrofp/app/modules/settings/controller/content_controller.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
@@ -89,7 +88,7 @@ class _TokenExchangeScreenState extends State<TokenExchangeScreen> {
     });
 
     try {
-      await paymentService.payment(context, dollarAmount.toStringAsFixed(2));
+      await paymentService.payment(context, amountController.text.trim());
     } finally {
       if (mounted) {
         setState(() {

@@ -145,7 +145,7 @@ class ExchangeController extends GetxController {
       }
     } catch (e) {
       print('Exchange Error: $e');
-      showError('Something went wrong. Try again.');
+      // showError('Something went wrong. Try again.');
     } finally {
       isLoading(false);
     }

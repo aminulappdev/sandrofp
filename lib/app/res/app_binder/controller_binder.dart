@@ -19,7 +19,6 @@ import 'package:sandrofp/app/modules/product/controller/product_details_controll
 import 'package:sandrofp/app/modules/profile/controllers/my_feedback_controller.dart';
 import 'package:sandrofp/app/modules/profile/controllers/my_product_controller.dart';
 import 'package:sandrofp/app/modules/profile/controllers/profile_controller.dart';
-import 'package:sandrofp/app/modules/settings/controller/content_controller.dart';
 import 'package:sandrofp/app/modules/settings/controller/exchange_history_controller.dart';
 import 'package:sandrofp/app/services/network_caller/network_caller.dart';
 
@@ -31,16 +30,17 @@ class ControllerBinder extends Bindings {
     Get.put(SignUpController());
     Get.put(SignInController());
     Get.put(DashboardController());
+    Get.put(ExchangeHistoryController());
+    Get.put(MyProductController());
     Get.lazyPut(() => OtpVerifyController());
     Get.lazyPut(() => ForgotPasswordController());
     Get.lazyPut(() => ResetPasswordController());
-    // Get.lazyPut(() => DashboardController());
     Get.lazyPut(() => CategoryController());
     Get.lazyPut(() => AllProductController());
-    Get.lazyPut(() => MyProductController());
+    // Get.lazyPut(() => MyProductController());
     Get.lazyPut(() => HomeController());
-    Get.lazyPut(() => ContentController());
-    Get.lazyPut(() => ExchangeHistoryController());
+    // Get.lazyPut(() => ContentController());
+    // Get.lazyPut(() => ExchangeHistoryController());
     Get.lazyPut(() => FeedbackController());
     Get.lazyPut(() => MyFeedbackController());
     Get.lazyPut(() => MessageController());
@@ -48,7 +48,6 @@ class ControllerBinder extends Bindings {
     Get.lazyPut(() => FriendController());
     Get.lazyPut(() => HomeProductController());
 
-    // এই লাইনটা যোগ করো
     Get.lazyPut<ViewAllItemController>(
       () => ViewAllItemController(),
       fenix: true,

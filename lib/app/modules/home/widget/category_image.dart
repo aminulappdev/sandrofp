@@ -15,7 +15,7 @@ class CategoryImage extends StatelessWidget {
     required this.onTap, required this.height, required this.width,
   });
 
-  @override
+  @override 
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,

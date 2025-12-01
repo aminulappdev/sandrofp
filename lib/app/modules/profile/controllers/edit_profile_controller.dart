@@ -83,7 +83,7 @@ class EditProfileController extends GetxController {
       if (response.isSuccess) {
         await profileController.getMyProfile();
         showSuccess('Profile updated!');
-        Get.back();
+        Navigator.pop(Get.overlayContext!);
       } else {
         showError(response.errorMessage);
       }

@@ -68,6 +68,7 @@ class SignUpScreen extends GetView<SignUpController> {
                 LabelName(label: 'Phone Number'),
                 heightBox10,
                 TextFormField(
+                  validator: ValidatorService.validateSimpleField,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   keyboardType: TextInputType.phone,
                   controller: controller.phoneCtrl,

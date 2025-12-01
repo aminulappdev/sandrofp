@@ -10,7 +10,7 @@ import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 
 class ViewAllCategoryScreen extends GetView<CategoryController> {
   const ViewAllCategoryScreen({super.key});
-
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(

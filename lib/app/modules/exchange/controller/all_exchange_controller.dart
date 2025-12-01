@@ -37,7 +37,7 @@ class AllExchangeController extends GetxController {
       if (response.isSuccess && response.responseData != null) {
         _exchangeModel.value = AllExchangeModel.fromJson(response.responseData);
       } else {
-        showError(response.errorMessage);
+         // showError(response.errorMessage);
         _exchangeModel.value = null;
       }
     } catch (e) {

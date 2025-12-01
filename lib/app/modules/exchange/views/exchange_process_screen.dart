@@ -3,6 +3,7 @@ import 'package:crash_safe_image/crash_safe_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:sandrofp/app/modules/cart/widget/exchange_card.dart';
 import 'package:sandrofp/app/modules/cart/widget/product_cart.dart';
 import 'package:sandrofp/app/modules/cart/widget/status_card.dart';
@@ -11,6 +12,7 @@ import 'package:sandrofp/app/modules/exchange/controller/exchange_process_contro
 import 'package:sandrofp/app/modules/exchange/model/all_exchange_model.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
+import 'package:sandrofp/app/res/common_widgets/date_formatter.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
@@ -19,17 +21,16 @@ class ExchangeProcessScreen extends GetView<ExchangeProcessController> {
 
   @override
   Widget build(BuildContext context) {
-    // কন্ট্রোলার ইনস্ট্যান্স (Get.put দরকার নাই যদি বাইন্ডিংস ব্যবহার করো)
     final ExchangeProcessController controller = Get.put(
       ExchangeProcessController(),
     );
 
     AllExchangeItemModel exchangeData = controller.exchangeItemModel;
+     DateFormatter dateFormatter = DateFormatter(
+                        exchangeData.createdAt!
+                      );
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Exchange Process',
-        leading: Container()
-      ),
+      appBar: CustomAppBar(title: 'Exchange Process', leading: Container()),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -173,8 +174,11 @@ class ExchangeProcessScreen extends GetView<ExchangeProcessController> {
                     productName: exchangeData.exchangeWith.first.name,
                     description: exchangeData.exchangeWith.first.descriptions,
                     productImage: exchangeData.exchangeWith.first.images[0].url,
-                    productPrice: exchangeData.exchangeWith.first.price
-                        .toString(),
+                    productPrice:
+                        (exchangeData.exchangeWith.first.price -
+                                exchangeData.exchangeWith.first.discount)
+                            .toString(),
+
                     quantity: int.parse(
                       exchangeData.exchangeWith.first.quantity!,
                     ),
@@ -195,15 +199,21 @@ class ExchangeProcessScreen extends GetView<ExchangeProcessController> {
                     physics:
                         const NeverScrollableScrollPhysics(), // Parent SingleChildScrollView এর সাথে কনফ্লিক্ট এড়ানোর জন্য
                     itemCount: exchangeData.products.length,
+
                     itemBuilder: (context, index) {
                       final product = exchangeData.products[index];
+                      
+                      var price = product.price?.toDouble() ?? 0.0;
+                      var discount = product.discount?.toDouble() ?? 0.0;
+                      var updatePrice = price - discount;
+                     
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 12.0),
                         child: ProductCart(
                           productName: product.name,
                           description: product.descriptions,
                           productImage: product.images[0].url,
-                          productPrice: product.price.toString(),
+                          productPrice: updatePrice.toString(),
                           quantity: int.tryParse(product.quantity ?? '1') ?? 1,
                         ),
                       );
@@ -214,7 +224,7 @@ class ExchangeProcessScreen extends GetView<ExchangeProcessController> {
                     exchangeName: exchangeData.exchangeWith.first.name,
                     requestsForm: exchangeData.user?.name ?? '',
                     requestsTo: exchangeData.requestTo?.name ?? '',
-                    approvedDate: exchangeData.createdAt.toString(),
+                    approvedDate: dateFormatter.getFullDateFormat(),
                     requestsDate: exchangeData.createdAt.toString(),
                   ),
                   heightBox20,

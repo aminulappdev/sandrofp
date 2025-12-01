@@ -63,7 +63,7 @@ class HomeController extends GetxController {
   void goToViewAll(String title, String? categoryId) {
     Get.to(
       () => ViewAllItemScreen(),
-      arguments: {
+      arguments: { 
         'title': title,
         'category': categoryId,
         'type': 'category', // new flag

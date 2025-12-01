@@ -41,7 +41,7 @@ class _HtmlViewScreenState extends State<HtmlViewScreen> {
     // Navigate to home page after 3 seconds
     Future.delayed(const Duration(seconds: 4), () {
       if (mounted) {
-        Get.to(DashboardScreen());
+        Get.offAll(()=> DashboardScreen());
       }
     });
   }

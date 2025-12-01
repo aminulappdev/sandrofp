@@ -32,7 +32,7 @@ class MyProductController extends GetxController {
         final model = AllProductModel.fromJson(response.responseData);
         allProductItems.assignAll(model.data?.data ?? []);
       } else {
-        showError(response.errorMessage);
+       // showError(response.errorMessage);
       }
     } catch (e) {
       showError('Network error occurred');

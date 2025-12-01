@@ -82,7 +82,7 @@ class ExchangeHistoryController extends GetxController {
         if (status == 'rejected') rejectedList.assignAll(data);
         if (status == 'decline') declinedList.assignAll(data);
       } else {
-        showError(response.errorMessage);
+        //K showError(response.errorMessage);
         _clearList(status);
       }
     } catch (e) {

@@ -11,7 +11,7 @@ class ViewAllItemScreen extends GetView<ViewAllItemController> {
   const ViewAllItemScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         title: controller.title ?? 'All Items',
@@ -80,7 +80,7 @@ class ViewAllItemScreen extends GetView<ViewAllItemController> {
                       ? product.images.first.url
                       : '',
                   price: '\$$updatePrice',
-                  ownerName: product.name,
+                  ownerName: product.author?.name ?? '',
                   description: product.descriptions,
                   address: address,
                   discount: '${product.discount}',

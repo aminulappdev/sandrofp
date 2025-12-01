@@ -20,7 +20,7 @@ class ExchangedCompletedScreen extends StatefulWidget {
 }
 
 class _ExchangedCompletedScreenState extends State<ExchangedCompletedScreen> {
-  // final ContentController contentController = Get.put(ContentController());
+
 
   @override
   void initState() {

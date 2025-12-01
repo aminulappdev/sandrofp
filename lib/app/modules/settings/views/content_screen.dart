@@ -8,7 +8,9 @@ import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import '../controller/content_controller.dart';
 
 class ContentScreen extends GetView<ContentController> {
-  const ContentScreen({super.key});
+  ContentScreen({super.key});
+  @override
+  final ContentController controller = Get.put(ContentController());
 
   @override
   Widget build(BuildContext context) {

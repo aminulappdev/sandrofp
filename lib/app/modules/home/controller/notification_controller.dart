@@ -39,7 +39,7 @@ class NotificationController extends GetxController {
           response.responseData,
         );
       } else {
-        showError(response.errorMessage);
+        // showError(response.errorMessage);
         _notificationModel.value = null;
       }
     } catch (e) {
@@ -61,7 +61,7 @@ class NotificationController extends GetxController {
       if (response.isSuccess && response.responseData != null) {
         getAllNotification();
       } else {
-        showError(response.errorMessage);
+        // showError(response.errorMessage);
       }
     } catch (e) {
       showError('Network error: $e');

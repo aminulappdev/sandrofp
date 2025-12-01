@@ -97,7 +97,7 @@ class HomeScreen extends GetView<HomeController> {
                         InkWell(
                           onTap: () {
                             Get.to(() => ViewAllCategoryScreen());
-                          },
+                          }, 
                           child: Text(
                             'View all',
                             style: GoogleFonts.poppins(

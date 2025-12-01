@@ -10,6 +10,7 @@ import 'package:sandrofp/app/modules/product/model/upload_product_model.dart';
 import 'package:sandrofp/app/modules/product/views/upload_product_Details_screen.dart';
 import 'package:sandrofp/app/modules/product/views/uplpad_product_description_screen.dart';
 import 'package:sandrofp/app/modules/product/views/upload_file_screen.dart';
+import 'package:sandrofp/app/modules/profile/controllers/my_product_controller.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
 import 'package:sandrofp/app/services/network_caller/custom.dart';
 import 'package:sandrofp/app/services/network_caller/network_caller.dart';
@@ -155,6 +156,9 @@ class AddProductController extends GetxController {
           );
 
       if (response.isSuccess) {
+        final MyProductController myProductController =
+            Get.find<MyProductController>();
+        await myProductController.getMyProduct();
         Get.offAll(() => const DashboardScreen());
       } else {
         showError(response.errorMessage);

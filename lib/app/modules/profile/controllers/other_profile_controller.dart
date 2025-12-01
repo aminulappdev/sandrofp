@@ -52,7 +52,7 @@ class OtherProfileController extends GetxController {
         _profileModel.value = ProfileModel.fromJson(response.responseData);
         print('PROFILE DATA: ${_profileModel.value?.data}');
       } else {
-        showError(response.errorMessage);
+        //K showError(response.errorMessage);
       }
     } catch (e) {
       showError("Failed to load profile");

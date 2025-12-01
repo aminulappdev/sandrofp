@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:sandrofp/app/get_storage.dart';
 import 'package:sandrofp/app/modules/profile/model/profile_model.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
 import 'package:sandrofp/app/services/network_caller/network_caller.dart';
 import 'package:sandrofp/app/urls.dart'; 
  

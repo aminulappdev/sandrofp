@@ -39,7 +39,7 @@ class AllProductController extends GetxController {
           response.responseData,
         );
       } else {
-        showError(response.errorMessage);
+        // showError(response.errorMessage);
         _allProductModel.value = null;
       }
     } catch (e) {
@@ -69,7 +69,7 @@ class AllProductController extends GetxController {
           response.responseData,
         );
       } else {
-        showError(response.errorMessage);
+        // showError(response.errorMessage);
         _allProductModel.value = null;
       }
     } catch (e) {
@@ -102,8 +102,8 @@ class AllProductController extends GetxController {
           response.responseData,
         );
       } else {
-        showError(response.errorMessage);
-        _allProductModel.value = null;
+        // showError(response.errorMessage);
+         _allProductModel.value = null;
       }
     } catch (e) {
       showError('Network error: $e');
@@ -138,7 +138,7 @@ class AllProductController extends GetxController {
           response.responseData,
         );
       } else {
-        showError(response.errorMessage);
+        // showError(response.errorMessage);
         _allProductModel.value = null;
       }
     } catch (e) {

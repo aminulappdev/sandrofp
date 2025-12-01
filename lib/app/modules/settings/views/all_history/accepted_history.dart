@@ -1,7 +1,6 @@
 // completed_history.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 import 'package:sandrofp/app/modules/cart/widget/exchange_card.dart';
 import 'package:sandrofp/app/modules/exchange/views/exchange_process_screen.dart';
 import 'package:sandrofp/app/modules/settings/controller/exchange_history_controller.dart';
