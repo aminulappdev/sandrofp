@@ -93,9 +93,7 @@ class UploadProductDetailsScreen extends GetView<AddProductController> {
                     heightBox10,
                     ProductStaticData(
                       title: product.name,
-                      price: (product.price - product.discount).toStringAsFixed(
-                        2,
-                      ),
+                      price: (product.price).toStringAsFixed(2),
                       address: controller.selectedAddress.value,
                       description: product.descriptions,
                       discount: product.discount.toStringAsFixed(2),

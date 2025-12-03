@@ -145,6 +145,18 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  dynamic _findExchangeRequestToByMessageId(String messageId) {
+    if (messageCtrl.messageResponse.value.data?.data == null) return null;
+    try {
+      final found = messageCtrl.messageResponse.value.data!.data.firstWhere(
+        (m) => m.id == messageId || m.id.toString() == messageId,
+      );
+      return found.exchanges?.requestTo;
+    } catch (_) {
+      return null;
+    }
+  }
+
   dynamic _findExchangeStatusByMessageId(String messageId) {
     if (messageCtrl.messageResponse.value.data?.data == null) return null;
     try {
@@ -259,6 +271,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
                   // এখানে exchanges খুঁজছি id দিয়ে → কখনো RangeError আসবে না
                   final exchangeData = _findExchangeByMessageId(messageId);
+                  var exchangeTo = _findExchangeRequestToByMessageId(messageId);
                   final exchangeStatus = _findExchangeStatusByMessageId(
                     messageId,
                   );
@@ -400,57 +413,102 @@ class _ChatScreenState extends State<ChatScreen> {
                                       )
                                     : Row(
                                         children: [
-                                          GestureDetector(
-                                            onTap: () => changeStatus(
-                                              'accepted',
-                                              exchangeData.id,
-                                            ),
-                                            child: Container(
-                                              width: 120.w,
-                                              height: 40.h,
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(10.r),
-                                                border: Border.all(
-                                                  color: Colors.grey.shade300,
-                                                ),
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  'Yes',
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: 14.sp,
+                                          exchangeTo !=
+                                            StorageUtil.getData(
+                                                StorageUtil.userId,
+                                              )
+                                              ? Container(
+                                                width: 180.w,
+                                                height: 40.h,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.deepOrangeAccent,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                        10.r,
+                                                      ),
+                                                  border: Border.all(
+                                                    color: Colors
+                                                        .grey
+                                                        .shade300,
                                                   ),
                                                 ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(width: 10.w),
-                                          GestureDetector(
-                                            onTap: () => changeStatus(
-                                              'decline',
-                                              exchangeData.id,
-                                            ),
-                                            child: Container(
-                                              width: 120.w,
-                                              height: 40.h,
-                                              decoration: BoxDecoration(
-                                                color: Colors.red,
-                                                borderRadius:
-                                                    BorderRadius.circular(10.r),
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  'No',
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: 14.sp,
-                                                    color: Colors.white,
+                                                child: Center(
+                                                  child: Text(
+                                                    'Pending Approval',
+                                                    style:
+                                                        GoogleFonts.poppins(
+                                                          fontSize:
+                                                              14.sp,
+                                                        ),
                                                   ),
                                                 ),
-                                              ),
-                                            ),
-                                          ),
+                                              )
+                                              : Row(
+                                                  children: [
+                                                    GestureDetector(
+                                                      onTap: () => changeStatus(
+                                                        'accepted',
+                                                        exchangeData.id,
+                                                      ),
+                                                      child: Container(
+                                                        width: 120.w,
+                                                        height: 40.h,
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.white,
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                10.r,
+                                                              ),
+                                                          border: Border.all(
+                                                            color: Colors
+                                                                .grey
+                                                                .shade300,
+                                                          ),
+                                                        ),
+                                                        child: Center(
+                                                          child: Text(
+                                                            'Yes',
+                                                            style:
+                                                                GoogleFonts.poppins(
+                                                                  fontSize:
+                                                                      14.sp,
+                                                                ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 10.w),
+                                                    GestureDetector(
+                                                      onTap: () => changeStatus(
+                                                        'decline',
+                                                        exchangeData.id,
+                                                      ),
+                                                      child: Container(
+                                                        width: 120.w,
+                                                        height: 40.h,
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.red,
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                10.r,
+                                                              ),
+                                                        ),
+                                                        child: Center(
+                                                          child: Text(
+                                                            'No',
+                                                            style:
+                                                                GoogleFonts.poppins(
+                                                                  fontSize:
+                                                                      14.sp,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                         ],
                                       ),
                               ],

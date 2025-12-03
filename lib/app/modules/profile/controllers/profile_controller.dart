@@ -6,7 +6,7 @@ import 'package:sandrofp/app/urls.dart';
  
 class ProfileController extends GetxController { 
   final RxBool obscureText = true.obs;
-  final NetworkCaller _networkCaller = NetworkCaller();
+  final NetworkCaller _networkCaller = NetworkCaller(); 
 
   final Rx<ProfileModel?> _profileModel = Rx<ProfileModel?>(null);
   ProfileData? get profileData => _profileModel.value?.data;

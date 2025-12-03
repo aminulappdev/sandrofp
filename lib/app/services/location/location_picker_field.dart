@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 // ==================== How to use  ====================
 
 /*
-
+ 
 For Controller :
 
 final Rx<LatLng?> selectedLatLng = Rx<LatLng?>(null);
@@ -14,7 +14,11 @@ final RxString selectedAddress = ''.obs;
   void setLocation(LatLng latLng, String address) {
     selectedLatLng.value = latLng;
     selectedAddress.value = address;
-    locationController.text = address;
+  }
+
+  void clearLocation() {
+    selectedLatLng.value = null;
+    selectedAddress.value = '';
   }
 
 

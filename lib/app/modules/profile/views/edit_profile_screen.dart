@@ -1,12 +1,16 @@
 // screens/edit_profile_screen.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:sandrofp/app/modules/authentication/widget/label_name_widget.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
+import 'package:sandrofp/app/services/location/location_picker_field.dart';
+import 'package:sandrofp/app/services/location/location_services.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 import '../controllers/edit_profile_controller.dart';
 
@@ -15,7 +19,7 @@ class EditProfileScreen extends GetView<EditProfileController> {
 
   @override
   Widget build(BuildContext context) {
-    // Controller initialize
+    // Controller initialize (যদিও Get.put আগে থেকে আছে, তবু নিশ্চিত করার জন্য)
     Get.put(EditProfileController());
 
     return Scaffold(
@@ -54,8 +58,7 @@ class EditProfileScreen extends GetView<EditProfileController> {
                         bottom: 0,
                         right: 0,
                         child: GestureDetector(
-                          onTap: controller
-                              .pickImage, // তোমার ImagePickerHelper কল হচ্ছে
+                          onTap: controller.pickImage,
                           child: Container(
                             padding: const EdgeInsets.all(10),
                             decoration: const BoxDecoration(
@@ -115,10 +118,94 @@ class EditProfileScreen extends GetView<EditProfileController> {
                 controller: controller.phoneCtrl,
                 keyboardType: TextInputType.phone,
                 validator: (value) =>
-                    value!.trim().isEmpty ? 'Enter phone' : null,
+                    value!.trim().isEmpty ? 'Enter phone number' : null,
                 decoration: const InputDecoration(
                   hintText: 'Enter your phone number',
                   border: OutlineInputBorder(),
+                ),
+              ),
+
+              heightBox20,
+
+              // Email
+              heightBox20,
+
+              // Location
+              LabelName(label: 'Location'),
+              heightBox8,
+
+              // Email
+              Obx(() {
+                if (controller.selectedLatLng.value != null) {
+                  return Container();
+                } else {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      TextFormField(
+                        controller: controller.locationCtrl,
+
+                        keyboardType: TextInputType.emailAddress,
+                        enabled: false,
+                      ),
+                    ],
+                  );
+                  ;
+                }
+              }),
+
+              heightBox20,
+              Obx(
+                () => LocationField(
+                  address: controller.selectedAddress.value,
+                  onPick: () async {
+                    final pos =
+                        controller.selectedLatLng.value ??
+                        LatLng(23.8103, 90.4125);
+                    final res = await Get.to(
+                      () => LocationPickerScreen(initialPosition: pos),
+                    );
+                    if (res is Map) {
+                      controller.setLocation(res['latLng'], res['address']);
+                    }
+                  },
+                  onClear: controller.clearLocation,
+                ),
+              ),
+
+              heightBox20,
+
+              // Gender Dropdown
+              LabelName(label: 'Gender'),
+              heightBox8,
+              Obx(
+                () => DropdownButtonFormField<String>(
+                  value: controller.selectedGender.value.isEmpty
+                      ? null
+                      : controller.selectedGender.value,
+                  hint: const Text('Select your gender'),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 16,
+                    ),
+                  ),
+                  items: controller.genderOptions
+                      .map(
+                        (gender) => DropdownMenuItem(
+                          value: gender,
+                          child: Text(gender),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    if (value != null) {
+                      controller.selectedGender.value = value;
+                    }
+                  },
+                  validator: (value) =>
+                      value == null ? 'Please select gender' : null,
                 ),
               ),
 
@@ -142,7 +229,6 @@ class EditProfileScreen extends GetView<EditProfileController> {
               Obx(
                 () => CustomElevatedButton(
                   title: 'Save Changes',
-
                   onPress: controller.isLoading.value
                       ? null
                       : controller.editProfile,

@@ -4,10 +4,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:sandrofp/app/get_storage.dart';
 import 'package:sandrofp/app/modules/profile/controllers/profile_controller.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
 import 'package:sandrofp/app/res/common_widgets/image_picker_controller.dart';
+import 'package:sandrofp/app/services/location/address_fetcher.dart';
 import 'package:sandrofp/app/services/network_caller/custom.dart';
 import 'package:sandrofp/app/services/network_caller/network_caller.dart';
 import 'package:sandrofp/app/services/network_caller/network_response.dart';
@@ -16,17 +18,43 @@ import 'package:sandrofp/app/urls.dart';
 
 class EditProfileController extends GetxController {
   final ProfileController profileController = Get.find<ProfileController>();
-  final ImagePickerHelper imagePicker = ImagePickerHelper(); // তোমার ক্লাস
+  final ImagePickerHelper imagePicker = ImagePickerHelper();
 
   final formKey = GlobalKey<FormState>();
   final usernameCtrl = TextEditingController();
   final emailCtrl = TextEditingController();
-  final phoneCtrl = TextEditingController(); 
+  final locationCtrl = TextEditingController();
+  final phoneCtrl = TextEditingController();
   final aboutCtrl = TextEditingController();
 
+  // Image
   final Rx<File?> selectedImage = Rx<File?>(null);
   final RxString networkImageUrl = ''.obs;
+
+  // Location
+  final Rx<LatLng?> selectedLatLng = Rx<LatLng?>(null);
+  final RxString selectedAddress = ''.obs;
+
+  // Gender - নতুন যোগ করা
+  final RxString selectedGender = ''.obs;
+  final List<String> genderOptions = [
+    'Male',
+    'Female',
+    'Other',
+    'Prefer not to say',
+  ];
+
   final RxBool isLoading = false.obs;
+
+  void setLocation(LatLng latLng, String address) {
+    selectedLatLng.value = latLng;
+    selectedAddress.value = address;
+  }
+
+  void clearLocation() {
+    selectedLatLng.value = null;
+    selectedAddress.value = '';
+  }
 
   @override
   void onInit() {
@@ -37,11 +65,25 @@ class EditProfileController extends GetxController {
   void _loadProfile() {
     final data = profileController.profileData;
     if (data != null) {
+      var lat = data.location?.coordinates[0];
+      var lng = data.location?.coordinates[1];
+      var address = AddressHelper.getAddress(lat, lng);
       usernameCtrl.text = data.name ?? '';
       emailCtrl.text = data.email ?? '';
       phoneCtrl.text = data.phoneNumber ?? '';
       aboutCtrl.text = data.about ?? '';
       networkImageUrl.value = data.profile ?? '';
+      locationCtrl.text = address;
+
+      // Gender লোড করা হচ্ছে (API থেকে যদি gender ফিল্ড থাকে)
+      selectedGender.value = data.gender ?? '';
+
+      // Location যদি থাকে (যদি API তে lat, lng, address থাকে)
+      // উদাহরণ: data.latitude, data.longitude, data.address
+      // if (data.latitude != null && data.longitude != null) {
+      //   selectedLatLng.value = LatLng(data.latitude, data.longitude);
+      //   selectedAddress.value = data.address ?? '';
+      // }
     }
   }
 
@@ -63,12 +105,20 @@ class EditProfileController extends GetxController {
     isLoading(true);
     try {
       print('Updating profile...');
-      print('Image: ${selectedImage.value}');
+
       Map<String, dynamic> jsonFields = {
         'name': usernameCtrl.text.trim(),
         'email': emailCtrl.text.trim(),
         'phone': phoneCtrl.text.trim(),
         'about': aboutCtrl.text.trim(),
+        'gender': selectedGender.value, // Gender পাঠানো হচ্ছে
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            selectedLatLng.value!.latitude,
+            selectedLatLng.value!.longitude,
+          ],
+        },
       };
 
       final NetworkResponse response = await Get.find<NetworkCaller>()
@@ -81,8 +131,8 @@ class EditProfileController extends GetxController {
           );
 
       if (response.isSuccess) {
-        await profileController.getMyProfile();
-        showSuccess('Profile updated!');
+        await profileController.getMyProfile(); // প্রোফাইল রিফ্রেশ
+        showSuccess('Profile updated successfully!');
         Navigator.pop(Get.overlayContext!);
       } else {
         showError(response.errorMessage);

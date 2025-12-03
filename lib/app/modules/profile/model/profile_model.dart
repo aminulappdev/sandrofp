@@ -113,6 +113,8 @@ class ProfileData {
         );
     }
 
+  get latitude => null;
+
 }
 
 class Device {

@@ -10,7 +10,7 @@ class ChatMessageModel {
     final MessageData? data;
 
     factory ChatMessageModel.fromJson(Map<String, dynamic> json){ 
-        return ChatMessageModel(
+        return ChatMessageModel( 
             success: json["success"],
             message: json["message"],
             data: json["data"] == null ? null : MessageData.fromJson(json["data"]),
@@ -100,7 +100,7 @@ class Exchanges {
 
     final String? id;
     final String? user;
-    final String? requestTo;
+    final String? requestTo; 
     final String? status;
     final List<ExchangeWith> products;
     final List<ExchangeWith> exchangeWith;

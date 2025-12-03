@@ -1,7 +1,7 @@
 // app/modules/product/views/edit_product_screen.dart
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart'; 
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/home/controller/category_controller.dart';
 import 'package:sandrofp/app/modules/home/widget/feature_row.dart';
@@ -208,20 +208,19 @@ class EditProductScreen extends StatelessWidget {
               ),
               heightBox30,
 
-              const Label(label: 'Location'), heightBox8,
-              TextFormField(
-                controller: controller.locationController,
-                readOnly: true,
-                decoration: const InputDecoration(
-                  hintText: 'Tap to select location',
-                  border: OutlineInputBorder(),
-                  suffixIcon: Icon(Icons.location_on_outlined),
-                ),
-                onTap: () =>
-                    Get.snackbar("Info", "Location picker coming soon!"),
-              ),
-              heightBox30,
-
+              // const Label(label: 'Location'), heightBox8,
+              // TextFormField(
+              //   controller: controller.locationController,
+              //   readOnly: true,
+              //   decoration: const InputDecoration(
+              //     hintText: 'Tap to select location',
+              //     border: OutlineInputBorder(),
+              //     suffixIcon: Icon(Icons.location_on_outlined),
+              //   ),
+              //   onTap: () =>
+              //       Get.snackbar("Info", "Location picker coming soon!"),
+              // ),
+              // heightBox30,
               FeatureRow(
                 title: 'Category:',
                 widget: GestureDetector(

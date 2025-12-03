@@ -48,7 +48,7 @@ class AddressHelper {
       final parts = <String>[
         if (place.street?.isNotEmpty == true) place.street!,
         if (place.subLocality?.isNotEmpty == true) place.subLocality!,
-        if (place.locality?.isNotEmpty == true) place.locality!,
+        // if (place.locality?.isNotEmpty == true) place.locality!,
         if (place.administrativeArea?.isNotEmpty == true)
           place.administrativeArea!,
         if (place.country?.isNotEmpty == true) place.country!,

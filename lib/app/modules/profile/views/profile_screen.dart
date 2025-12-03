@@ -12,6 +12,7 @@ import 'package:sandrofp/app/modules/profile/widgets/comment_widget.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
+import 'package:sandrofp/app/services/location/address_fetcher.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
 class ProfileScreen extends GetView<ProfileScreenController> {
@@ -37,6 +38,9 @@ class ProfileScreen extends GetView<ProfileScreenController> {
             child: Center(child: CircularProgressIndicator()),
           );
         } else {
+          var lat = profileController.profileData?.location?.coordinates[0];
+          var lng = profileController.profileData?.location?.coordinates[1];
+          final address = AddressHelper.getAddress(lat, lng).obs;
           return SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Obx(
@@ -155,26 +159,31 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                   _buildInfoCard('User information', [
                     FeatureRow(
                       title: 'Location',
-                      widget: Text(
-                        profileController.profileData?.status ?? 'N/A',
-                      ),
+                      widget: SizedBox(
+                        width: Get.width * 0.4,
+                        child: Text(
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          address.toString(), style: TextStyle( fontSize: 12),)),
                     ),
-                    FeatureRow(
-                      title: 'Age',
-                      widget: Text(profileController.profileData?.status ?? ''),
-                    ),
+                    heightBox4,
+                    // FeatureRow(
+                    //   title: 'Age',
+                    //   widget: Text(profileController.profileData?.status ?? ''),
+                    // ),
                     FeatureRow(
                       title: 'Gender',
                       widget: Text(
-                        profileController.profileData?.gender ?? 'N/A',
+                        profileController.profileData?.gender ?? 'N/A',style: TextStyle( fontSize: 12),
                       ),
                     ),
-                    FeatureRow(
-                      title: 'Height',
-                      widget: Text(
-                        profileController.profileData?.status ?? 'N/A',
-                      ),
-                    ),
+                    // heightBox4,
+                    // FeatureRow(
+                    //   title: 'Height',
+                    //   widget: Text(
+                    //     profileController.profileData?.status ?? 'N/A',
+                    //   ),
+                    // ),
                   ]),
 
                   heightBox12,
