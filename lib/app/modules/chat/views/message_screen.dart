@@ -414,35 +414,34 @@ class _ChatScreenState extends State<ChatScreen> {
                                     : Row(
                                         children: [
                                           exchangeTo !=
-                                            StorageUtil.getData(
-                                                StorageUtil.userId,
-                                              )
+                                                  StorageUtil.getData(
+                                                    StorageUtil.userId,
+                                                  )
                                               ? Container(
-                                                width: 180.w,
-                                                height: 40.h,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.deepOrangeAccent,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                        10.r,
-                                                      ),
-                                                  border: Border.all(
-                                                    color: Colors
-                                                        .grey
-                                                        .shade300,
-                                                  ),
-                                                ),
-                                                child: Center(
-                                                  child: Text(
-                                                    'Pending Approval',
-                                                    style:
-                                                        GoogleFonts.poppins(
-                                                          fontSize:
-                                                              14.sp,
+                                                  width: 180.w,
+                                                  height: 40.h,
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        Colors.deepOrangeAccent,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          10.r,
                                                         ),
+                                                    border: Border.all(
+                                                      color:
+                                                          Colors.grey.shade300,
+                                                    ),
                                                   ),
-                                                ),
-                                              )
+                                                  child: Center(
+                                                    child: Text(
+                                                      'Pending Approval',
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                            fontSize: 14.sp,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                )
                                               : Row(
                                                   children: [
                                                     GestureDetector(
