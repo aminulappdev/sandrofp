@@ -42,7 +42,7 @@ class _MyProductCardScreenState extends State<MyProductCardScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
+                Text(  
                   'Processing Details',
                   style: GoogleFonts.poppins(
                     fontSize: 16,

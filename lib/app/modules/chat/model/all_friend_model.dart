@@ -10,7 +10,7 @@ class AllFriendsModel {
     final List<AllFriendsItemModel>? data;
 
     factory AllFriendsModel.fromJson(Map<String, dynamic> json){ 
-        return AllFriendsModel(
+        return AllFriendsModel( 
             success: json["success"],
             message: json["message"],
             data: json["data"] == null ? [] : List<AllFriendsItemModel>.from(json["data"]!.map((x) => AllFriendsItemModel.fromJson(x))),

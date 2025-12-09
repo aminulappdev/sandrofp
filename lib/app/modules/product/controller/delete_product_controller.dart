@@ -12,11 +12,11 @@ import 'package:sandrofp/app/urls.dart';
 
 class DeleteProductController extends GetxController {
   final RxBool isLoading = false.obs;
-  late String productId;
+  late String productId; 
 
   @override
   void onClose() {
-    deleteProduct(productId);
+    deleteProduct(productId); 
     super.onClose();
   }
 

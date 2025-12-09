@@ -7,7 +7,7 @@ import 'package:sandrofp/app/modules/product/model/product_model.dart';
 import 'package:sandrofp/app/modules/profile/controllers/my_product_controller.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
 import 'package:sandrofp/app/services/network_caller/network_caller.dart';
-import 'package:sandrofp/app/urls.dart';
+import 'package:sandrofp/app/urls.dart'; 
 
 class EditProductController extends GetxController {
   late AllProductItemModel product;

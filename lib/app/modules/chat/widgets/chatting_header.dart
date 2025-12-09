@@ -22,7 +22,7 @@ class ChatHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
+  
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.only(
@@ -35,7 +35,7 @@ class ChatHeader extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.end,

@@ -57,7 +57,6 @@ class _ChatScreenState extends State<ChatScreen> {
     });
 
     socketService.sokect.on('new_message', _handleIncomingMessage);
-    socketService.sokect.emit('joinChat', {'chatId': recieverId});
   }
 
   void _scrollToBottom() {
@@ -78,6 +77,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _handleIncomingMessage(dynamic data) {
     try {
+      print('Incoming message from socket: $data');
       Map<String, dynamic> msg = {};
 
       if (data is Map && data['message'] != null) {
@@ -228,7 +228,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70.h),
+        preferredSize: Size.fromHeight(80.h),
         child: ChatHeader(
           id: widget.receiverId,
           name: widget.receiverName,
@@ -243,7 +243,7 @@ class _ChatScreenState extends State<ChatScreen> {
             child: Obx(() {
               final messages = socketService.messageList.reversed.toList();
 
-              if (messages.isEmpty && messageCtrl.isLoading.value) {
+              if (messageCtrl.isLoading.value) {
                 return const Center(child: CircularProgressIndicator());
               }
               if (messages.isEmpty) {
@@ -275,7 +275,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   final exchangeStatus = _findExchangeStatusByMessageId(
                     messageId,
                   );
-                  print('EXCHANGE DATA: $exchangeStatus');
+                  // print('EXCHANGE DATA: $exchangeStatus');
 
                   return Align(
                     alignment: isMe

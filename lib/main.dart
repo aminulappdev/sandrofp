@@ -7,6 +7,7 @@ import 'package:sandrofp/app/get_storage.dart';
 import 'package:sandrofp/app/modules/dashboard/views/dashboard_screen.dart';
 import 'package:sandrofp/app/modules/onboarding/views/onboarding_01.dart';
 import 'package:sandrofp/app/res/app_binder/controller_binder.dart';
+import 'package:sandrofp/app/services/location/google_distance_services.dart';
 import 'package:sandrofp/app/services/socket/socket_service.dart';
 
 void main() async {
@@ -18,6 +19,13 @@ void main() async {
 
   // Init FCM token
   // await _initFCMToken();
+
+  // এই দুই লাইন খুব জরুরি
+  await Get.putAsync<LocationService>(() async {
+    final service = LocationService();
+    await service.init();
+    return service;
+  });
 
   final SocketService socketService = Get.put(SocketService());
   await socketService.init();

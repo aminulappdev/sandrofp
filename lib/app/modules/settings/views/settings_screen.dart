@@ -65,7 +65,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     rating:
                         profileController.profileData?.tokens.toString() ?? '',
                     onTap: () {
-                      Get.to(() => const ProfileScreen());
+                      Get.to(() =>  ProfileScreen());
                     },
                   );
                 }

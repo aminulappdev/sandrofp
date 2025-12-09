@@ -42,7 +42,7 @@ class CartScreen extends GetView<CartController> {
 
               return Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: Column(
+                child: Column( 
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -62,8 +62,8 @@ class CartScreen extends GetView<CartController> {
                           final price = product.price?.toDouble() ?? 0.0;
                           final discount = product.discount?.toDouble() ?? 0.0;
                           final updatePrice = price - discount;
-                           var lat = product.location?.coordinates[0];
-                            var lng = product.location?.coordinates[1];
+                          var lat = product.location?.coordinates[0];
+                          var lng = product.location?.coordinates[1];
 
                             final address = AddressHelper.getAddress(lat, lng);
 

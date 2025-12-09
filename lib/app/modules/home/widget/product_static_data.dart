@@ -11,13 +11,14 @@ class ProductStaticData extends StatelessWidget {
   final String? address;
   final String? title;
   final String? description;
+  final String? distance;
   const ProductStaticData({
     super.key,
     this.price,
     this.discount,
-    this.address,
+    this.address, 
     this.title,
-    this.description,
+    this.description, this.distance,
   });
 
   @override
@@ -98,7 +99,7 @@ class ProductStaticData extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    '2km away',
+                    '$distance away',
                     style: GoogleFonts.poppins(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,

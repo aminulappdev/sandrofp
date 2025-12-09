@@ -1,11 +1,12 @@
 // app/modules/home/views/home_screen.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/home/controller/category_controller.dart';
 import 'package:sandrofp/app/modules/home/controller/home_controller.dart';
-import 'package:sandrofp/app/modules/home/controller/home_product_controller.dart'; // নতুন
+import 'package:sandrofp/app/modules/home/controller/home_product_controller.dart';
 import 'package:sandrofp/app/modules/home/views/view_all_category_screen.dart';
 import 'package:sandrofp/app/modules/home/widget/category_header.dart';
 import 'package:sandrofp/app/modules/home/widget/category_image.dart';
@@ -18,25 +19,44 @@ import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/app/res/shimmer/category_shimmer.dart';
 import 'package:sandrofp/app/res/shimmer/product_card_shimmer.dart';
 import 'package:sandrofp/app/services/location/address_fetcher.dart';
+import 'package:sandrofp/app/services/location/google_distance_services.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
-class HomeScreen extends GetView<HomeController> {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Controllers
-    final HomeController homeController = Get.find<HomeController>();
-    final ProfileController profileController = Get.find<ProfileController>();
-    final CategoryController categoryController =
-        Get.find<CategoryController>();
-    final HomeProductController homeProductController =
-        Get.find<HomeProductController>();
+    final homeController = Get.find<HomeController>();
+    final profileController = Get.find<ProfileController>();
+    final categoryController = Get.find<CategoryController>();
+    final productController = Get.find<HomeProductController>();
+
+    // Shared location service
+    final locationService = LocationService.to;
+
+    Future<String> getLiveDistance(double? lat, double? lng) async {
+      if (lat == null || lng == null) return "Far";
+
+      if (!locationService.isReady.value ||
+          locationService.currentLocation.value == null) {
+        debugPrint("Location not ready yet – showing Far");
+        return "Far";
+      }
+
+      return await DistanceService.getDistanceInKm(
+        userLat: locationService.currentLocation.value!.latitude!,
+        userLng: locationService.currentLocation.value!.longitude!,
+        productLat: lat,
+        productLng: lng,
+      );
+    }
 
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () async {
-          await Future.wait([homeProductController.refresh()]);
+          await productController.refresh();
+          await locationService.getLocation(); // Refresh location too
         },
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -48,13 +68,12 @@ class HomeScreen extends GetView<HomeController> {
                 height: MediaQuery.of(context).size.height * 0.36,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(40),
-                    bottomRight: Radius.circular(40),
+                  borderRadius: const BorderRadius.vertical(
+                    bottom: Radius.circular(40),
                   ),
                   image: DecorationImage(
                     image: AssetImage(Assets.images.background.keyName),
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 child: Obx(() {
@@ -71,7 +90,8 @@ class HomeScreen extends GetView<HomeController> {
                         profileController.profileData?.tokens.toString() ?? '0',
                     notificationAction: homeController.goToNotifications,
                     settingsAction: homeController.goToFilters,
-                    arrowAction: () => Get.to(() => TokenExchangeScreen()),
+                    arrowAction: () =>
+                        Get.to(() => const TokenExchangeScreen()),
                   );
                 }),
               ),
@@ -83,6 +103,7 @@ class HomeScreen extends GetView<HomeController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Exchange by items + View all
                     Row(
                       children: [
                         Text(
@@ -90,14 +111,11 @@ class HomeScreen extends GetView<HomeController> {
                           style: GoogleFonts.poppins(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
-                            color: Colors.black,
                           ),
                         ),
                         const Spacer(),
                         InkWell(
-                          onTap: () {
-                            Get.to(() => ViewAllCategoryScreen());
-                          }, 
+                          onTap: () => Get.to(() => ViewAllCategoryScreen()),
                           child: Text(
                             'View all',
                             style: GoogleFonts.poppins(
@@ -109,7 +127,7 @@ class HomeScreen extends GetView<HomeController> {
                         ),
                       ],
                     ),
-                    heightBox8,
+                    heightBox10,
 
                     // Categories Grid
                     Obx(() {
@@ -119,22 +137,17 @@ class HomeScreen extends GetView<HomeController> {
 
                       final categories =
                           categoryController.categoryData?.data ?? [];
-
                       if (categories.isEmpty) {
-                        return const Padding(
-                          padding: EdgeInsets.all(16),
-                          child: Text(
-                            "No categories available",
-                            style: TextStyle(color: Colors.grey),
-                          ),
+                        return const Center(
+                          child: Text("No categories available"),
                         );
                       }
 
                       return SizedBox(
                         height: categories.length < 2 ? 110 : 210,
                         child: GridView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.zero,
+                          physics: const NeverScrollableScrollPhysics(),
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
@@ -145,19 +158,17 @@ class HomeScreen extends GetView<HomeController> {
                           itemCount: categories.length > 4
                               ? 4
                               : categories.length,
-                          itemBuilder: (context, index) {
-                            final category = categories[index];
+                          itemBuilder: (context, i) {
+                            final cat = categories[i];
                             return CategoryImage(
                               height: 100,
                               width: 100,
-                              name: category.name ?? '',
-                              imagePath: category.banner ?? '',
-                              onTap: () {
-                                homeController.goToViewAll(
-                                  category.name ?? 'Category',
-                                  category.id.toString(),
-                                );
-                              },
+                              name: cat.name ?? '',
+                              imagePath: cat.banner ?? '',
+                              onTap: () => homeController.goToViewAll(
+                                cat.name ?? 'Category',
+                                cat.id.toString(),
+                              ),
                             );
                           },
                         ),
@@ -165,7 +176,7 @@ class HomeScreen extends GetView<HomeController> {
                     }),
                     heightBox16,
 
-                    // === All Products Section ===
+                    // All Products
                     CategoryHeader(
                       name: 'All products',
                       onTap: homeController.goToAllProducts,
@@ -173,24 +184,15 @@ class HomeScreen extends GetView<HomeController> {
                     heightBox10,
 
                     Obx(() {
-                      if (homeProductController.isLoadingAll.value) {
+                      if (productController.isLoadingAll.value) {
                         return const ProductCardShimmerEffectWidget();
                       }
 
-                      final items = homeProductController.allProducts;
-
+                      final items = productController.allProducts;
                       if (items.isEmpty) {
                         return const SizedBox(
                           height: 300,
-                          child: Center(
-                            child: Text(
-                              'No matches found',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
+                          child: Center(child: Text('No matches found')),
                         );
                       }
 
@@ -203,36 +205,55 @@ class HomeScreen extends GetView<HomeController> {
                           numberOfCardsDisplayed: items.length >= 2 ? 2 : 1,
                           cardsCount: items.length,
                           cardBuilder: (context, index, _, __) {
-                            var lat = items[index].location?.coordinates[0];
-                            var lng = items[index].location?.coordinates[1];
-
-                            final address = AddressHelper.getAddress(lat, lng);
                             final product = items[index];
-                            var updatePrice =
-                                items[index].price! - items[index].discount;
-                            return HomeProductCard(
-                              onTap: () =>
-                                  homeController.goToProductDetails(product),
-                              imagePath: product.images.isNotEmpty
-                                  ? product.images.first.url
-                                  : '',
-                              price: '\$$updatePrice',
-                              ownerName: product.author?.name ?? 'Unknown',
-                              description: product.descriptions,
-                              address: address,
-                              discount: '${product.discount}\$',
-                              distance: '2.5 km',
-                              rating: product.author?.avgRating.toString(),
-                              profile: product.author?.profile,
-                              title: product.name,
+
+                            // GeoJSON format: [longitude, latitude]
+                            final double? productLat =
+                                product.location?.coordinates[1];
+                            final double? productLng =
+                                product.location?.coordinates[0];
+
+                            final priceAfterDiscount =
+                                (product.price ?? 0) - (product.discount ?? 0);
+
+                            return FutureBuilder<String>(
+                              future: getLiveDistance(productLat, productLng),
+                              builder: (context, snapshot) {
+                                final distance = snapshot.data ?? "Far";
+
+                                return HomeProductCard(
+                                  onTap: () => homeController
+                                      .goToProductDetails(product),
+                                  imagePath: product.images.isNotEmpty
+                                      ? product.images.first.url
+                                      : 'https://via.placeholder.com/300',
+                                  price: '\$$priceAfterDiscount',
+                                  ownerName: product.author?.name ?? 'Unknown',
+                                  description: product.descriptions ?? '',
+                                  address: AddressHelper.getAddress(
+                                    productLat,
+                                    productLng,
+                                  ),
+                                  discount: '${product.discount ?? 0}\$',
+                                  distance:
+                                      distance, // Perfect English distance
+                                  rating:
+                                      product.author?.avgRating
+                                          ?.toStringAsFixed(1) ??
+                                      '0',
+                                  profile: product.author?.profile ?? '',
+                                  title: product.name ?? 'No Title',
+                                );
+                              },
                             );
                           },
                         ),
                       );
                     }),
+
                     heightBox20,
 
-                    // === Nearby Products Section ===
+                    // Nearby Products (same logic)
                     CategoryHeader(
                       name: 'Nearby products',
                       onTap: homeController.goToNearbyProducts,
@@ -240,23 +261,16 @@ class HomeScreen extends GetView<HomeController> {
                     heightBox10,
 
                     Obx(() {
-                      if (homeProductController.isLoadingNearby.value) {
+                      if (productController.isLoadingNearby.value) {
                         return const ProductCardShimmerEffectWidget();
                       }
 
-                      final items = homeProductController.nearbyProducts;
-
+                      final items = productController.nearbyProducts;
                       if (items.isEmpty) {
                         return const SizedBox(
                           height: 300,
                           child: Center(
-                            child: Text(
-                              'No nearby products found',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey,
-                              ),
-                            ),
+                            child: Text('No nearby products found'),
                           ),
                         );
                       }
@@ -271,23 +285,43 @@ class HomeScreen extends GetView<HomeController> {
                           cardsCount: items.length,
                           cardBuilder: (context, index, _, __) {
                             final product = items[index];
-                            var updatePrice =
-                                items[index].price! - items[index].discount;
-                            return HomeProductCard(
-                              onTap: () =>
-                                  homeController.goToProductDetails(product),
-                              imagePath: product.images.isNotEmpty
-                                  ? product.images.first.url
-                                  : '',
-                              price: '\$$updatePrice',
-                              ownerName: product.author?.name ?? 'Unknown',
-                              description: product.descriptions,
-                              address: product.author?.name ?? 'Nearby',
-                              discount: '${product.discount}',
-                              distance: '2.5 km',
-                              rating: product.author?.avgRating.toString(),
-                              profile: product.author?.profile,
-                              title: product.name,
+                            final double? productLat =
+                                product.location?.coordinates[1];
+                            final double? productLng =
+                                product.location?.coordinates[0];
+
+                            return FutureBuilder<String>(
+                              future: getLiveDistance(productLat, productLng),
+                              builder: (context, snapshot) {
+                                final distance = snapshot.data ?? "Far";
+
+                                final priceAfterDiscount =
+                                    (product.price ?? 0) -
+                                    (product.discount ?? 0);
+
+                                return HomeProductCard(
+                                  onTap: () => homeController
+                                      .goToProductDetails(product),
+                                  imagePath: product.images.isNotEmpty
+                                      ? product.images.first.url
+                                      : 'https://via.placeholder.com/300',
+                                  price: '\$$priceAfterDiscount',
+                                  ownerName: product.author?.name ?? 'Unknown',
+                                  description: product.descriptions ?? '',
+                                  address: AddressHelper.getAddress(
+                                    productLat,
+                                    productLng,
+                                  ),
+                                  discount: '${product.discount ?? 0}\$',
+                                  distance: distance,
+                                  rating:
+                                      product.author?.avgRating
+                                          ?.toStringAsFixed(1) ??
+                                      '0',
+                                  profile: product.author?.profile ?? '',
+                                  title: product.name ?? 'No Title',
+                                );
+                              },
                             );
                           },
                         ),

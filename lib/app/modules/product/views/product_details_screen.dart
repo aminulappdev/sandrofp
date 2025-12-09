@@ -1,6 +1,7 @@
 // app/modules/product_details/views/product_details_screen.dart
+
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/Get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/get_storage.dart';
 import 'package:sandrofp/app/modules/cart/views/cart_screen.dart';
@@ -16,13 +17,79 @@ import 'package:sandrofp/app/res/common_widgets/image_container.dart';
 import 'package:sandrofp/app/res/common_widgets/straight_liner.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/app/services/location/address_fetcher.dart';
+import 'package:sandrofp/app/services/location/google_distance_services.dart';
 
-class ProductDetailsScreen extends GetView<ProductDetailsController> {
+class ProductDetailsScreen extends StatefulWidget {
   const ProductDetailsScreen({super.key});
+
+  @override
+  State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
+}
+
+class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  final ProductDetailsController controller =
+      Get.find<ProductDetailsController>();
+  final locationService = LocationService.to; // Shared location
+
+  String distanceText = "Calculating...";
+
+  @override
+  void initState() {
+    super.initState();
+    _calculateDistanceWhenReady();
+  }
+
+  /// Waits for location to be ready, then calculates distance
+  Future<void> _calculateDistanceWhenReady() async {
+    // Max 10 seconds wait
+    int attempts = 0;
+    while (!locationService.isReady.value && attempts < 100) {
+      await Future.delayed(const Duration(milliseconds: 100));
+      attempts++;
+    }
+
+    // If still not ready, use fallback (should never happen because of fallback in LocationService)
+    final currentLoc = locationService.currentLocation.value;
+    if (currentLoc == null) {
+      if (mounted) setState(() => distanceText = "Far");
+      return;
+    }
+
+    final product = controller.product;
+    if (product == null ||
+        product.location?.coordinates == null ||
+        product.location!.coordinates.length < 2) {
+      if (mounted) setState(() => distanceText = "Unknown");
+      return;
+    }
+
+    final double productLat = product.location!.coordinates[1]; // latitude
+    final double productLng = product.location!.coordinates[0]; // longitude
+
+    try {
+      final distance = await DistanceService.getDistanceInKm(
+        userLat: currentLoc.latitude!,
+        userLng: currentLoc.longitude!,
+        productLat: productLat,
+        productLng: productLng,
+      );
+
+      if (mounted) {
+        setState(() {
+          distanceText = distance;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => distanceText = "Far");
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     var productLength = controller.product?.images.length ?? 0;
+
     return Scaffold(
       appBar: CustomAppBar(title: 'Back', leading: Container()),
       body: Column(
@@ -37,7 +104,7 @@ class ProductDetailsScreen extends GetView<ProductDetailsController> {
                   children: [
                     heightBox12,
 
-                    // Main Product Image
+                    // Main Image
                     ImageContainer(
                       height: 220,
                       width: double.infinity,
@@ -50,67 +117,69 @@ class ProductDetailsScreen extends GetView<ProductDetailsController> {
                     heightBox12,
 
                     // Thumbnail Images
-                    controller.product!.images.length > 1
-                        ? SizedBox(
-                            height: 80,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: productLength - 1,
-                              itemBuilder: (context, index) {
-                                var newIndex = index + 1;
-                                return Padding(
-                                  padding: const EdgeInsets.only(right: 8),
-                                  child: ImageContainer(
-                                    height: 80,
-                                    width: 80,
-                                    imagePath:
-                                        controller
-                                            .product
-                                            ?.images[newIndex]
-                                            .url ??
-                                        '',
-                                    radius: 16,
-                                  ),
-                                );
-                              },
-                            ),
-                          )
-                        : Container(),
+                    if (controller.product!.images.length > 1)
+                      SizedBox(
+                        height: 80,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: productLength - 1,
+                          itemBuilder: (context, index) {
+                            var newIndex = index + 1;
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: ImageContainer(
+                                height: 80,
+                                width: 80,
+                                imagePath:
+                                    controller.product?.images[newIndex].url ??
+                                    '',
+                                radius: 16,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
 
                     heightBox10,
-                    controller.product!.author?.id !=
-                            StorageUtil.getData(StorageUtil.userId)
-                        ? BuyerDetails(
-                            image: controller.product!.author?.profile ?? '',
-                            description: controller.product?.descriptions ?? '',
-                            rating: controller.product?.author?.avgRating ?? 0,
-                            id: controller.product?.author?.id ?? '',
-                            name: controller.product?.author?.name ?? '',
-                          )
-                        : Container(),
-                    controller.product!.author?.id !=
-                            StorageUtil.getData(StorageUtil.userId)
-                        ? heightBox20
-                        : heightBox4,
 
+                    // Buyer Details (only if not own product)
+                    if (controller.product!.author?.id !=
+                        StorageUtil.getData(StorageUtil.userId))
+                      BuyerDetails(
+                        image: controller.product!.author?.profile ?? '',
+                        description: controller.product?.descriptions ?? '',
+                        rating: controller.product?.author?.avgRating ?? 0,
+                        id: controller.product?.author?.id ?? '',
+                        name: controller.product?.author?.name ?? '',
+                      ),
+
+                    if (controller.product!.author?.id !=
+                        StorageUtil.getData(StorageUtil.userId))
+                      heightBox20
+                    else
+                      heightBox4,
+
+                    // Product Info with Distance
                     Obx(() {
-                      var lat = controller.product?.location?.coordinates[0];
-                      var lng = controller.product?.location?.coordinates[1];
-                      final address$ = AddressHelper.getAddress(lat, lng).obs;
-                      var updatePrice =
+                      final lat = controller.product?.location?.coordinates?[1];
+                      final lng = controller.product?.location?.coordinates?[0];
+                      final updatePrice =
                           controller.product!.price! -
-                          controller.product?.discount;
+                          (controller.product?.discount ?? 0);
+
                       return ProductStaticData(
                         title: controller.product?.name ?? '',
                         price: updatePrice.toString(),
-                        address: address$.value,
+                        address: AddressHelper.getAddress(lat, lng),
                         description: controller.product?.descriptions ?? '',
-                        discount: controller.product?.discount.toString() ?? '',
+                        discount: (controller.product?.discount ?? 0)
+                            .toString(),
+                        distance: distanceText, // Perfect English distance
                       );
                     }),
 
-                    // Title
+                    // Product Details Title
                     Text(
                       'Product Details',
                       style: GoogleFonts.poppins(
@@ -121,7 +190,7 @@ class ProductDetailsScreen extends GetView<ProductDetailsController> {
                     ),
                     heightBox10,
 
-                    // Size Selection
+                    // Size
                     FeatureRow(
                       title: 'Size:',
                       widget: LabelData(
@@ -135,7 +204,7 @@ class ProductDetailsScreen extends GetView<ProductDetailsController> {
                     const StraightLiner(),
                     heightBox10,
 
-                    // Brand Selection
+                    // Material
                     FeatureRow(
                       title: 'Material:',
                       widget: LabelData(
@@ -165,7 +234,7 @@ class ProductDetailsScreen extends GetView<ProductDetailsController> {
                     const StraightLiner(),
                     heightBox10,
 
-                    // Color Selection
+                    // Color
                     FeatureRow(
                       title: 'Color:',
                       widget: LabelData(
@@ -179,7 +248,7 @@ class ProductDetailsScreen extends GetView<ProductDetailsController> {
                     const StraightLiner(),
                     heightBox10,
 
-                    // Delivery Policy
+                    // Delivery
                     FeatureRow(
                       title: 'Delivery Policy:',
                       widget: Text(
@@ -200,53 +269,52 @@ class ProductDetailsScreen extends GetView<ProductDetailsController> {
             ),
           ),
 
-          // Bottom Action Buttons
-          controller.product!.author?.id ==
-                  StorageUtil.getData(StorageUtil.userId)
-              ? Container()
-              : Card(
-                  elevation: 3,
-                  margin: EdgeInsets.zero,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                  ),
-                  child: Container(
-                    height: 80,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: CustomElevatedButton(
-                            color: AppColors.greenColor,
-                            textColor: Colors.white,
-                            title: 'Request Exchange',
-                            onPress: () => Get.to(
-                              () => CartScreen(),
-                              arguments: {'data': controller.product},
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+          // Bottom Button
+          if (controller.product!.author?.id ==
+              StorageUtil.getData(StorageUtil.userId))
+            Container()
+          else
+            Card(
+              elevation: 3,
+              margin: EdgeInsets.zero,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              child: Container(
+                height: 80,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
                   ),
                 ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: CustomElevatedButton(
+                        color: AppColors.greenColor,
+                        textColor: Colors.white,
+                        title: 'Request Exchange',
+                        onPress: () => Get.to(
+                          () => CartScreen(),
+                          arguments: {'data': controller.product},
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
         ],
       ),
     );
   }
-
-  // Reusable Selectable Label
 }

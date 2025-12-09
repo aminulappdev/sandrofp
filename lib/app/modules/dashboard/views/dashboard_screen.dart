@@ -60,7 +60,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ChatListScreen(),
           const HomeScreen(),
           const SettingsScreen(),
-          const ProfileScreen(),
+           ProfileScreen(),
         ],
       ),
     );

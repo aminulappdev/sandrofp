@@ -108,24 +108,24 @@ class ProductCart extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 4,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xffEBF2EE),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Text(
-                                    '${distance ?? '0'} km',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.greenColor,
-                                    ),
-                                  ),
-                                ),
+                                // Container(
+                                //   padding: const EdgeInsets.symmetric(
+                                //     horizontal: 8,
+                                //     vertical: 4,
+                                //   ),
+                                //   decoration: BoxDecoration(
+                                //     color: const Color(0xffEBF2EE),
+                                //     borderRadius: BorderRadius.circular(20),
+                                //   ),
+                                //   child: Text(
+                                //     '${distance ?? '0'} km',
+                                //     style: GoogleFonts.poppins(
+                                //       fontSize: 10,
+                                //       fontWeight: FontWeight.w600,
+                                //       color: AppColors.greenColor,
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             )
                           : Container(),

@@ -228,18 +228,23 @@ class HomeProductCard extends StatelessWidget {
                           ),
                           Container(
                             height: 30,
-                            width: 80,
+                            width: 100,
                             decoration: BoxDecoration(
                               color: Color(0xffEBF2EE),
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            child: Center(
-                              child: Text(
-                                '$distance away',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.greenColor,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 4,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '$distance away',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.greenColor,
+                                  ),
                                 ),
                               ),
                             ),

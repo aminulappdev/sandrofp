@@ -1,6 +1,5 @@
 // controllers/edit_profile_controller.dart
 // ignore_for_file: avoid_print
-
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,7 +18,6 @@ import 'package:sandrofp/app/urls.dart';
 class EditProfileController extends GetxController {
   final ProfileController profileController = Get.find<ProfileController>();
   final ImagePickerHelper imagePicker = ImagePickerHelper();
-
   final formKey = GlobalKey<FormState>();
   final usernameCtrl = TextEditingController();
   final emailCtrl = TextEditingController();
@@ -35,7 +33,7 @@ class EditProfileController extends GetxController {
   final Rx<LatLng?> selectedLatLng = Rx<LatLng?>(null);
   final RxString selectedAddress = ''.obs;
 
-  // Gender - নতুন যোগ করা
+  // Gender
   final RxString selectedGender = ''.obs;
   final List<String> genderOptions = [
     'Male',
@@ -68,22 +66,22 @@ class EditProfileController extends GetxController {
       var lat = data.location?.coordinates[0];
       var lng = data.location?.coordinates[1];
       var address = AddressHelper.getAddress(lat, lng);
+
       usernameCtrl.text = data.name ?? '';
       emailCtrl.text = data.email ?? '';
       phoneCtrl.text = data.phoneNumber ?? '';
       aboutCtrl.text = data.about ?? '';
-      networkImageUrl.value = data.profile ?? '';
       locationCtrl.text = address;
-
-      // Gender লোড করা হচ্ছে (API থেকে যদি gender ফিল্ড থাকে)
       selectedGender.value = data.gender ?? '';
 
-      // Location যদি থাকে (যদি API তে lat, lng, address থাকে)
-      // উদাহরণ: data.latitude, data.longitude, data.address
-      // if (data.latitude != null && data.longitude != null) {
-      //   selectedLatLng.value = LatLng(data.latitude, data.longitude);
-      //   selectedAddress.value = data.address ?? '';
-      // }
+      // ========= সবচেয়ে সেফ চেক =========
+      final profileUrl = (data.profile ?? '').toString().trim();
+      if (profileUrl.isNotEmpty && Uri.tryParse(profileUrl)?.hasScheme == true) {
+        networkImageUrl.value = profileUrl;
+      } else {
+        networkImageUrl.value = ''; // invalid হলে খালি রাখো
+      }
+      // ====================================
     }
   }
 
@@ -101,37 +99,36 @@ class EditProfileController extends GetxController {
 
   Future<void> performEditProfile() async {
     if (!formKey.currentState!.validate()) return;
-
     isLoading(true);
     try {
       print('Updating profile...');
-
       Map<String, dynamic> jsonFields = {
         'name': usernameCtrl.text.trim(),
         'email': emailCtrl.text.trim(),
         'phone': phoneCtrl.text.trim(),
         'about': aboutCtrl.text.trim(),
-        'gender': selectedGender.value, // Gender পাঠানো হচ্ছে
-        "location": {
-          "type": "Point",
-          "coordinates": [
-            selectedLatLng.value!.latitude,
-            selectedLatLng.value!.longitude,
-          ],
-        },
+        'gender': selectedGender.value,
+        "location": selectedLatLng.value != null
+            ? {
+                "type": "Point",
+                "coordinates": [
+                  selectedLatLng.value!.latitude,
+                  selectedLatLng.value!.longitude,
+                ],
+              }
+            : null,
       };
 
-      final NetworkResponse response = await Get.find<NetworkCaller>()
-          .patchRequest(
-            Urls.updateProfileUrl,
-            body: jsonFields,
-            accessToken: StorageUtil.getData(StorageUtil.userAccessToken),
-            image: selectedImage.value,
-            keyNameImage: 'profile',
-          );
+      final NetworkResponse response = await Get.find<NetworkCaller>().patchRequest(
+        Urls.updateProfileUrl,
+        body: jsonFields,
+        accessToken: StorageUtil.getData(StorageUtil.userAccessToken),
+        image: selectedImage.value,
+        keyNameImage: 'profile',
+      );
 
       if (response.isSuccess) {
-        await profileController.getMyProfile(); // প্রোফাইল রিফ্রেশ
+        await profileController.getMyProfile();
         showSuccess('Profile updated successfully!');
         Navigator.pop(Get.overlayContext!);
       } else {

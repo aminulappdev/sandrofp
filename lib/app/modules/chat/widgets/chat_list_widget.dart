@@ -12,7 +12,7 @@ class ChatListHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Container( 
       height: 160,
       width: double.infinity,
       decoration: BoxDecoration(
