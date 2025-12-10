@@ -6,7 +6,7 @@ class ChatMessageModel {
     });
 
     final bool? success;
-    final String? message;
+    final String? message; 
     final MessageData? data;
 
     factory ChatMessageModel.fromJson(Map<String, dynamic> json){ 
@@ -104,8 +104,8 @@ class Exchanges {
     final String? status;
     final List<ExchangeWith> products;
     final List<ExchangeWith> exchangeWith;
-    final int? extraToken;
-    final int? totalToken;
+    final dynamic extraToken;
+    final dynamic totalToken;
     final List<dynamic> reviewers;
     final dynamic reason;
     final bool? isReviewed;
@@ -177,9 +177,9 @@ class ExchangeWith {
     final bool? isFeatured;
     final bool? isVerified;
     final String? category;
-    final int? price;
+    final dynamic price;
     final String? quantity;
-    final int? discount;
+    final dynamic discount;
     final bool? isDeleted;
     final DateTime? createdAt;
     final DateTime? updatedAt;

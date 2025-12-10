@@ -12,7 +12,7 @@ class MessageController extends GetxController {
   bool get inProgress => _inProgress;
 
   String? _errorMessage;
-  String? get errorMessage => _errorMessage;
+  String? get errorMessage => _errorMessage; 
 
   final SocketService socketService = Get.find<SocketService>();
   var isLoading = false.obs;
