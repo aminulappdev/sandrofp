@@ -4,7 +4,7 @@ import 'package:sandrofp/app/get_storage.dart';
 import 'package:sandrofp/app/modules/profile/controllers/profile_controller.dart';
 import 'package:sandrofp/app/urls.dart'; 
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-
+ 
 class SocketService extends GetxController {
   late IO.Socket _socket;
 
