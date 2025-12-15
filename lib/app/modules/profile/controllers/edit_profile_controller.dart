@@ -8,7 +8,6 @@ import 'package:sandrofp/app/get_storage.dart';
 import 'package:sandrofp/app/modules/profile/controllers/profile_controller.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
 import 'package:sandrofp/app/res/common_widgets/image_picker_controller.dart';
-import 'package:sandrofp/app/services/location/address_fetcher.dart';
 import 'package:sandrofp/app/services/network_caller/custom.dart';
 import 'package:sandrofp/app/services/network_caller/network_caller.dart';
 import 'package:sandrofp/app/services/network_caller/network_response.dart';
@@ -44,16 +43,6 @@ class EditProfileController extends GetxController {
 
   final RxBool isLoading = false.obs;
 
-  void setLocation(LatLng latLng, String address) {
-    selectedLatLng.value = latLng;
-    selectedAddress.value = address;
-  }
-
-  void clearLocation() {
-    selectedLatLng.value = null;
-    selectedAddress.value = '';
-  }
-
   @override
   void onInit() {
     super.onInit();
@@ -63,20 +52,16 @@ class EditProfileController extends GetxController {
   void _loadProfile() {
     final data = profileController.profileData;
     if (data != null) {
-      var lat = data.location?.coordinates[0];
-      var lng = data.location?.coordinates[1];
-      var address = AddressHelper.getAddress(lat, lng);
-
       usernameCtrl.text = data.name ?? '';
       emailCtrl.text = data.email ?? '';
       phoneCtrl.text = data.phoneNumber ?? '';
       aboutCtrl.text = data.about ?? '';
-      locationCtrl.text = address;
       selectedGender.value = data.gender ?? '';
 
       // ========= সবচেয়ে সেফ চেক =========
       final profileUrl = (data.profile ?? '').toString().trim();
-      if (profileUrl.isNotEmpty && Uri.tryParse(profileUrl)?.hasScheme == true) {
+      if (profileUrl.isNotEmpty &&
+          Uri.tryParse(profileUrl)?.hasScheme == true) {
         networkImageUrl.value = profileUrl;
       } else {
         networkImageUrl.value = ''; // invalid হলে খালি রাখো
@@ -119,13 +104,14 @@ class EditProfileController extends GetxController {
             : null,
       };
 
-      final NetworkResponse response = await Get.find<NetworkCaller>().patchRequest(
-        Urls.updateProfileUrl,
-        body: jsonFields,
-        accessToken: StorageUtil.getData(StorageUtil.userAccessToken),
-        image: selectedImage.value,
-        keyNameImage: 'profile',
-      );
+      final NetworkResponse response = await Get.find<NetworkCaller>()
+          .patchRequest(
+            Urls.updateProfileUrl,
+            body: jsonFields,
+            accessToken: StorageUtil.getData(StorageUtil.userAccessToken),
+            image: selectedImage.value,
+            keyNameImage: 'profile',
+          );
 
       if (response.isSuccess) {
         await profileController.getMyProfile();

@@ -44,10 +44,10 @@ class _AgreeConditionCheckState extends State<AgreeConditionCheck> {
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
                       Get.to(
-                         ContentScreen(),
+                        ContentScreen(),
                         arguments: {
                           'title': 'Terms of Service',
-                          'data': 'aboutUs',
+                          'key': 'termsAndConditions',
                         },
                       );
                     },

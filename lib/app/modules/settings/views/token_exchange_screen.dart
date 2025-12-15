@@ -14,25 +14,30 @@ import 'package:sandrofp/gen/assets.gen.dart';
 class TokenExchangeScreen extends StatefulWidget {
   const TokenExchangeScreen({super.key});
 
-  @override
+  @override 
   State<TokenExchangeScreen> createState() => _TokenExchangeScreenState();
 }
 
 class _TokenExchangeScreenState extends State<TokenExchangeScreen> {
   final TextEditingController amountController = TextEditingController();
   final PaymentService paymentService = PaymentService();
-  final ContentController contentController = Get.put(ContentController());
+  
+  late final ContentController contentController;
 
   double tokenToUSD = 0.0;
   double dollarAmount = 0.0;
 
-  // লোডিং স্টেট যোগ করলাম
   bool _isExchanging = false;
 
   @override
   void initState() {
     super.initState();
-    contentController.fetchContent('perTokenPrice');
+    
+    contentController = Get.put(ContentController());
+    
+    // safe way — কোনো error snackbar আসবে না, arguments ছাড়াই fetch
+    contentController.loadContentByKey('perTokenPrice');
+    
     amountController.text = "1";
     amountController.addListener(_calculateUSD);
   }
@@ -69,7 +74,6 @@ class _TokenExchangeScreenState extends State<TokenExchangeScreen> {
     return 0.0;
   }
 
-  // Exchange বাটনের কাজ – লোডিং + এরর হ্যান্ডলিং
   Future<void> _exchangeNow() async {
     final input = amountController.text.trim();
     final tokens = double.tryParse(input.replaceAll(',', ''));

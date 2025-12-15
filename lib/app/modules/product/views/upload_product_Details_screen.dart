@@ -222,7 +222,7 @@ class UploadProductDetailsScreen extends GetView<AddProductController> {
                   topRight: Radius.circular(20),
                 ),
               ),
-              child: Row(
+              child: Row( 
                 children: [
                   Expanded(
                     child: CustomElevatedButton(

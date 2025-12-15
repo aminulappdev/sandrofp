@@ -2,47 +2,38 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sandrofp/app/get_storage.dart';
+import 'package:sandrofp/app/modules/chat/controller/all_friend_controller.dart';
 import 'package:sandrofp/app/modules/profile/controllers/profile_controller.dart';
 
 class DashboardController extends GetxController {
   final ProfileController profileController = Get.find<ProfileController>();
+  final FriendController friendController = Get.put(FriendController());
 
-  final RxInt _tabIndex = 2.obs; // ডিফল্ট Home
+  // সবসময় Home tab (index 2) দিয়ে শুরু
+  final RxInt _tabIndex = 2.obs;
   int get tabIndex => _tabIndex.value;
   set tabIndex(int v) => _tabIndex.value = v;
 
-  late PageController pageController;
+  late PageController pageController; 
 
   @override
   void onInit() {
     super.onInit();
     print('ON INIT CALL DASHBOARD');
+
+    // সবসময় Home দিয়ে initialize
+    tabIndex = 2;
+    pageController = PageController(initialPage: 2);
+
+    // ডাটা লোড
+    loadInitialData();
     profileController.getMyProfile();
-    pageController = PageController(initialPage: tabIndex);
     _printUserInfo();
-    _handleArguments(); // প্রথমবারের জন্য
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-    _handleArguments(); // প্রতিবার Dashboard ওপেন হলে চেক করবে (মূল সমাধান)
-  }
-
-  void _handleArguments() {
-    final arguments = Get.arguments as Map<String, dynamic>?;
-    final int? targetIndex = arguments?['index'] as int?;
-
-    if (targetIndex != null && targetIndex >= 0 && targetIndex <= 4) {
-      tabIndex = targetIndex;
-
-      // UI রেন্ডার হওয়ার পর jump করবে
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (pageController.hasClients) {
-          pageController.jumpToPage(targetIndex);
-        }
-      });
-    }
+  Future<void> loadInitialData() async {
+    await friendController.getAllFriends();
+    // অন্যান্য প্রয়োজনীয় ডাটা লোড করতে পারো
   }
 
   void _printUserInfo() {
@@ -51,6 +42,7 @@ class DashboardController extends GetxController {
     print('USER ID: $userId  TOKEN: $token');
   }
 
+  // User tap করলে tab + page change
   void changeTab(int index) {
     tabIndex = index;
     pageController.jumpToPage(index);

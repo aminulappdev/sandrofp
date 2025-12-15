@@ -27,7 +27,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-
   final ProfileController profileController = Get.find<ProfileController>();
 
   @override
@@ -65,7 +64,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     rating:
                         profileController.profileData?.tokens.toString() ?? '',
                     onTap: () {
-                      Get.to(() =>  ProfileScreen());
+                      Get.to(() => ProfileScreen());
                     },
                   );
                 }
@@ -120,10 +119,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     name: 'Help & Support',
                     onTap: () {
                       Get.to(
-                         ContentScreen(),
+                        ContentScreen(),
                         arguments: {
-                          'title': 'Terms of Service',
-                          'data': 'aboutUs',
+                          'title': 'Help & Support',
+                          'key': 'aboutUs',
                         },
                       );
                     },
@@ -134,10 +133,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     name: 'Terms of Service',
                     onTap: () {
                       Get.to(
-                         ContentScreen(),
+                        () =>
+                            ContentScreen(), // ফাংশন হিসেবে দাও (খুব গুরুত্বপূর্ণ!)
                         arguments: {
                           'title': 'Terms of Service',
-                          'data': 'aboutUs',
+                          'key': 'termsAndConditions',
                         },
                       );
                     },

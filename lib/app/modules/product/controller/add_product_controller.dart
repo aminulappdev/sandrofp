@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:sandrofp/app/get_storage.dart';
+import 'package:sandrofp/app/modules/dashboard/controller/dashboard_controller.dart';
 import 'package:sandrofp/app/modules/dashboard/views/dashboard_screen.dart';
 import 'package:sandrofp/app/modules/product/model/upload_product_model.dart';
 import 'package:sandrofp/app/modules/product/views/upload_product_Details_screen.dart';
@@ -159,6 +160,10 @@ class AddProductController extends GetxController {
         final MyProductController myProductController =
             Get.find<MyProductController>();
         await myProductController.getMyProduct();
+        // force reset
+        final dashboardController = Get.find<DashboardController>();
+        dashboardController.tabIndex = 2;
+        dashboardController.pageController.jumpToPage(2);
         Get.offAll(() => const DashboardScreen());
       } else {
         showError(response.errorMessage);

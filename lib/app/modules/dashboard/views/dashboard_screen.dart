@@ -1,13 +1,15 @@
+// app/modules/dashboard/views/dashboard_screen.dart
 import 'package:circle_nav_bar/circle_nav_bar.dart';
 import 'package:crash_safe_image/crash_safe_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/cart/views/my_product_card_page.dart';
+import 'package:sandrofp/app/modules/chat/controller/all_friend_controller.dart';
 import 'package:sandrofp/app/modules/chat/views/chat_screen.dart';
 import 'package:sandrofp/app/modules/dashboard/controller/dashboard_controller.dart';
 import 'package:sandrofp/app/modules/home/views/home_screen.dart';
-import 'package:sandrofp/app/modules/profile/controllers/profile_controller.dart';
+import 'package:sandrofp/app/modules/profile/controllers/my_product_controller.dart';
 import 'package:sandrofp/app/modules/profile/views/profile_screen.dart';
 import 'package:sandrofp/app/modules/settings/views/settings_screen.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
@@ -16,19 +18,29 @@ import 'package:sandrofp/gen/assets.gen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
-  
+
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
-  final controller = Get.put(DashboardController());
-  final ProfileController profileController = Get.find<ProfileController>();
+ class _DashboardScreenState extends State<DashboardScreen> {
+  late final DashboardController controller;
+  final FriendController friendController = Get.put(FriendController());
+
+  final MyProductController myProductController = Get.put(
+    MyProductController(),
+  );
 
   @override
   void initState() {
-    profileController.getMyProfile();
     super.initState();
+    loadData();
+    controller = Get.put(DashboardController());
+  }
+
+  Future<void> loadData() async {
+    await friendController.getAllFriends();
+    await myProductController.getMyProduct();
   }
 
   @override
@@ -54,19 +66,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       body: PageView(
         controller: controller.pageController,
-        physics: const NeverScrollableScrollPhysics(),
+        physics:
+            const NeverScrollableScrollPhysics(), // swipe disable (optional)
         children: [
-          const MyProductCardScreen(),
-          ChatListScreen(),
-          const HomeScreen(),
-          const SettingsScreen(),
-           ProfileScreen(),
+          MyProductCardScreen(), // index 0 - Wishlist
+          ChatListScreen(), // index 1 - Message
+          HomeScreen(), // index 2 - Home
+          SettingsScreen(), // index 3 - Settings
+          ProfileScreen(), // index 4 - Profile
         ],
       ),
     );
   }
 
-  // ---------- Active Icons ----------
+  // Active Icons (highlighted)
   List<Widget> get _activeIcons => [
     _icon(Assets.images.heart03, AppColors.greenColor),
     _icon(Assets.images.sms, AppColors.greenColor),
@@ -75,11 +88,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _icon(Assets.images.person02, AppColors.greenColor),
   ];
 
-  // ---------- Inactive Icons ----------
+  // Inactive Icons (with label)
   List<Widget> get _inactiveIcons => [
     _labeledIcon(Assets.images.heart03, "Wishlist"),
     _labeledIcon(Assets.images.sms, "Message"),
-    _labeledIcon(Assets.images.home, "Home", active: true),
+    _labeledIcon(
+      Assets.images.home,
+      "Home",
+      active: true,
+    ), // Home সবসময় label সহ
     _labeledIcon(Assets.images.settings, "Settings"),
     _labeledIcon(Assets.images.person02, "Profile"),
   ];

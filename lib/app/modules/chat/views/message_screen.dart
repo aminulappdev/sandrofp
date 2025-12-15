@@ -78,6 +78,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void _handleIncomingMessage(dynamic data) {
     try {
       print('Incoming message from socket: $data');
+
       Map<String, dynamic> msg = {};
 
       if (data is Map && data['message'] != null) {

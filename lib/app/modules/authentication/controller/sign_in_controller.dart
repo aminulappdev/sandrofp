@@ -19,7 +19,7 @@ class SignInController extends GetxController {
     emailCtrl.dispose();
     passwordCtrl.dispose();
     super.onClose();
-  }
+  } 
 
   void togglePasswordVisibility() {
     obscureText.value = !obscureText.value;

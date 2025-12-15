@@ -20,7 +20,7 @@ class SignInScreen extends GetView<SignInController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
+      body: Padding( 
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Column(
