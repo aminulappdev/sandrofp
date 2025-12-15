@@ -19,7 +19,7 @@ class Product {
     required this.image,
     required this.title,
     required this.price,
-    this.description,
+    this.description, 
     this.userId,
   });
 }
@@ -27,7 +27,7 @@ class Product {
 class ExchangeController extends GetxController {
   final RxBool isLoading = false.obs;
   final NetworkCaller _networkCaller = NetworkCaller();
-
+ 
   // Received Data
   late Product exchangeProduct;
   final RxList<Product> selectedProducts = <Product>[].obs;

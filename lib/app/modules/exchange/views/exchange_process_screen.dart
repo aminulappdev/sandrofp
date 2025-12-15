@@ -179,14 +179,14 @@ class ExchangeProcessScreen extends GetView<ExchangeProcessController> {
                                 exchangeData.exchangeWith.first.discount)
                             .toString(),
 
-                    quantity: int.parse(
+                    quantity: int.parse( 
                       exchangeData.exchangeWith.first.quantity!,
                     ),
                   ),
 
                   heightBox10,
                   Text(
-                    'My Products',
+                    'My Products',  
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,

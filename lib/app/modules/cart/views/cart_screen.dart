@@ -44,7 +44,7 @@ class CartScreen extends GetView<CartController> {
                 padding: const EdgeInsets.all(12.0),
                 child: Column( 
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: [ 
                     Text(
                       'My Products',
                       style: GoogleFonts.poppins(

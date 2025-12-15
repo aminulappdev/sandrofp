@@ -9,7 +9,7 @@ class ExchangeProcessController extends GetxController {
   // var isLoading = false.obs;
   // var tokenBalance = 0.obs;
 
-  late AllExchangeItemModel exchangeItemModel;
+  late AllExchangeItemModel exchangeItemModel; 
 
   @override
   void onInit() {

@@ -11,9 +11,9 @@ import 'package:sandrofp/app/urls.dart';
 class CartController extends GetxController {
   final TextEditingController passwordCtrl = TextEditingController();
   final TextEditingController confirmPasswordCtrl = TextEditingController();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>(); 
 
-  final RxBool isLoading = false.obs;
+  final RxBool isLoading = false.obs; 
   final RxBool obscurePassword = true.obs;
   final RxBool obscureConfirm = true.obs;
 
@@ -52,7 +52,7 @@ class CartController extends GetxController {
     // Listen to selection changes and update totals
     ever(selectedProductIds, (_) => _calculateTotals());
 
-    print('EXCHANGE PRICE: ${updatePrice}');
+    print('EXCHANGE PRICE: $updatePrice');
   }
 
   void _calculateTotals() {

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import '../controller/content_controller.dart';

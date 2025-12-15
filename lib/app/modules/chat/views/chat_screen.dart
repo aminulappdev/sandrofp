@@ -13,7 +13,7 @@ import 'package:sandrofp/app/res/common_widgets/date_formatter.dart';
 import 'package:sandrofp/app/services/socket/socket_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
-
+ 
 class ChatListScreen extends StatefulWidget {
   const ChatListScreen({super.key});
 

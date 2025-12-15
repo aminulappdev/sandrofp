@@ -8,7 +8,7 @@ import 'package:sandrofp/app/urls.dart';
 
 class FriendController extends GetxController {
   final SocketService socketService = Get.find<SocketService>();
-  var inProgress = false.obs;
+  var inProgress = false.obs; 
   var friendList = <AllFriendsItemModel>[].obs;
 
   @override

@@ -10,9 +10,6 @@ import 'package:flutter/foundation.dart';
 
 // lib/app/services/location/location_service.dart
 
-import 'package:get/get.dart';
-import 'package:location/location.dart';
-
 class LocationService extends GetxService {
   static LocationService get to => Get.find(); // এটাই ছিল মিসিং
 

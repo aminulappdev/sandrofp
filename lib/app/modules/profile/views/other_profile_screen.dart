@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/home/widget/feature_row.dart';
 import 'package:sandrofp/app/modules/home/widget/home_product_card.dart';
-import 'package:sandrofp/app/modules/home/widget/label_data.dart';
 import 'package:sandrofp/app/modules/profile/widgets/comment_widget.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';

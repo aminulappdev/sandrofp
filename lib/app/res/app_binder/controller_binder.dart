@@ -16,7 +16,6 @@ import 'package:sandrofp/app/modules/home/controller/view_all_item_controller.da
 import 'package:sandrofp/app/modules/product/controller/all_product_controller.dart';
 import 'package:sandrofp/app/modules/product/controller/cart_controller.dart';
 import 'package:sandrofp/app/modules/product/controller/product_details_controller.dart';
-import 'package:sandrofp/app/modules/profile/controllers/edit_profile_controller.dart';
 import 'package:sandrofp/app/modules/profile/controllers/my_feedback_controller.dart';
 import 'package:sandrofp/app/modules/profile/controllers/my_product_controller.dart';
 import 'package:sandrofp/app/modules/profile/controllers/profile_controller.dart';
