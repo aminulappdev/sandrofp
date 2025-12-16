@@ -10,7 +10,7 @@ class HomeProductCard extends StatelessWidget {
   final String? imagePath;
   final String? price;
   final String? discount;
-  final String? ownerName;
+  final String? ownerName; 
   final String? profile;
   final String? rating;
   final String? address;
@@ -21,8 +21,9 @@ class HomeProductCard extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback? shareTap;
   final VoidCallback? reactTap;
+  
   const HomeProductCard({
-    super.key,
+    super.key, 
     required this.onTap,
     this.imagePath,
     this.price,
@@ -44,73 +45,93 @@ class HomeProductCard extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             color: Colors.white,
           ),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                height: 220,
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(12),
-                    topLeft: Radius.circular(12),
+              // Image section
+              Stack(
+                children: [
+                  Container(
+                    height: 220,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        topRight: Radius.circular(12),
+                      ),
+                      color: Colors.grey[300],
+                      image: imagePath != null && imagePath!.isNotEmpty
+                          ? DecorationImage(
+                              image: NetworkImage(imagePath!),
+                              fit: BoxFit.cover,
+                            )
+                          : null,
+                    ),
+                    child: imagePath == null || imagePath!.isEmpty
+                        ? const Icon(
+                            Icons.image_not_supported,
+                            color: Colors.grey,
+                            size: 50,
+                          )
+                        : null,
                   ),
-                  image: DecorationImage(
-                    image: NetworkImage(imagePath ?? ''),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      InkWell(
-                        onTap: () {},
-                        child: Container(
-                          height: 38,
-                          width: 95,
-                          decoration: BoxDecoration(
-                            color: Color(0xffEBF2EE),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                CrashSafeImage(
-                                  Assets.images.done02.keyName,
-                                  height: 16,
-                                  width: 16,
+                  Positioned(
+                    top: 12,
+                    right: 12,
+                    child: InkWell(
+                      onTap: () {},
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        height: 38,
+                        width: 95,
+                        decoration: BoxDecoration(
+                          color: const Color(0xffEBF2EE),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CrashSafeImage(
+                                Assets.images.done02.keyName,
+                                height: 16,
+                                width: 16,
+                                color: AppColors.greenColor,
+                              ),
+                              widthBox8,
+                              Text(
+                                'Verified',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
                                   color: AppColors.greenColor,
                                 ),
-                                widthBox8,
-                                Text(
-                                  'Verified',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.greenColor,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
+              
+              // Content section
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 0),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Price and discount row
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -122,11 +143,11 @@ class HomeProductCard extends StatelessWidget {
                             ),
                             widthBox8,
                             Text(
-                              '($price)',
+                              price ?? '\$0',
                               style: GoogleFonts.poppins(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w600,
-                                color: Color(0xffBFA62C),
+                                color: const Color(0xffBFA62C),
                               ),
                             ),
                             widthBox8,
@@ -140,42 +161,50 @@ class HomeProductCard extends StatelessWidget {
                           height: 30,
                           width: 80,
                           decoration: BoxDecoration(
-                            color: Color(0xffFFF4C2),
+                            color: const Color(0xffFFF4C2),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Center(
                             child: Text(
-                              '($discount)',
+                              discount ?? '\$0',
                               style: GoogleFonts.poppins(
                                 decoration: TextDecoration.lineThrough,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
-                                color: Color(0xff998523),
+                                color: const Color(0xff998523),
                               ),
                             ),
                           ),
                         ),
                       ],
                     ),
+                    
                     heightBox12,
+                    
+                    // Owner and rating row
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
                           children: [
                             CircleAvatar(
-                              backgroundImage: AssetImage(
-                                Assets.images.onboarding01.keyName,
-                              ),
+                              backgroundImage: profile != null && profile!.isNotEmpty
+                                  ? NetworkImage(profile!)
+                                  : AssetImage(Assets.images.onboarding01.keyName) as ImageProvider,
                               radius: 15,
                             ),
                             widthBox8,
-                            Text(
-                              ownerName ?? '',
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
+                            SizedBox(
+                              width: 100,
+                              child: Text(
+                                ownerName ?? 'Unknown',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ],
@@ -199,7 +228,10 @@ class HomeProductCard extends StatelessWidget {
                         ),
                       ],
                     ),
+                    
                     heightBox10,
+                    
+                    // Address and distance row
                     SizedBox(
                       width: double.infinity,
                       child: Row(
@@ -216,11 +248,12 @@ class HomeProductCard extends StatelessWidget {
                                 width: 140,
                                 child: Text(
                                   maxLines: 2,
-                                  address ?? '',
+                                  address ?? 'Address not available',
+                                  overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.poppins(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w500,
-                                    color: Color(0xff595959),
+                                    color: const Color(0xff595959),
                                   ),
                                 ),
                               ),
@@ -230,13 +263,11 @@ class HomeProductCard extends StatelessWidget {
                             height: 30,
                             width: 100,
                             decoration: BoxDecoration(
-                              color: Color(0xffEBF2EE),
+                              color: const Color(0xffEBF2EE),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 4,
-                              ),
+                              padding: const EdgeInsets.symmetric(horizontal: 4),
                               child: Center(
                                 child: Text(
                                   '$distance away',
@@ -252,13 +283,16 @@ class HomeProductCard extends StatelessWidget {
                         ],
                       ),
                     ),
+                    
                     heightBox8,
-                    Align(
-                      alignment: Alignment.centerLeft,
+                    
+                    // Title
+                    SizedBox(
+                      width: double.infinity,
                       child: Text(
+                        title ?? 'No Title',
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
-                        title ?? '',
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -266,13 +300,16 @@ class HomeProductCard extends StatelessWidget {
                         ),
                       ),
                     ),
+                    
                     heightBox4,
-                    Align(
-                      alignment: Alignment.centerLeft,
+                    
+                    // Description
+                    SizedBox(
+                      width: double.infinity,
                       child: Text(
+                        description ?? 'No description available',
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
-                        description ?? '',
                         style: GoogleFonts.poppins(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
@@ -280,42 +317,19 @@ class HomeProductCard extends StatelessWidget {
                         ),
                       ),
                     ),
+                    
                     heightBox12,
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          height: 45,
-                          width: 150,
-                          child: CustomElevatedButton(
-                            title: 'View Details',
-                            onPress: onTap,
-                            color: Colors.black,
-                            textColor: Colors.white,
-                          ),
-                        ),
-
-                        // Row(
-                        //   children: [
-                        //     CircleIconWidget(
-                        //       imagePath: Assets.images.share.keyName,
-                        //       onTap: shareTap ?? () {},
-                        //       radius: 20,
-                        //       iconRadius: 16,
-                        //       color: Color(0xffEBF2EE),
-                        //     ),
-                        //     widthBox8,
-                        //     CircleIconWidget(
-                        //       iconRadius: 20,
-                        //       imagePath: Assets.images.heart.keyName,
-                        //       onTap: reactTap ?? () {},
-                        //       radius: 20,
-                        //       color: Color(0xffFFE6E6),
-                        //     ),
-                        //   ],
-                        // ),
-                      ],
+                    
+                    // View Details button
+                    SizedBox(
+                      height: 45,
+                      width: 150,
+                      child: CustomElevatedButton(
+                        title: 'View Details',
+                        onPress: onTap,
+                        color: Colors.black,
+                        textColor: Colors.white,
+                      ),
                     ),
                   ],
                 ),

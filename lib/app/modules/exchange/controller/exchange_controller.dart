@@ -1,4 +1,6 @@
 // app/modules/exchange/controller/exchange_controller.dart
+// ignore_for_file: avoid_print
+
 import 'package:get/get.dart';
 import 'package:sandrofp/app/get_storage.dart';
 import 'package:sandrofp/app/modules/dashboard/views/dashboard_screen.dart';
@@ -25,7 +27,7 @@ class Product {
 }
 
 class ExchangeController extends GetxController {
-  final RxBool isLoading = false.obs;
+  final RxBool isLoading = false.obs; 
   final NetworkCaller _networkCaller = NetworkCaller();
  
   // Received Data
@@ -90,7 +92,7 @@ class ExchangeController extends GetxController {
 
   // Change Exchange Product
   void changeExchangeProduct() {
-    if (selectedProducts.isEmpty) return;
+    // if (selectedProducts.isEmpty) return;
     _exchangeIndex = (_exchangeIndex + 1) % selectedProducts.length;
     exchangeProduct = selectedProducts[_exchangeIndex];
     update();
@@ -109,12 +111,12 @@ class ExchangeController extends GetxController {
 
   // Dynamic Exchange API Call
   Future<void> exchangeFunction() async {
-    if (selectedProducts.isEmpty) {
-      showError('No product selected!');
-      return;
-    }
+    // if (selectedProducts.isEmpty) {
+    //   showError('No product selected!');
+    //   return;
+    // }
 
-    if (exchangeProduct.id == '0') {
+    if (exchangeProduct.id == '0') { 
       showError('Invalid exchange product!');
       return;
     }

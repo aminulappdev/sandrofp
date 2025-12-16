@@ -1,26 +1,20 @@
 // app/modules/cart/controller/cart_controller.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sandrofp/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:sandrofp/app/modules/product/model/product_model.dart';
 import 'package:sandrofp/app/modules/profile/controllers/my_product_controller.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
-import 'package:sandrofp/app/services/network_caller/network_caller.dart';
-import 'package:sandrofp/app/urls.dart';
 
 class CartController extends GetxController {
   final TextEditingController passwordCtrl = TextEditingController();
   final TextEditingController confirmPasswordCtrl = TextEditingController();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>(); 
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  final RxBool isLoading = false.obs; 
+  final RxBool isLoading = false.obs;
   final RxBool obscurePassword = true.obs;
   final RxBool obscureConfirm = true.obs;
 
   late String email;
-  late String? token; // OTP token (optional)
-
-  final NetworkCaller _networkCaller = NetworkCaller();
+  late String? token;
 
   final MyProductController myProductController =
       Get.find<MyProductController>();
@@ -36,6 +30,7 @@ class CartController extends GetxController {
   // Computed values
   var selectedTotal = 0.0.obs;
   var remainingPrice = 0.0.obs;
+  var extraTokens = 0.0.obs; // New: Extra tokens to earn
 
   @override
   void onInit() {
@@ -70,10 +65,17 @@ class CartController extends GetxController {
     }
 
     selectedTotal.value = total;
-    remainingPrice.value = (exchangePrice.value - total).clamp(
-      0.0,
-      double.infinity,
-    );
+    
+    // Calculate remaining price and extra tokens
+    if (total > exchangePrice.value) {
+      // User's products are worth more - they earn tokens
+      extraTokens.value = total - exchangePrice.value;
+      remainingPrice.value = 0.0;
+    } else {
+      // User's products are worth less - they need to add more
+      extraTokens.value = 0.0;
+      remainingPrice.value = exchangePrice.value - total;
+    }
   }
 
   void toggleSelection(String productId) {
@@ -83,58 +85,14 @@ class CartController extends GetxController {
     );
     if (product == null) return;
 
-    final newPrice = product.price?.toDouble() ?? 0.0;
-
     if (selectedProductIds.contains(productId)) {
       // Deselect
       selectedProductIds.remove(productId);
     } else {
-      // Try to select
-      final currentTotal = selectedTotal.value;
-      if (currentTotal + newPrice > exchangePrice.value) {
-        // Show snackbar or toast (optional)
-        Get.snackbar(
-          "Limit Exceeded",
-          "Cannot select this item. Total would exceed exchange value.",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red.withOpacity(0.8),
-          colorText: Colors.white,
-        );
-        return;
-      }
+      // Allow any selection - we'll show extra tokens if user's products exceed exchange value
       selectedProductIds.add(productId);
     }
   }
 
   bool get canProceed => selectedTotal.value > 0;
-
-  Future<void> _performReset() async {
-    try {
-      isLoading(true);
-
-      final body = {
-        "newPassword": passwordCtrl.text,
-        "confirmPassword": confirmPasswordCtrl.text,
-      };
-
-      final response = await _networkCaller.patchRequest(
-        accessToken: token,
-        customTokenName: 'token',
-        Urls.resetPasswordUrl,
-        body: body,
-      );
-
-      if (response.isSuccess) {
-        showSuccess('Password reset successfully!');
-        Get.offAll(() => SignInScreen());
-      } else {
-        // showError(response.errorMessage);
-      }
-    } catch (e) {
-      print('Reset Password Error: $e');
-      showError('Something went wrong');
-    } finally {
-      isLoading(false);
-    }
-  }
 }

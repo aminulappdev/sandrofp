@@ -53,6 +53,10 @@ class Urls {
     return '$_baseUrl/messages/get-by-recovered/$id';
   }
 
+   static String exchangeById(String id) {
+    return '$_baseUrl/exchanges/$id';
+  }
+
   static String messagesSeenById(String id) {
     return '$_baseUrl/messages/seen/$id';
   }

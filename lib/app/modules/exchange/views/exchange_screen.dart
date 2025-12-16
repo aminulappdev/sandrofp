@@ -60,24 +60,32 @@ class ExchangeView extends GetView<ExchangeController> {
                       ),
                     ),
                     heightBox20,
-
-                    // Your Products
                     _sectionHeader('Your Product', ctrl.changeYourProduct),
                     heightBox8,
-                    ...ctrl.selectedProducts.map(
-                      (p) => Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: ProductCart(
-                          productImage: p.image,
-                          productName: p.title,
-                          productPrice: p.price,
-                          description: p.description,
-                          address: '',
-                          quantity: 1,
-                          onQuantityChanged: (_) {},
+                    if (ctrl.selectedProducts.isEmpty) ...{
+                      Center(
+                        child: SizedBox(
+                          height: 200,
+                          child: Text('No product selected!'),
                         ),
                       ),
-                    ),
+                    } else ...{
+                      ...ctrl.selectedProducts.map(
+                        (p) => Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: ProductCart(
+                            productImage: p.image,
+                            productName: p.title,
+                            productPrice: p.price,
+                            description: p.description,
+                            address: '',
+                            quantity: 1,
+                            onQuantityChanged: (_) {},
+                          ),
+                        ),
+                      ),
+                    },
+                    // Your Products
                   ],
                 ),
               ),

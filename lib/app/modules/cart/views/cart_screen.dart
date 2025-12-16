@@ -8,6 +8,7 @@ import 'package:sandrofp/app/modules/exchange/views/exchange_screen.dart';
 import 'package:sandrofp/app/modules/home/widget/feature_row.dart';
 import 'package:sandrofp/app/modules/product/controller/cart_controller.dart';
 import 'package:sandrofp/app/modules/profile/controllers/my_product_controller.dart';
+import 'package:sandrofp/app/modules/profile/controllers/profile_controller.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/bottom_card.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
@@ -24,6 +25,7 @@ class CartScreen extends GetView<CartController> {
   Widget build(BuildContext context) {
     Get.put(CartController());
     final myProductController = Get.find<MyProductController>();
+    final ProfileController profileController = Get.find<ProfileController>();
 
     return Scaffold(
       backgroundColor: const Color(0xffFBFBFD),
@@ -42,16 +44,16 @@ class CartScreen extends GetView<CartController> {
 
               return Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: Column( 
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [ 
+                  children: [
                     Text(
                       'My Products',
                       style: GoogleFonts.poppins(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                       ),
-                    ), 
+                    ),
                     heightBox12,
                     Expanded(
                       child: ListView.builder(
@@ -65,7 +67,7 @@ class CartScreen extends GetView<CartController> {
                           var lat = product.location?.coordinates[0];
                           var lng = product.location?.coordinates[1];
 
-                            final address = AddressHelper.getAddress(lat, lng);
+                          final address = AddressHelper.getAddress(lat, lng);
 
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 4),
@@ -107,7 +109,10 @@ class CartScreen extends GetView<CartController> {
           BottomCard(
             child: Obx(() {
               final count = controller.selectedProductIds.length;
-              final hasSelection = count > 0;
+              final myToken = (profileController.profileData?.tokens ?? 0)
+                  .toDouble();
+
+              final bool hasSelection = count > 0;
 
               return Column(
                 children: [
@@ -141,6 +146,20 @@ class CartScreen extends GetView<CartController> {
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                  heightBox8,
+                  FeatureRow(
+                    title: 'Earn Tokens',
+                    widget: Text(
+                      'Rs. ${controller.extraTokens.value.toStringAsFixed(2)}',
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: controller.remainingPrice.value > 0
+                            ? Colors.orange
+                            : Colors.red,
+                      ),
                     ),
                   ),
                   heightBox8,

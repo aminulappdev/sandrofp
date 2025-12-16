@@ -9,6 +9,7 @@ import 'package:sandrofp/app/get_storage.dart';
 import 'package:sandrofp/app/modules/chat/controller/change_exchange_status_con.dart';
 import 'package:sandrofp/app/modules/chat/controller/image_decode_controller.dart';
 import 'package:sandrofp/app/modules/chat/controller/message_controller.dart';
+import 'package:sandrofp/app/modules/chat/views/eschange_preview_screen.dart';
 import 'package:sandrofp/app/modules/chat/widgets/chatting_header.dart';
 import 'package:sandrofp/app/modules/chat/widgets/message_input_field.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
@@ -146,6 +147,18 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  dynamic _findExchangeId(String messageId) {
+    if (messageCtrl.messageResponse.value.data?.data == null) return null;
+    try {
+      final found = messageCtrl.messageResponse.value.data!.data.firstWhere(
+        (m) => m.id == messageId || m.id.toString() == messageId,
+      );
+      return found.exchanges?.id;
+    } catch (_) {
+      return null;
+    }
+  }
+
   dynamic _findExchangeRequestToByMessageId(String messageId) {
     if (messageCtrl.messageResponse.value.data?.data == null) return null;
     try {
@@ -273,6 +286,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   // এখানে exchanges খুঁজছি id দিয়ে → কখনো RangeError আসবে না
                   final exchangeData = _findExchangeByMessageId(messageId);
                   var exchangeTo = _findExchangeRequestToByMessageId(messageId);
+                  var exchangeId = _findExchangeId(messageId);
                   final exchangeStatus = _findExchangeStatusByMessageId(
                     messageId,
                   );
@@ -365,6 +379,28 @@ class _ChatScreenState extends State<ChatScreen> {
                                       ),
                                       fit: BoxFit.cover,
                                     ),
+                                  ),
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child:
+                                        exchangeTo !=
+                                            StorageUtil.getData(
+                                              StorageUtil.userId,
+                                            )
+                                        ? Container()
+                                        : IconButton(
+                                            onPressed: () {
+                                              Get.to(
+                                                () => EschangePreviewScreen(
+                                                  exchangeId: exchangeId ?? '',
+                                                ),
+                                              );
+                                            },
+                                            icon: Icon(
+                                              Icons.visibility,
+                                              color: Colors.white,
+                                            ),
+                                          ),
                                   ),
                                 ),
                                 heightBox10,

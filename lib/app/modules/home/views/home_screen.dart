@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/home/controller/category_controller.dart';
@@ -53,7 +54,6 @@ class HomeScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      
       body: RefreshIndicator(
         onRefresh: () async {
           await productController.refresh();
@@ -69,8 +69,8 @@ class HomeScreen extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.36,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.vertical(
-                    bottom: Radius.circular(40),
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(40.r),
                   ),
                   image: DecorationImage(
                     image: AssetImage(Assets.images.background.keyName),
@@ -100,7 +100,7 @@ class HomeScreen extends StatelessWidget {
 
               // Main Content
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -145,7 +145,9 @@ class HomeScreen extends StatelessWidget {
                       }
 
                       return SizedBox(
-                        height: categories.length < 2 ? 110 : 210,
+                        height: categories.length < 2
+                            ? 110
+                            : MediaQuery.of(context).size.height * 0.28,
                         child: GridView.builder(
                           padding: EdgeInsets.zero,
                           physics: const NeverScrollableScrollPhysics(),
@@ -191,16 +193,20 @@ class HomeScreen extends StatelessWidget {
 
                       final items = productController.allProducts;
                       if (items.isEmpty) {
-                        return const SizedBox(
+                        return SizedBox(
                           height: 300,
                           child: Center(child: Text('No matches found')),
                         );
                       }
 
                       return SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.67,
+                        height: MediaQuery.of(context).size.height * 0.65,
                         child: CardSwiper(
-                          padding: const EdgeInsets.only(left: 0, right: 12),
+                          padding: const EdgeInsets.only(
+                            left: 0,
+                            right: 12,
+                            bottom: 0,
+                          ),
                           scale: 0.98,
                           backCardOffset: const Offset(12, 0),
                           numberOfCardsDisplayed: items.length >= 2 ? 2 : 1,
@@ -236,8 +242,7 @@ class HomeScreen extends StatelessWidget {
                                     productLng,
                                   ),
                                   discount: '${product.discount ?? 0}\$',
-                                  distance:
-                                      distance, // Perfect English distance
+                                  distance: distance,
                                   rating:
                                       product.author?.avgRating
                                           ?.toStringAsFixed(1) ??
@@ -254,7 +259,7 @@ class HomeScreen extends StatelessWidget {
 
                     heightBox20,
 
-                    // Nearby Products (same logic)
+                    // Nearby Products
                     CategoryHeader(
                       name: 'Nearby products',
                       onTap: homeController.goToNearbyProducts,
@@ -268,7 +273,7 @@ class HomeScreen extends StatelessWidget {
 
                       final items = productController.nearbyProducts;
                       if (items.isEmpty) {
-                        return const SizedBox(
+                        return SizedBox(
                           height: 300,
                           child: Center(
                             child: Text('No nearby products found'),
