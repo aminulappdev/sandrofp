@@ -9,7 +9,7 @@ import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
-class ReportSubmitScreen extends StatefulWidget {
+class ReportSubmitScreen extends StatefulWidget { 
   //final ProfileData? profileData;
   const ReportSubmitScreen({super.key});
 
@@ -39,7 +39,7 @@ class _ReportSubmitScreenState extends State<ReportSubmitScreen> {
                 'Report an issue',
                 style: GoogleFonts.poppins(
                   fontSize: 18.sp,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w600,  
                   color: Colors.black,
                 ),
               ),

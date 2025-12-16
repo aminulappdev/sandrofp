@@ -11,7 +11,7 @@ import 'package:sandrofp/app/urls.dart';
 class FeedbackController extends GetxController {
   final NetworkCaller _networkCaller = NetworkCaller();
   final RxBool isLoading = false.obs;
-
+ 
   late String sellerId;
   late String exchangeId;
 
