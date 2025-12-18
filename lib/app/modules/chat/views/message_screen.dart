@@ -178,7 +178,7 @@ class _ChatScreenState extends State<ChatScreen> {
         (m) => m.id == messageId || m.id.toString() == messageId,
       );
       return found.exchanges?.status;
-    } catch (_) {
+    } catch (_) { 
       return null;
     }
   }
@@ -357,7 +357,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           if (exchangeData != null)
                             Column(
                               mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start, 
                               children: [
                                 Container(
                                   width: 300.w,
@@ -426,7 +426,52 @@ class _ChatScreenState extends State<ChatScreen> {
                                           ),
                                         ),
                                       )
-                                    : exchangeStatus == 'decline'
+                                    : exchangeStatus == 'approved'
+                                    ? Container(
+                                        width: 120.w,
+                                        height: 40.h,
+                                        decoration: BoxDecoration(
+                                          color: Colors.green,
+                                          borderRadius: BorderRadius.circular(
+                                            10.r,
+                                          ),
+                                          border: Border.all(
+                                            color: Colors.grey.shade300,
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            'Approved',
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 14.sp,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : 
+                                    exchangeStatus == 'rejected'
+                                    ? Container(
+                                        width: 120.w,
+                                        height: 40.h,
+                                        decoration: BoxDecoration(
+                                          color: Colors.red,
+                                          borderRadius: BorderRadius.circular(
+                                            10.r,
+                                          ),
+                                          border: Border.all(
+                                            color: Colors.grey.shade300,
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            'Rejected',
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 14.sp,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    :  exchangeStatus == 'decline'
                                     ? Container(
                                         width: 120.w,
                                         height: 40.h,

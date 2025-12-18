@@ -162,8 +162,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
                     // Product Info with Distance
                     Obx(() {
-                      final lat = controller.product?.location?.coordinates?[1];
-                      final lng = controller.product?.location?.coordinates?[0];
+                      final lat = controller.product?.location?.coordinates[1];
+                      final lng = controller.product?.location?.coordinates[0];
                       final updatePrice =
                           controller.product!.price! -
                           (controller.product?.discount ?? 0);
@@ -201,6 +201,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ),
                     ),
                     heightBox20,
+                    const StraightLiner(),
+                    heightBox10,
+
+                    // Material
+                    FeatureRow(
+                      title: 'Quantity:',
+                      widget: LabelData(
+                        onTap: () {},
+                        bgColor: const Color(0xffF3F3F5),
+                        title: controller.product?.quantity ?? '',
+                        titleColor: Colors.black,
+                      ),
+                    ),
+                    heightBox20,
+
                     const StraightLiner(),
                     heightBox10,
 

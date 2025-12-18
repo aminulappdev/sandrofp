@@ -1,6 +1,9 @@
 // app/modules/other_profile/controllers/other_profile_controller.dart
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:get/get.dart';
 import 'package:sandrofp/app/get_storage.dart';
+import 'package:sandrofp/app/modules/chat/views/message_screen.dart';
 import 'package:sandrofp/app/modules/profile/controllers/my_feedback_controller.dart';
 import 'package:sandrofp/app/modules/profile/model/profile_model.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
@@ -18,6 +21,10 @@ class OtherProfileController extends GetxController {
 
   final RxBool isLoading = false.obs;
   late String id;
+
+  var userId;
+  var userNName;
+  var userImage;
 
   @override
   void onInit() {
@@ -51,6 +58,9 @@ class OtherProfileController extends GetxController {
       if (response.isSuccess && response.responseData['data'] != null) {
         _profileModel.value = ProfileModel.fromJson(response.responseData);
         print('PROFILE DATA: ${_profileModel.value?.data}');
+        userId = _profileModel.value?.data?.id ?? '';
+        userNName = _profileModel.value?.data?.name ?? '';
+        userImage = _profileModel.value?.data?.profile ?? '';
       } else {
         //K showError(response.errorMessage);
       }
@@ -81,6 +91,13 @@ There are many variations of passages of Lorem Ipsum available, but the majority
   var clothingItems2 = List.generate(5, (_) => true).obs;
 
   void goToChat() {
-    Get.toNamed('/chat');
+    print('USER ID: $userId');
+    Get.to(
+      ChatScreen(
+        receiverId: userId,
+        receiverName: userNName,
+        receiverImageUrl: userImage,
+      ),
+    );
   }
 }

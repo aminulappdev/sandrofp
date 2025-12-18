@@ -32,6 +32,8 @@ class ControllerBinder extends Bindings {
     Get.put(DashboardController());
     Get.put(ExchangeHistoryController());
     Get.put(MyProductController());
+    // Get.put(HomeController());
+
 
     Get.lazyPut(() => OtpVerifyController());
     Get.lazyPut(() => ForgotPasswordController());

@@ -22,7 +22,7 @@ class BuyerDetails extends StatelessWidget {
     this.description,
     this.id,
   });
-
+  
   @override
   Widget build(BuildContext context) {
     return Container(

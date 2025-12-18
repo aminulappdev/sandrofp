@@ -5,7 +5,7 @@ import 'package:sandrofp/app/modules/home/controller/home_controller.dart';
 
 class FilterController extends GetxController {
   // Get.find() দিয়ে নিলে বারবার put করতে হবে না
-  final HomeController homeController = Get.find<HomeController>();
+  final HomeController homeController = Get.put(HomeController());
 
   var selectedCategoryId =
       ''.obs; // String রাখলাম (int আসলেও toString() করা হয়েছে)

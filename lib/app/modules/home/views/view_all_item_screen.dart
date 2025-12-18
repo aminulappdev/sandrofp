@@ -74,7 +74,8 @@ class ViewAllItemScreen extends GetView<ViewAllItemController> {
                 padding: const EdgeInsets.only(bottom: 12),
                 child: HomeProductCard(
                   onTap: () {
-                    Get.find<HomeController>().goToProductDetails(product);
+                    // Get.find<HomeController>().goToProductDetails(product);
+                     Get.put(HomeController()).goToProductDetails(product); 
                   },
                   imagePath: product.images.isNotEmpty
                       ? product.images.first.url

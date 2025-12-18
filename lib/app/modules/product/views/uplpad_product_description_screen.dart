@@ -28,21 +28,7 @@ class UploadProductDescriptionScreen extends GetView<AddProductController> {
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Product information',
-        leading: Row(
-          children: [
-            CircleIconWidget(
-              radius: 20,
-              iconRadius: 20,
-              color: const Color(0xffFFFFFF).withValues(alpha: 0.05),
-              imagePath: Assets.images.notification.keyName,
-              onTap: () {},
-            ),
-            widthBox10,
-            CircleAvatar(
-              backgroundImage: AssetImage(Assets.images.onboarding01.keyName),
-            ),
-          ],
-        ),
+        leading: Container(),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -109,17 +95,17 @@ class UploadProductDescriptionScreen extends GetView<AddProductController> {
                     ),
                   ),
                 ),
-                Obx(
-                  () => controller.selectedSize.value.isEmpty
-                      ? const Padding(
-                          padding: EdgeInsets.only(top: 8, left: 12),
-                          child: Text(
-                            'Please select a size',
-                            style: TextStyle(color: Colors.red, fontSize: 12),
-                          ),
-                        )
-                      : const SizedBox(),
-                ),
+                // Obx(
+                //   () => controller.selectedSize.value.isEmpty
+                //       ? const Padding(
+                //           padding: EdgeInsets.only(top: 8, left: 12),
+                //           child: Text(
+                //             'Please select a size',
+                //             style: TextStyle(color: Colors.red, fontSize: 12),
+                //           ),
+                //         )
+                //       : const SizedBox(),
+                // ),
 
                 // === Category ===
                 heightBox12,
@@ -224,7 +210,6 @@ class UploadProductDescriptionScreen extends GetView<AddProductController> {
                   title: 'Next',
                   onPress: () {
                     if (_formKey.currentState!.validate() &&
-                        controller.selectedSize.value.isNotEmpty &&
                         controller.selectedCategoryId.value.isNotEmpty) {
                       controller.goToUploadFileScreen();
                     } else {

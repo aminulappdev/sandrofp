@@ -20,9 +20,9 @@ class EditProductController extends GetxController {
   final discountController = TextEditingController();
   final materialController = TextEditingController();
   final colorController = TextEditingController();
-  final quantityController = TextEditingController();
+  final quantityController = TextEditingController(); 
 
-  // Reactive
+  // Reactive 
   final RxString selectedCategoryId = ''.obs;
   final RxString selectedSize = ''.obs;
 
@@ -101,7 +101,7 @@ class EditProductController extends GetxController {
         "price": priceController.text.isNotEmpty
             ? int.parse(priceController.text)
             : 0,
-        "quantity": priceController.text,
+        "quantity": quantityController.text,
         "discount": discountController.text.isNotEmpty
             ? int.parse(discountController.text)
             : 0,

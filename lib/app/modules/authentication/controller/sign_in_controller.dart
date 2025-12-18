@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sandrofp/app/get_storage.dart';
+import 'package:sandrofp/app/modules/dashboard/controller/dashboard_controller.dart';
 import 'package:sandrofp/app/modules/dashboard/views/dashboard_screen.dart';
 import 'package:sandrofp/app/services/network_caller/custom.dart';
 import 'package:sandrofp/app/services/network_caller/network_caller.dart';
@@ -19,7 +20,7 @@ class SignInController extends GetxController {
     emailCtrl.dispose();
     passwordCtrl.dispose();
     super.onClose();
-  } 
+  }
 
   void togglePasswordVisibility() {
     obscureText.value = !obscureText.value;
@@ -45,7 +46,7 @@ class SignInController extends GetxController {
         print(StorageUtil.getData(StorageUtil.userAccessToken));
         StorageUtil.saveData(StorageUtil.userId, data['user']['_id']);
         print(StorageUtil.getData(StorageUtil.userId));
-
+       
         Get.offAll(() => DashboardScreen());
       } else {}
     } else {

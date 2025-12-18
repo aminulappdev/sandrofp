@@ -14,7 +14,7 @@ class DashboardController extends GetxController {
   int get tabIndex => _tabIndex.value;
   set tabIndex(int v) => _tabIndex.value = v;
 
-  late PageController pageController; 
+  late PageController pageController;
 
   @override
   void onInit() {
@@ -28,6 +28,7 @@ class DashboardController extends GetxController {
     // ডাটা লোড
     loadInitialData();
     profileController.getMyProfile();
+
     _printUserInfo();
   }
 

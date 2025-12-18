@@ -151,7 +151,8 @@ class AllProductController extends GetxController {
 
   // lib/app/modules/product/controller/all_product_controller.dart
   void goToProductDetails(AllProductItemModel data) {
-    Get.find<HomeController>().goToProductDetails(data);
+   // Get.find<HomeController>().goToProductDetails(data);
+   Get.put(HomeController()).goToProductDetails(data);
   }
 
   // রিফ্রেশ করার জন্য

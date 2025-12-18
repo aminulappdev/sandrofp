@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/cart/widget/product_cart.dart';
+import 'package:sandrofp/app/modules/chat/views/preview_details_data.dart';
 import 'package:sandrofp/app/modules/exchange/controller/exchange_by_id.dart';
+import 'package:sandrofp/app/modules/product/views/product_details_screen.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/app/services/location/address_fetcher.dart';
@@ -93,25 +95,38 @@ class _EschangePreviewScreenState extends State<EschangePreviewScreen> {
                               ),
                               heightBox10,
                               // প্রথম প্রোডাক্টের জন্য
-                              ProductCart(
-                                productImage:
-                                    data.products.first.images.isNotEmpty
-                                    ? data.products.first.images.first.url ?? ''
-                                    : '',
-                                productName:
-                                    data.products.first.name ?? 'No Name',
-                                productPrice: data.products.first.price
-                                    .toString(),
-                                description:
-                                    data.products.first.descriptions ??
-                                    'No Description',
-                                address: AddressHelper.getAddress(
-                                  data.products.first.location?.coordinates[0],
-                                  data.products.first.location?.coordinates[1],
+                              for (
+                                int i = 0;
+                                i < data.products.length;
+                                i++
+                              ) ...{
+                                ProductCart(
+                                  onTap: () {
+                                    Get.to(
+                                      () => PreviewDetailsScreen(
+                                        exchange: data.products[i],
+                                      ),
+                                    );
+                                  },
+                                  productImage:
+                                      data.products[i].images.isNotEmpty
+                                      ? data.products[i].images.first.url ?? ''
+                                      : '',
+                                  productName:
+                                      data.products[i].name ?? 'No Name',
+                                  productPrice: data.products[i].price
+                                      .toString(),
+                                  description:
+                                      data.products[i].descriptions ??
+                                      'No Description',
+                                  address: AddressHelper.getAddress(
+                                    data.products[i].location?.coordinates[0],
+                                    data.products[i].location?.coordinates[1],
+                                  ),
+                                  quantity: 1,
+                                  onQuantityChanged: (_) {},
                                 ),
-                                quantity: 1,
-                                onQuantityChanged: (_) {},
-                              ),
+                              },
                             ],
                           ),
 

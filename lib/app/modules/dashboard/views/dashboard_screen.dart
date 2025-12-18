@@ -23,7 +23,7 @@ class DashboardScreen extends StatefulWidget {
   State<DashboardScreen> createState() => _DashboardScreenState();
 }
 
- class _DashboardScreenState extends State<DashboardScreen> {
+class _DashboardScreenState extends State<DashboardScreen> {
   late final DashboardController controller;
   final FriendController friendController = Get.put(FriendController());
 
@@ -90,7 +90,7 @@ class DashboardScreen extends StatefulWidget {
 
   // Inactive Icons (with label)
   List<Widget> get _inactiveIcons => [
-    _labeledIcon(Assets.images.heart03, "Wishlist"),
+    _labeledIcon(Assets.images.heart03, "Products"),
     _labeledIcon(Assets.images.sms, "Message"),
     _labeledIcon(
       Assets.images.home,

@@ -62,7 +62,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     imagePath: profileController.profileData?.profile ?? '',
                     name: profileController.profileData?.name ?? '',
                     rating:
-                        profileController.profileData?.tokens.toString() ?? '',
+                        profileController.profileData!.avgRating.toString() ,
                     onTap: () {
                       Get.to(() => ProfileScreen());
                     },

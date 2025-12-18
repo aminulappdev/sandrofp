@@ -21,7 +21,7 @@ import 'package:sandrofp/app/urls.dart';
 class AddProductController extends GetxController {
   // Text Controllers
   final nameController = TextEditingController();
-  final descriptionController = TextEditingController();
+  final descriptionController = TextEditingController(); 
   final priceController = TextEditingController();
   final discountController = TextEditingController();
   final materialController = TextEditingController();
@@ -155,7 +155,7 @@ class AddProductController extends GetxController {
             images: selectedImages,
             keyNameImage: 'images',
           );
-
+ 
       if (response.isSuccess) {
         final MyProductController myProductController =
             Get.find<MyProductController>();

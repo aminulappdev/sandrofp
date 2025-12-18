@@ -7,7 +7,7 @@ class ViewAllItemController extends GetxController {
       Get.find<AllProductController>();
 
   String? title;
-  String? type; // 'all', 'category', 'nearby'
+  String? type; // 'all', 'category', 'nearby' 
 
   @override
   void onInit() {

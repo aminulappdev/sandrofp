@@ -13,7 +13,7 @@ import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/app/services/location/location_services.dart';
 import 'package:sandrofp/app/services/location/location_picker_field.dart';
-import 'package:sandrofp/app/services/network_caller/validator_service.dart';
+import 'package:sandrofp/app/services/network_caller/validator_service.dart'; 
 import 'package:sandrofp/gen/assets.gen.dart';
 
 class UploadProductInfoScreen extends GetView<AddProductController> {
@@ -26,22 +26,8 @@ class UploadProductInfoScreen extends GetView<AddProductController> {
 
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Product information',
-        leading: Row(
-          children: [
-            CircleIconWidget(
-              radius: 20,
-              iconRadius: 20,
-              color: const Color(0xffFFFFFF).withValues(alpha: 0.05),
-              imagePath: Assets.images.notification.keyName,
-              onTap: () {},
-            ),
-            widthBox10,
-            CircleAvatar(
-              backgroundImage: AssetImage(Assets.images.onboarding01.keyName),
-            ),
-          ],
-        ),
+        title: 'Product information', 
+        leading: Container(),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -150,7 +136,7 @@ class UploadProductInfoScreen extends GetView<AddProductController> {
                   controller: controller.discountController,
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
-                    hintText: 'Enter discount percentage',
+                    hintText: 'Enter discount amount',
                   ),
                 ),
                 heightBox30,

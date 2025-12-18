@@ -4,13 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/home/widget/feature_row.dart';
-import 'package:sandrofp/app/modules/home/widget/home_product_card.dart';
 import 'package:sandrofp/app/modules/profile/widgets/comment_widget.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
-
 import '../controllers/other_profile_controller.dart';
 
 class OtherProfileScreen extends GetView<OtherProfileController> {
@@ -18,7 +16,6 @@ class OtherProfileScreen extends GetView<OtherProfileController> {
 
   @override
   Widget build(BuildContext context) {
-    // Controller ইনিশিয়ালাইজ করা (যদি binding না করে থাকো)
     Get.put(OtherProfileController());
 
     return Scaffold(
@@ -99,16 +96,12 @@ class OtherProfileScreen extends GetView<OtherProfileController> {
                         ),
                       ],
                     ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.more_horiz, size: 40),
-                    ),
+                    const SizedBox(width: 40),
                   ],
                 ),
 
                 heightBox12,
 
-                // Name + Verified
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -186,7 +179,7 @@ class OtherProfileScreen extends GetView<OtherProfileController> {
                   style: GoogleFonts.poppins(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                  ), 
+                  ),
                 ),
                 heightBox10,
                 Obx(() {
@@ -244,25 +237,7 @@ class OtherProfileScreen extends GetView<OtherProfileController> {
               color: Colors.black,
             ),
           ),
-          heightBox10,
-          Obx(
-            () => FeatureRow(
-              titleWeight: FontWeight.w400,
-              title: 'Location',
-              widget: Text(
-                controller.location.value,
-                style: GoogleFonts.poppins(),
-              ),
-            ),
-          ),
-          heightBox10,
-          Obx(
-            () => FeatureRow(
-              titleWeight: FontWeight.w400,
-              title: 'Age',
-              widget: Text(controller.age.value, style: GoogleFonts.poppins()),
-            ),
-          ),
+
           heightBox10,
           Obx(
             () => FeatureRow(
@@ -275,16 +250,6 @@ class OtherProfileScreen extends GetView<OtherProfileController> {
             ),
           ),
           heightBox10,
-          Obx(
-            () => FeatureRow(
-              titleWeight: FontWeight.w400,
-              title: 'Height',
-              widget: Text(
-                controller.height.value,
-                style: GoogleFonts.poppins(),
-              ),
-            ),
-          ),
         ],
       ),
     );
@@ -323,30 +288,30 @@ class OtherProfileScreen extends GetView<OtherProfileController> {
     );
   }
 
-  Widget _buildClothingSection(String title, RxList items) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: GoogleFonts.poppins(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
-          ),
-        ),
-        heightBox10,
-        SizedBox(
-          height: 550,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: items.length,
-            itemBuilder: (context, index) {
-              return SizedBox(width: 300, child: HomeProductCard(onTap: () {}));
-            },
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget _buildClothingSection(String title, RxList items) {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       Text(
+  //         title,
+  //         style: GoogleFonts.poppins(
+  //           fontSize: 16,
+  //           fontWeight: FontWeight.w600,
+  //           color: Colors.black,
+  //         ),
+  //       ),
+  //       heightBox10,
+  //       SizedBox(
+  //         height: 550,
+  //         child: ListView.builder(
+  //           scrollDirection: Axis.horizontal,
+  //           itemCount: items.length,
+  //           itemBuilder: (context, index) {
+  //             return SizedBox(width: 300, child: HomeProductCard(onTap: () {}));
+  //           },
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 }
