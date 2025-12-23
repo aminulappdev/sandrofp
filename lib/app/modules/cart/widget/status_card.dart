@@ -134,11 +134,11 @@ class StageWidget extends StatelessWidget {
 class FlowWidget extends StatelessWidget {
   const FlowWidget({super.key});
 
-  @override
+  @override 
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(width: 45, height: 1, color: Color(0xffECECEC)),
+        Container(width: 36, height: 1, color: Color(0xffECECEC)),
         Container(
           width: 5,
           height: 5,

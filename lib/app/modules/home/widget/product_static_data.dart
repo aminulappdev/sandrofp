@@ -16,9 +16,10 @@ class ProductStaticData extends StatelessWidget {
     super.key,
     this.price,
     this.discount,
-    this.address, 
+    this.address,
     this.title,
-    this.description, this.distance,
+    this.description,
+    this.distance,
   });
 
   @override
@@ -88,27 +89,29 @@ class ProductStaticData extends StatelessWidget {
                 ),
               ],
             ),
-            InkWell(
-              onTap: () {},
-              child: Container(
-                height: 30,
-                width: 95,
-                decoration: BoxDecoration(
-                  color: Color(0xffEBF2EE),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Center(
-                  child: Text(
-                    '$distance away',
-                    style: GoogleFonts.poppins(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.greenColor,
+            distance == null
+                ? Container()
+                : InkWell(
+                    onTap: () {},
+                    child: Container(
+                      height: 30,
+                      width: 95,
+                      decoration: BoxDecoration(
+                        color: Color(0xffEBF2EE),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Center(
+                        child: Text(
+                          '$distance away',
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.greenColor,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ),
           ],
         ),
         heightBox12,

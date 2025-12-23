@@ -196,7 +196,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       widget: LabelData(
                         onTap: () {},
                         bgColor: const Color(0xffF3F3F5),
-                        title: controller.product?.size ?? '',
+                        title: controller.product?.size ?? 'N/A',
                         titleColor: Colors.black,
                       ),
                     ),
@@ -210,7 +210,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       widget: LabelData(
                         onTap: () {},
                         bgColor: const Color(0xffF3F3F5),
-                        title: controller.product?.quantity ?? '',
+                        title: controller.product?.quantity ?? 'N/A',
                         titleColor: Colors.black,
                       ),
                     ),
@@ -225,7 +225,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       widget: LabelData(
                         onTap: () {},
                         bgColor: const Color(0xffF3F3F5),
-                        title: controller.product?.materials ?? '',
+                        title: controller.product?.materials ?? 'N/A',
                         titleColor: Colors.black,
                       ),
                     ),
@@ -237,7 +237,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     FeatureRow(
                       title: 'Category:',
                       widget: Text(
-                        controller.product?.category?.name ?? '',
+                        controller.product?.category?.name ?? 'N/A',
                         style: GoogleFonts.poppins(
                           fontSize: 13,
                           fontWeight: FontWeight.w400,
@@ -255,7 +255,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       widget: LabelData(
                         onTap: () {},
                         bgColor: const Color(0xffF3F3F5),
-                        title: controller.product?.colors ?? '',
+                        title: controller.product?.colors ?? 'N/A',
                         titleColor: Colors.black,
                       ),
                     ),

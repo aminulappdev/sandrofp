@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_intl_phone_field/flutter_intl_phone_field.dart';
 import 'package:get/get.dart';
 import 'package:sandrofp/app/modules/authentication/controller/sign_up_controller.dart';
 import 'package:sandrofp/app/modules/authentication/widget/agree_condition_widget.dart';
@@ -67,14 +68,25 @@ class SignUpScreen extends GetView<SignUpController> {
                 // Phone Number
                 LabelName(label: 'Phone Number'),
                 heightBox10,
-                TextFormField(
-                  validator: ValidatorService.validateSimpleField,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  keyboardType: TextInputType.phone,
-                  controller: controller.phoneCtrl,
-                  decoration: const InputDecoration(
-                    hintText: 'Enter your phone number',
+                // TextFormField(
+                //   validator: ValidatorService.validateSimpleField,
+                //   autovalidateMode: AutovalidateMode.onUserInteraction,
+                //   keyboardType: TextInputType.phone,
+                //   controller: controller.phoneCtrl,
+                //   decoration: const InputDecoration(
+                //     hintText: 'Enter your phone number',
+                //   ),
+                // ),
+                IntlPhoneField(
+                  decoration: InputDecoration(
+                    labelText: 'Phone Number',
+                    border: OutlineInputBorder(borderSide: BorderSide()),
                   ),
+                  initialCountryCode: 'US',
+                  controller: controller.phoneCtrl,
+                  onChanged: (phone) {
+                    print(phone.completeNumber);
+                  },
                 ),
                 heightBox20,
 

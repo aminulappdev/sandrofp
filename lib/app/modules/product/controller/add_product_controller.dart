@@ -42,7 +42,7 @@ class AddProductController extends GetxController {
 
   // Final Product Preview
   Product? product;
-
+ 
   @override
   void onClose() {
     nameController.dispose();
@@ -123,12 +123,11 @@ class AddProductController extends GetxController {
         return;
       }
 
-      // যদি লোকেশন না পিক করে থাকে → ডিফল্ট ঢাকা দিয়ে দিবে (তোমার ইচ্ছা অনুযায়ী চেঞ্জ করতে পারো)
       final coordinates = selectedLatLng.value != null
           ? [
               selectedLatLng.value!.longitude,
               selectedLatLng.value!.latitude,
-            ] // GeoJSON → [lng, lat]
+            ] 
           : [90.3995, 23.7944]; // Dhaka fallback
 
       Map<String, dynamic> jsonFields = {

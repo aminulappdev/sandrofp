@@ -18,7 +18,7 @@ import 'package:geocoding/geocoding.dart' hide Location;
 */
 
 // ==================== Location Service ====================
-class LocationService {
+class LocationService2 {
   final Location _location = Location();
 
   Future<bool> _checkAndRequestService(BuildContext context) async {
@@ -134,7 +134,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
   late LatLng selectedPosition;
   final MapController _mapController = MapController();
   final TextEditingController _searchController = TextEditingController();
-  final LocationService _locationService = LocationService();
+  final LocationService2 _locationService = LocationService2();
 
   @override
   void initState() {

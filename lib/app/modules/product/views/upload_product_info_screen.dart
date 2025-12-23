@@ -8,16 +8,41 @@ import 'package:sandrofp/app/modules/product/controller/add_product_controller.d
 import 'package:sandrofp/app/modules/product/widgets/label.dart';
 import 'package:sandrofp/app/modules/product/widgets/status_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
-import 'package:sandrofp/app/services/location/location_services.dart';
 import 'package:sandrofp/app/services/location/location_picker_field.dart';
-import 'package:sandrofp/app/services/network_caller/validator_service.dart'; 
+import 'package:sandrofp/app/services/location/location_services.dart';
+
+import 'package:sandrofp/app/services/network_caller/validator_service.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
 class UploadProductInfoScreen extends GetView<AddProductController> {
   const UploadProductInfoScreen({super.key});
+
+  // Initial position নির্ধারণের ফাংশন
+  Future<LatLng> _getInitialPosition(
+    BuildContext context,
+    AddProductController controller,
+  ) async {
+    // যদি আগে থেকে লোকেশন সিলেক্ট করা থাকে
+    if (controller.selectedLatLng.value != null) {
+      return controller.selectedLatLng.value!;
+    }
+
+    // Current location নেওয়ার চেষ্টা
+    final locationService = LocationService2();
+    final LatLng? currentLocation = await locationService.getCurrentLocation(
+      context,
+    );
+
+    // যদি পাওয়া যায়, সেটা রিটার্ন করো
+    if (currentLocation != null) {
+      return currentLocation;
+    }
+
+    // না পেলে fallback: Dhaka
+    return LatLng(23.8103, 90.4125);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +50,7 @@ class UploadProductInfoScreen extends GetView<AddProductController> {
     final _formKey = GlobalKey<FormState>();
 
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Product information', 
-        leading: Container(),
-      ),
+      appBar: CustomAppBar(title: 'Product information', leading: Container()),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -40,15 +62,15 @@ class UploadProductInfoScreen extends GetView<AddProductController> {
                 heightBox20,
                 StatusBar(
                   firstName: 'Information',
-                  firstBgColor: Color(0xffEBF2EE),
+                  firstBgColor: const Color(0xffEBF2EE),
                   firtsIconColor: null,
                   firstIconPath: Assets.images.group02.keyName,
                   secondName: 'Description',
-                  secondBgColor: Color(0xffEBF2EE),
+                  secondBgColor: const Color(0xffEBF2EE),
                   secondIconColor: Colors.grey,
                   secondIconPath: Assets.images.group02.keyName,
                   thirdName: 'Upload',
-                  thirdBgColor: Color(0xffEBF2EE),
+                  thirdBgColor: const Color(0xffEBF2EE),
                   thirdIconColor: Colors.grey,
                   thirdIconPath: Assets.images.group02.keyName,
                 ),
@@ -99,12 +121,15 @@ class UploadProductInfoScreen extends GetView<AddProductController> {
                   () => LocationField(
                     address: controller.selectedAddress.value,
                     onPick: () async {
-                      final pos =
-                          controller.selectedLatLng.value ??
-                          LatLng(23.8103, 90.4125);
-                      final res = await Get.to(
-                        () => LocationPickerScreen(initialPosition: pos),
+                      final LatLng initialPos = await _getInitialPosition(
+                        context,
+                        controller,
                       );
+
+                      final res = await Get.to(
+                        () => LocationPickerScreen(initialPosition: initialPos),
+                      );
+
                       if (res is Map) {
                         controller.setLocation(res['latLng'], res['address']);
                       }

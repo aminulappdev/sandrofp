@@ -9,7 +9,6 @@ import 'package:sandrofp/app/modules/product/widgets/label.dart';
 import 'package:sandrofp/app/modules/product/widgets/status_bar.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/app/services/network_caller/validator_service.dart';
@@ -169,8 +168,7 @@ class UploadProductDescriptionScreen extends GetView<AddProductController> {
                 TextFormField(
                   controller: controller.materialController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) =>
-                      ValidatorService.validateSimpleField(value),
+                 
                   decoration: const InputDecoration(
                     hintText: 'Enter your material',
                   ),
@@ -183,8 +181,7 @@ class UploadProductDescriptionScreen extends GetView<AddProductController> {
                 TextFormField(
                   controller: controller.colorController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) =>
-                      ValidatorService.validateSimpleField(value),
+                 
                   decoration: const InputDecoration(
                     hintText: 'Enter product color',
                   ),

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/get_storage.dart';
 import 'package:sandrofp/app/modules/authentication/views/sign_in_screen.dart';
+import 'package:sandrofp/app/modules/dashboard/controller/dashboard_controller.dart';
 import 'package:sandrofp/app/modules/profile/controllers/profile_controller.dart';
 import 'package:sandrofp/app/modules/profile/views/profile_screen.dart';
 import 'package:sandrofp/app/modules/settings/views/change_password_screen.dart';
@@ -61,8 +62,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   return SettingsHeader(
                     imagePath: profileController.profileData?.profile ?? '',
                     name: profileController.profileData?.name ?? '',
-                    rating:
-                        profileController.profileData!.avgRating.toString() ,
+                    rating: profileController.profileData!.avgRating.toString(),
                     onTap: () {
                       Get.to(() => ProfileScreen());
                     },
@@ -184,6 +184,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           yesOntap: () {
             StorageUtil.deleteData(StorageUtil.userAccessToken);
             StorageUtil.deleteData(StorageUtil.userId);
+            final dashboardController = Get.find<DashboardController>();
+            dashboardController.tabIndex = 2;
+            dashboardController.pageController.jumpToPage(2);
             Get.offAll(() => const SignInScreen());
           },
           iconData: Icons.delete,

@@ -81,7 +81,7 @@ class HomeScreen extends StatelessWidget {
                 child: Obx(() {
                   if (profileController.isLoading.value) {
                     return const Center(
-                      child: CircularProgressIndicator(color: Colors.white),
+                      child: CircularProgressIndicator(color: Colors.white), 
                     );
                   }
                   return HomepageHeader(

@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/product/controller/add_product_controller.dart';
 import 'package:sandrofp/app/modules/product/widgets/status_bar.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_app_bar.dart';
-import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
 import 'package:sandrofp/app/res/common_widgets/image_picker_controller.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
@@ -21,24 +20,7 @@ class UploadProductFileScreen extends GetView<AddProductController> {
     final imagePickerHelper = ImagePickerHelper();
 
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Upload Product',
-        leading: Row(
-          children: [
-            CircleIconWidget(
-              radius: 20,
-              iconRadius: 20,
-              color: const Color(0xffFFFFFF).withValues(alpha: 0.05),
-              imagePath: Assets.images.notification.keyName,
-              onTap: () {},
-            ),
-            widthBox10,
-            CircleAvatar(
-              backgroundImage: AssetImage(Assets.images.onboarding01.keyName),
-            ),
-          ],
-        ),
-      ),
+      appBar: CustomAppBar(title: 'Upload Product', leading: Container()),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
@@ -101,11 +83,17 @@ class UploadProductFileScreen extends GetView<AddProductController> {
                         top: 8,
                         right: 8,
                         child: GestureDetector(
-                          onTap: () => controller.removeImage(controller.selectedImages.first),
+                          onTap: () => controller.removeImage(
+                            controller.selectedImages.first,
+                          ),
                           child: CircleAvatar(
                             radius: 14,
                             backgroundColor: Colors.black54,
-                            child: Icon(Icons.close, size: 16, color: Colors.white),
+                            child: Icon(
+                              Icons.close,
+                              size: 16,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -162,7 +150,12 @@ class UploadProductFileScreen extends GetView<AddProductController> {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12),
-                          child: Image.file(image, width: double.infinity, height: double.infinity, fit: BoxFit.cover),
+                          child: Image.file(
+                            image,
+                            width: double.infinity,
+                            height: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                         Positioned(
                           top: 4,
@@ -172,7 +165,11 @@ class UploadProductFileScreen extends GetView<AddProductController> {
                             child: CircleAvatar(
                               radius: 10,
                               backgroundColor: Colors.black54,
-                              child: Icon(Icons.close, size: 12, color: Colors.white),
+                              child: Icon(
+                                Icons.close,
+                                size: 12,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),

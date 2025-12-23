@@ -68,7 +68,7 @@ class ProductCart extends StatelessWidget {
               ),
 
               widthBox12,
-
+ 
               // Product Details
               Expanded(
                 child: Padding(

@@ -24,15 +24,15 @@ class SignUpController extends GetxController {
 
   final NetworkCaller _networkCaller = NetworkCaller();
 
-  @override
-  void onClose() {
-    usernameCtrl.dispose();
-    emailCtrl.dispose();
-    phoneCtrl.dispose();
-    passwordCtrl.dispose();
-    confirmPasswordCtrl.dispose();
-    super.onClose();
-  }
+  // @override
+  // void onClose() {
+  //   usernameCtrl.dispose();
+  //   emailCtrl.dispose();
+  //   phoneCtrl.dispose();
+  //   passwordCtrl.dispose();
+  //   confirmPasswordCtrl.dispose();
+  //   super.onClose();
+  // }
 
   void togglePasswordVisibility() => obscurePassword.toggle();
   void toggleConfirmPasswordVisibility() => obscureConfirmPassword.toggle();
@@ -76,6 +76,7 @@ class SignUpController extends GetxController {
 
         // FIXED: Get.off() → Get.to()
         Get.to(
+          // Get.to() এর পরিবর্তে Get.off() → SignUp screen pop হবে
           () => OtpVerifyScreen(),
           arguments: {
             'email': emailCtrl.text.trim(),

@@ -10,6 +10,7 @@ import 'package:sandrofp/app/modules/chat/views/chat_screen.dart';
 import 'package:sandrofp/app/modules/dashboard/controller/dashboard_controller.dart';
 import 'package:sandrofp/app/modules/home/views/home_screen.dart';
 import 'package:sandrofp/app/modules/profile/controllers/my_product_controller.dart';
+import 'package:sandrofp/app/modules/profile/controllers/profile_controller.dart';
 import 'package:sandrofp/app/modules/profile/views/profile_screen.dart';
 import 'package:sandrofp/app/modules/settings/views/settings_screen.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
@@ -26,6 +27,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   late final DashboardController controller;
   final FriendController friendController = Get.put(FriendController());
+  final ProfileController profileController = Get.put(ProfileController());
 
   final MyProductController myProductController = Get.put(
     MyProductController(),
@@ -39,6 +41,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Future<void> loadData() async {
+    await profileController.getMyProfile();
     await friendController.getAllFriends();
     await myProductController.getMyProduct();
   }

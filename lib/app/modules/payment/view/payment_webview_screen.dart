@@ -35,13 +35,13 @@ class _PaymentViewState extends State<PaymentView> {
           onPageStarted: (String url) {
             debugPrint('Page start loading: $url');
           },
-          onPageFinished: (String url) async {
+          onPageFinished: (String url) async { 
             debugPrint('Page finished loading: $url');
             if (url.contains("confirm-payment")) {
               debugPrint('Confirmed payment hoye geche............................');
               final bool isSuccess = await paymentURLController.paymentUrl(url);
               if (isSuccess) {
-                //Get.to(MainButtonNavbarScreen());
+                //Get.to(MainButtonNavbarScreen()); 
                 // await confirmPayment('${widget.paymentData['reference']}');
                 // Navigator.pushNamed(context, '/payment-success-screen'); // Adjust route name if needed
               }

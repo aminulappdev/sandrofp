@@ -12,8 +12,13 @@ import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 class OtpVerifyScreen extends GetView<OtpVerifyController> {
   const OtpVerifyScreen({super.key});
 
-  @override 
+  // এখানে Get.put করব না! GetView automatically করে দেবে
+  // @override
+  // OtpVerifyController get controller => Get.put(OtpVerifyController());
+
+  @override
   Widget build(BuildContext context) {
+    final controller = Get.put(OtpVerifyController());
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -22,16 +27,21 @@ class OtpVerifyScreen extends GetView<OtpVerifyController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               heightBox30,
-              const AuthHeaderWidget(
-                title: 'Provide code',
-                subtitle: 'We will send OTP verification to you.',
+              // email reactive করার জন্য Obx দরকার নেই যদি static থাকে
+              // কিন্তু যদি late load হয়, তাহলে Obx দাও
+              Obx(
+                () => AuthHeaderWidget(
+                  title: 'Provide code',
+                  subtitle:
+                      'An OTP verification code will be sent to ${controller.email.isEmpty ? 'your email' : controller.email}',
+                ),
               ),
               heightBox20,
               Form(
                 key: controller.formKey,
                 child: Column(
                   children: [
-                    heightBox10, 
+                    heightBox10,
                     PinCodeTextField(
                       length: 6,
                       controller: controller.pinCtrl,
@@ -56,9 +66,7 @@ class OtpVerifyScreen extends GetView<OtpVerifyController> {
                       appContext: context,
                       onChanged: (v) {},
                     ),
-
                     heightBox20,
-
                     CustomElevatedButton(
                       title: 'Verify',
                       onPress: controller.verifyOtp,

@@ -9,7 +9,7 @@ class StatusBar extends StatelessWidget {
   final String? firstIconPath;
   final String? secondIconPath;
   final String? thirdIconPath;
-  final Color? firstBgColor;
+  final Color? firstBgColor; 
   final Color? secondBgColor;
   final Color? thirdBgColor;
   final Color? firtsIconColor;
@@ -53,7 +53,7 @@ class StatusBar extends StatelessWidget {
             ),
             heightBox4,
             SizedBox(
-              width: 60,
+              width: 65,
               child: Text(
                 firstName ?? '',
 
@@ -82,7 +82,7 @@ class StatusBar extends StatelessWidget {
             ),
             heightBox4,
             SizedBox(
-              width: 60,
+              width: 65,
               child: Text(
                 secondName ?? '',
                 style: GoogleFonts.poppins(
@@ -111,7 +111,7 @@ class StatusBar extends StatelessWidget {
             ),
             heightBox4,
             SizedBox(
-              width: 60,
+              width: 65,
               child: Text(
                 thirdName ?? '',
                 style: GoogleFonts.poppins(

@@ -1,4 +1,5 @@
 // app/modules/product_details/views/product_details_screen.dart
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,13 +28,11 @@ class UploadProductDetailsScreen extends GetView<AddProductController> {
       return const Scaffold(body: Center(child: Text('No product data')));
     }
 
-    // Find selected category name from ID
+    // Selected Category Name
     String getSelectedCategoryName() {
       if (controller.selectedCategoryId.value.isEmpty) return 'N/A';
       final selectedCat = categoryController.categoryData?.data
-          .firstWhereOrNull(
-            (cat) => cat.id == controller.selectedCategoryId.value,
-          );
+          .firstWhereOrNull((cat) => cat.id == controller.selectedCategoryId.value);
       return selectedCat?.name ?? 'Unknown';
     }
 
@@ -49,6 +48,7 @@ class UploadProductDetailsScreen extends GetView<AddProductController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     heightBox12,
+
                     // Main Image
                     ClipRRect(
                       borderRadius: BorderRadius.circular(20),
@@ -66,6 +66,7 @@ class UploadProductDetailsScreen extends GetView<AddProductController> {
                             ),
                     ),
                     heightBox12,
+
                     // Thumbnail Images
                     if (product.images.length > 1)
                       SizedBox(
@@ -91,6 +92,7 @@ class UploadProductDetailsScreen extends GetView<AddProductController> {
                         ),
                       ),
                     heightBox10,
+
                     ProductStaticData(
                       title: product.name,
                       price: (product.price).toStringAsFixed(2),
@@ -99,6 +101,7 @@ class UploadProductDetailsScreen extends GetView<AddProductController> {
                       discount: product.discount.toStringAsFixed(2),
                     ),
                     heightBox20,
+
                     Text(
                       'Product Details',
                       style: GoogleFonts.poppins(
@@ -108,81 +111,99 @@ class UploadProductDetailsScreen extends GetView<AddProductController> {
                       ),
                     ),
                     heightBox10,
-                    // Size
-                    FeatureRow(
-                      title: 'Size:',
-                      widget: LabelData(
-                        onTap: () {},
-                        bgColor: const Color(0xffF3F3F5),
-                        title: product.size,
-                        titleColor: Colors.black,
+
+                    // === Conditional Feature Rows ===
+
+                    // Size - শুধু দেখাবে যদি selectedSize non-empty
+                    if (controller.selectedSize.value.isNotEmpty) ...[
+                      FeatureRow(
+                        title: 'Size:',
+                        widget: LabelData(
+                          onTap: () {},
+                          bgColor: const Color(0xffF3F3F5),
+                          title: controller.selectedSize.value,
+                          titleColor: Colors.black,
+                        ),
                       ),
-                    ),
-                    heightBox20,
-                    const StraightLiner(),
-                    heightBox10,
-                    // Brand
-                    FeatureRow(
-                      title: 'Material:',
-                      widget: LabelData(
-                        onTap: () {},
-                        bgColor: const Color(0xffF3F3F5),
-                        title: product.brands,
-                        titleColor: Colors.black,
+                      heightBox20,
+                      const StraightLiner(),
+                      heightBox10,
+                    ],
+
+                    // Material - শুধু দেখাবে যদি material non-empty
+                    if (product.brands.isNotEmpty) ...[
+                      FeatureRow(
+                        title: 'Material:',
+                        widget: LabelData(
+                          onTap: () {},
+                          bgColor: const Color(0xffF3F3F5),
+                          title: product.brands,
+                          titleColor: Colors.black,
+                        ),
                       ),
-                    ),
-                    heightBox20,
-                    const StraightLiner(),
-                    heightBox10,
-                    // Category - SHOW NAME
+                      heightBox20,
+                      const StraightLiner(),
+                      heightBox10,
+                    ],
+
+                    // Category - সবসময় দেখাবে (required)
                     Obx(() {
                       final categoryName = getSelectedCategoryName();
-                      return FeatureRow(
-                        title: 'Category:',
+                      return Column(
+                        children: [
+                          FeatureRow(
+                            title: 'Category:',
+                            widget: Text(
+                              categoryName,
+                              style: GoogleFonts.poppins(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
+                                color: const Color(0xff595959),
+                              ),
+                            ),
+                          ),
+                          heightBox20,
+                          const StraightLiner(),
+                          heightBox10,
+                        ],
+                      );
+                    }),
+
+                    // Color - শুধু দেখাবে যদি color non-empty
+                    if (product.colors.isNotEmpty) ...[
+                      FeatureRow(
+                        title: 'Color:',
+                        widget: LabelData(
+                          onTap: () {},
+                          bgColor: const Color(0xffF3F3F5),
+                          title: product.colors,
+                          titleColor: Colors.black,
+                        ),
+                      ),
+                      heightBox20,
+                      const StraightLiner(),
+                      heightBox10,
+                    ],
+
+                    // Quantity - শুধু দেখাবে যদি quantity > 0 বা text non-empty
+                    if (controller.quantityController.text.trim().isNotEmpty) ...[
+                      FeatureRow(
+                        title: 'Quantity:',
                         widget: Text(
-                          categoryName,
+                          controller.quantityController.text.trim(),
                           style: GoogleFonts.poppins(
                             fontSize: 13,
                             fontWeight: FontWeight.w400,
                             color: const Color(0xff595959),
                           ),
                         ),
-                      );
-                    }),
-                    heightBox20,
-                    const StraightLiner(),
-                    heightBox10,
-                    // Color
-                    FeatureRow(
-                      title: 'Color:',
-                      widget: LabelData(
-                        onTap: () {},
-                        bgColor: const Color(0xffF3F3F5),
-                        title: product.colors,
-                        titleColor: Colors.black,
                       ),
-                    ),
-                    heightBox20,
-                    const StraightLiner(),
-                    heightBox10,
-                    // Quantity (NEW)
-                    FeatureRow(
-                      title: 'Quantity:',
-                      widget: Text(
-                        controller.quantityController.text.isNotEmpty
-                            ? controller.quantityController.text
-                            : '1',
-                        style: GoogleFonts.poppins(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
-                          color: const Color(0xff595959),
-                        ),
-                      ),
-                    ),
-                    heightBox20,
-                    const StraightLiner(),
-                    heightBox10,
-                    // Delivery Policy
+                      heightBox20,
+                      const StraightLiner(),
+                      heightBox10,
+                    ],
+
+                    // Delivery Policy - সবসময় দেখাবে
                     FeatureRow(
                       title: 'Delivery Policy:',
                       widget: Text(
@@ -202,6 +223,7 @@ class UploadProductDetailsScreen extends GetView<AddProductController> {
               ),
             ),
           ),
+
           // Bottom Upload Button
           Card(
             elevation: 3,
@@ -222,7 +244,7 @@ class UploadProductDetailsScreen extends GetView<AddProductController> {
                   topRight: Radius.circular(20),
                 ),
               ),
-              child: Row( 
+              child: Row(
                 children: [
                   Expanded(
                     child: CustomElevatedButton(

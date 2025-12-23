@@ -27,12 +27,12 @@ class DashboardController extends GetxController {
 
     // ডাটা লোড
     loadInitialData();
-    profileController.getMyProfile();
 
     _printUserInfo();
   }
 
   Future<void> loadInitialData() async {
+    await profileController.getMyProfile();
     await friendController.getAllFriends();
     // অন্যান্য প্রয়োজনীয় ডাটা লোড করতে পারো
   }

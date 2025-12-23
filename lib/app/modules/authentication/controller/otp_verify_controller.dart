@@ -1,8 +1,8 @@
-// ignore_for_file: avoid_print
-
+// otp_verify_controller.dart
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:sandrofp/app/modules/authentication/controller/sign_up_controller.dart';
 import 'package:sandrofp/app/modules/authentication/views/reset_password_screen.dart';
 import 'package:sandrofp/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
@@ -18,7 +18,7 @@ class OtpVerifyController extends GetxController {
   final pinCtrl = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
-  String email = '';
+  final RxString email = ''.obs; // RxString করে reactive করা
   String token = '';
   late bool isVerify;
 
@@ -27,8 +27,14 @@ class OtpVerifyController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _readArguments();
     _startTimer();
+    // arguments check onReady-এ করব যাতে build complete হয়
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    _readArguments();
   }
 
   void _readArguments() {
@@ -42,18 +48,21 @@ class OtpVerifyController extends GetxController {
       return;
     }
 
-    email = args['email']?.toString().trim() ?? '';
+    final String? receivedEmail = args['email']?.toString().trim();
     token = args['token']?.toString().trim() ?? '';
     isVerify = args['isVerify'] == true;
 
-    print('EMAIL: $email');
+    if (receivedEmail == null || receivedEmail.isEmpty || token.isEmpty) {
+      showError('Invalid data. Please try again.');
+      Get.back();
+      return;
+    }
+
+    email.value = receivedEmail; // RxString update
+
+    print('EMAIL: ${email.value}');
     print('TOKEN: $token');
     print('IS VERIFY: $isVerify');
-
-    if (email.isEmpty || token.isEmpty) {
-      showError('Invalid data. Please signup again.');
-      Get.back();
-    }
   }
 
   void _startTimer() {
@@ -76,10 +85,12 @@ class OtpVerifyController extends GetxController {
   }
 
   Future<void> _performResend() async {
+    pinCtrl.clear();
+    update();
     try {
       final resp = await NetworkCaller().postRequest(
         Urls.resendUrl,
-        body: {"email": email},
+        body: {"email": email.value},
       );
       if (resp.isSuccess) {
         showSuccess('New OTP sent!');
@@ -112,12 +123,21 @@ class OtpVerifyController extends GetxController {
       );
 
       if (resp.isSuccess) {
-        // showSuccess('Verified!');
+        // SignUp data clear করা (যদি sign-up flow হয়)
+        if (isVerify && Get.isRegistered<SignUpController>()) {
+          final signUpController = Get.find<SignUpController>();
+          signUpController.usernameCtrl.clear();
+          signUpController.emailCtrl.clear();
+          signUpController.phoneCtrl.clear();
+          signUpController.passwordCtrl.clear();
+          signUpController.confirmPasswordCtrl.clear();
+        }
+
         isVerify
             ? Get.offAll(() => SignInScreen())
             : Get.to(
                 () => ResetPasswordScreen(),
-                arguments: {'email': email, 'token': token},
+                arguments: {'email': email.value, 'token': token},
               );
       } else {
         showError(resp.errorMessage);
@@ -125,11 +145,5 @@ class OtpVerifyController extends GetxController {
     } catch (e) {
       showError('Verification failed');
     }
-  }
-
-  @override
-  void onClose() {
-    _timer?.cancel();
-    super.onClose();
   }
 }

@@ -42,11 +42,12 @@ class SignInController extends GetxController {
     if (response.isSuccess) {
       final data = response.responseData['data'];
       if (data != null) {
+        emailCtrl.clear();
+        passwordCtrl.clear();
         StorageUtil.saveData(StorageUtil.userAccessToken, data['accessToken']);
         print(StorageUtil.getData(StorageUtil.userAccessToken));
         StorageUtil.saveData(StorageUtil.userId, data['user']['_id']);
-        print(StorageUtil.getData(StorageUtil.userId));
-       
+        print(StorageUtil.getData(StorageUtil.userId));     
         Get.offAll(() => DashboardScreen());
       } else {}
     } else {

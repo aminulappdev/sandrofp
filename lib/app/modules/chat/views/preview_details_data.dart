@@ -183,15 +183,17 @@ class _PreviewDetailsScreenState extends State<PreviewDetailsScreen> {
                     heightBox10,
 
                     // Size
-                    FeatureRow(
-                      title: 'Size:',
-                      widget: LabelData(
-                        onTap: () {},
-                        bgColor: const Color(0xffF3F3F5),
-                        title: widget.exchange?.size ?? '',
-                        titleColor: Colors.black,
-                      ),
-                    ),
+                    widget.exchange?.size == null || widget.exchange?.size == ''
+                        ? Container()
+                        : FeatureRow(
+                            title: 'Size:',
+                            widget: LabelData(
+                              onTap: () {},
+                              bgColor: const Color(0xffF3F3F5),
+                              title: widget.exchange?.size ?? '',
+                              titleColor: Colors.black,
+                            ),
+                          ),
                     heightBox20,
                     const StraightLiner(),
                     heightBox10,
