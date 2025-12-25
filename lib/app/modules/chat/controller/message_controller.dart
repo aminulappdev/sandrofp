@@ -94,7 +94,7 @@ class MessageController extends GetxController {
     required String therapistName,
   }) {
     final key = "autoMessageSent_$chatId";
-    if (StorageUtil.getData(key) == true) return;
+    if (StorageUtil.getData(key) == true) return; 
 
     final autoMessage = Message(
       id: DateTime.now().millisecondsSinceEpoch.toString(),

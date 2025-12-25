@@ -31,6 +31,14 @@ class Urls {
   // =========================================== Home ====================================== //
   static String categoryUrl = '$_baseUrl/categories';
 
+  static String dontInterestUrlById(String id) {
+    return '$_baseUrl/products/not-interested/$id';
+  }
+
+  static String intertestUrlById(String id) {
+    return '$_baseUrl/products/interested/$id';
+  }
+
   // =========================================== Product ====================================== //
   static String productUrl = '$_baseUrl/products';
   static String myProductUrl = '$_baseUrl/products/my-products';
@@ -53,7 +61,7 @@ class Urls {
     return '$_baseUrl/messages/get-by-recovered/$id';
   }
 
-   static String exchangeById(String id) {
+  static String exchangeById(String id) {
     return '$_baseUrl/exchanges/$id';
   }
 

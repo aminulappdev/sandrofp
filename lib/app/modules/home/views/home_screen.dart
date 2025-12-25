@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/modules/home/controller/category_controller.dart';
 import 'package:sandrofp/app/modules/home/controller/home_controller.dart';
 import 'package:sandrofp/app/modules/home/controller/home_product_controller.dart';
+import 'package:sandrofp/app/modules/home/controller/product_interest_controller.dart';
 import 'package:sandrofp/app/modules/home/views/view_all_category_screen.dart';
 import 'package:sandrofp/app/modules/home/widget/category_header.dart';
 import 'package:sandrofp/app/modules/home/widget/category_image.dart';
@@ -33,6 +34,8 @@ class HomeScreen extends StatelessWidget {
     final profileController = Get.find<ProfileController>();
     final categoryController = Get.find<CategoryController>();
     final productController = Get.find<HomeProductController>();
+    ProductInterestController productInterestController =
+        ProductInterestController();
 
     // Shared location service
     final locationService = LocationService.to;
@@ -81,7 +84,7 @@ class HomeScreen extends StatelessWidget {
                 child: Obx(() {
                   if (profileController.isLoading.value) {
                     return const Center(
-                      child: CircularProgressIndicator(color: Colors.white), 
+                      child: CircularProgressIndicator(color: Colors.white),
                     );
                   }
                   return HomepageHeader(
@@ -209,6 +212,22 @@ class HomeScreen extends StatelessWidget {
                             bottom: 0,
                           ),
                           scale: 0.98,
+                          onSwipe: (previousIndex, currentIndex, direction) {
+                            if (direction == CardSwiperDirection.left) {
+                              productInterestController.updateInterest(
+                                false,
+                                items[currentIndex!].id.toString(),
+                              );
+                              print('swipe left');
+                            } else if (direction == CardSwiperDirection.right) {
+                              productInterestController.updateInterest(
+                                true,
+                                items[currentIndex!].id.toString(),
+                              );
+                              print('swipe right');
+                            }
+                            return true;
+                          },
                           backCardOffset: const Offset(12, 0),
                           numberOfCardsDisplayed: items.length >= 2 ? 2 : 1,
                           cardsCount: items.length,

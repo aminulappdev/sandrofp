@@ -499,7 +499,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                                   StorageUtil.getData(
                                                     StorageUtil.userId,
                                                   )
-                                              ? Container(
+                                              ? Container( 
                                                   width: 180.w,
                                                   height: 40.h,
                                                   decoration: BoxDecoration(

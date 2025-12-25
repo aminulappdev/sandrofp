@@ -187,3 +187,4 @@ class _ChattingFieldWidgetState extends State<ChattingFieldWidget> {
     );
   }
 }
+ 
