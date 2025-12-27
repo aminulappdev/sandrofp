@@ -20,7 +20,7 @@ class MessageController extends GetxController {
   var messageResponse = ChatMessageModel(
     success: false,
     message: "",
-    data: null,
+    data: null, 
   ).obs;
   var messageList = <Message>[].obs;
 

@@ -8,16 +8,16 @@ class MessageInputWidget extends StatelessWidget {
   final bool isSending;
   final String chatId; 
   final String receiverId;
-  final Function(String, String, String) onSendMessage;
+  final Function(String, String, String) onSendMessage; 
  
   final String imageUrl;
 
   const MessageInputWidget({
-    super.key,
+    super.key, 
     required this.controller,
-    required this.isSending,
+    required this.isSending, 
     required this.chatId,
-    required this.receiverId,
+    required this.receiverId, 
     required this.onSendMessage,
   
     required this.imageUrl,

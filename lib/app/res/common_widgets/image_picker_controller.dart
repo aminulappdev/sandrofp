@@ -8,7 +8,7 @@ class ImagePickerHelper {
   void showAlertDialog(BuildContext context, Function(File) onImagePicked) {
     showDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
+      builder: (ctx) => AlertDialog( 
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Text("Select Image Source"),
         actions: [

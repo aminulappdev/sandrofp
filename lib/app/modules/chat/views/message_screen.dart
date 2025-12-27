@@ -178,7 +178,7 @@ class _ChatScreenState extends State<ChatScreen> {
         (m) => m.id == messageId || m.id.toString() == messageId,
       );
       return found.exchanges?.status;
-    } catch (_) { 
+    } catch (_) {
       return null;
     }
   }
@@ -357,7 +357,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           if (exchangeData != null)
                             Column(
                               mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start, 
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
                                   width: 300.w,
@@ -448,8 +448,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                           ),
                                         ),
                                       )
-                                    : 
-                                    exchangeStatus == 'rejected'
+                                    : exchangeStatus == 'rejected'
                                     ? Container(
                                         width: 120.w,
                                         height: 40.h,
@@ -471,7 +470,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                           ),
                                         ),
                                       )
-                                    :  exchangeStatus == 'decline'
+                                    : exchangeStatus == 'decline'
                                     ? Container(
                                         width: 120.w,
                                         height: 40.h,
@@ -499,7 +498,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                                   StorageUtil.getData(
                                                     StorageUtil.userId,
                                                   )
-                                              ? Container( 
+                                              ? Container(
                                                   width: 180.w,
                                                   height: 40.h,
                                                   decoration: BoxDecoration(

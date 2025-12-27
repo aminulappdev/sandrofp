@@ -16,7 +16,7 @@ class ChattingFieldWidget extends StatefulWidget {
 
   @override
   State<ChattingFieldWidget> createState() => _ChattingFieldWidgetState();
-}
+} 
 
 class _ChattingFieldWidgetState extends State<ChattingFieldWidget> {
   final ImageDecodeController imageDecodeController =
@@ -61,7 +61,7 @@ class _ChattingFieldWidgetState extends State<ChattingFieldWidget> {
       _isImageSelected = false;
     });
     imageDecodeController.imageUrl = '';
-  }
+  } 
 
   void _sendMessage() {
     if (widget.controller!.text.trim().isNotEmpty ||
