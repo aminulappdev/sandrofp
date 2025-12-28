@@ -1,5 +1,6 @@
 import 'package:crash_safe_image/crash_safe_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
@@ -11,7 +12,7 @@ class HomeProductCard extends StatelessWidget {
   final String? price;
   final String? discount;
   final String? ownerName; 
-  final String? profile;
+  final String? profile; 
   final String? rating;
   final String? address;
   final String? distance;
@@ -22,9 +23,9 @@ class HomeProductCard extends StatelessWidget {
   final VoidCallback? shareTap;
   final VoidCallback? reactTap;
   
-  const HomeProductCard({
+  const HomeProductCard({ 
     super.key, 
-    required this.onTap,
+    required this.onTap, 
     this.imagePath,
     this.price,
     this.discount,
@@ -43,13 +44,13 @@ class HomeProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12.r),
             color: Colors.white,
           ),
           child: Column(
@@ -60,12 +61,12 @@ class HomeProductCard extends StatelessWidget {
               Stack(
                 children: [
                   Container(
-                    height: 220,
+                    height: MediaQuery.of(context).size.height * 0.28,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(12),
-                        topRight: Radius.circular(12),
+                      borderRadius:  BorderRadius.only(
+                        topLeft: Radius.circular(12.r),
+                        topRight: Radius.circular(12.r),
                       ),
                       color: Colors.grey[300],
                       image: imagePath != null && imagePath!.isNotEmpty
@@ -126,7 +127,7 @@ class HomeProductCard extends StatelessWidget {
               
               // Content section
               Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 0),
+                padding:  EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h, bottom: 0),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,7 +140,7 @@ class HomeProductCard extends StatelessWidget {
                           children: [
                             CrashSafeImage(
                               Assets.images.banana.keyName,
-                              height: 24,
+                              height: 24.h,
                             ),
                             widthBox8,
                             Text(
@@ -153,12 +154,12 @@ class HomeProductCard extends StatelessWidget {
                             widthBox8,
                             CrashSafeImage(
                               Assets.images.label.keyName,
-                              height: 24,
+                              height: 24.h,
                             ),
                           ],
                         ),
                         Container(
-                          height: 30,
+                          height: MediaQuery.of(context).size.height * 0.03,
                           width: 80,
                           decoration: BoxDecoration(
                             color: const Color(0xffFFF4C2),
@@ -259,8 +260,8 @@ class HomeProductCard extends StatelessWidget {
                               ),
                             ],
                           ),
-                          Container(
-                            height: 30,
+                          distance == null || distance == '' ? const SizedBox.shrink() :  Container(
+                            height: MediaQuery.of(context).size.height * 0.03,
                             width: 100,
                             decoration: BoxDecoration(
                               color: const Color(0xffEBF2EE),
@@ -309,7 +310,7 @@ class HomeProductCard extends StatelessWidget {
                       child: Text(
                         description ?? 'No description available',
                         overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
+                        maxLines: 1,
                         style: GoogleFonts.poppins(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
@@ -322,7 +323,7 @@ class HomeProductCard extends StatelessWidget {
                     
                     // View Details button
                     SizedBox(
-                      height: 45,
+                      height: MediaQuery.of(context).size.height * 0.05,
                       width: 150,
                       child: CustomElevatedButton(
                         title: 'View Details',

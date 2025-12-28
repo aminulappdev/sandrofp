@@ -1,12 +1,13 @@
 import 'package:crash_safe_image/crash_safe_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_circle.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
-class HomepageHeader extends StatelessWidget {
+class HomepageHeader extends StatefulWidget {
   final String imagePath;
   final String name;
   final String ammount;
@@ -14,6 +15,7 @@ class HomepageHeader extends StatelessWidget {
   final VoidCallback settingsAction;
   final VoidCallback arrowAction;
   final VoidCallback imageOnTap;
+  final ScrollController scrollController;
 
   const HomepageHeader({
     super.key,
@@ -24,12 +26,45 @@ class HomepageHeader extends StatelessWidget {
     required this.settingsAction,
     required this.arrowAction,
     required this.imageOnTap,
+    required this.scrollController,
   });
+
+  @override
+  State<HomepageHeader> createState() => _HomepageHeaderState();
+}
+
+class _HomepageHeaderState extends State<HomepageHeader> {
+  double _balanceOpacity = 1.0;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    widget.scrollController.removeListener(_scrollListener);
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    final scrollOffset = widget.scrollController.offset;
+    // 0 থেকে 120 পিক্সেল স্ক্রলের মধ্যে fade out
+    double opacity = 1.0 - (scrollOffset / 120.0);
+    opacity = opacity.clamp(0.0, 1.0);
+
+    if (opacity != _balanceOpacity) {
+      setState(() {
+        _balanceOpacity = opacity;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(16.0.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -40,15 +75,15 @@ class HomepageHeader extends StatelessWidget {
               Row(
                 children: [
                   GestureDetector(
-                    onTap: imageOnTap,
+                    onTap: widget.imageOnTap,
                     child: CircleAvatar(
                       radius: 20,
-                      backgroundImage: imagePath == ''
+                      backgroundImage: widget.imagePath.isEmpty
                           ? null
-                          : NetworkImage(imagePath),
-                      child: imagePath == ''
+                          : NetworkImage(widget.imagePath),
+                      child: widget.imagePath.isEmpty
                           ? const Icon(Icons.person, size: 30)
-                          : Container(),
+                          : null,
                     ),
                   ),
                   widthBox8,
@@ -67,7 +102,7 @@ class HomepageHeader extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: '$name!',
+                              text: '${widget.name}!',
                               style: GoogleFonts.poppins(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
@@ -77,7 +112,6 @@ class HomepageHeader extends StatelessWidget {
                           ],
                         ),
                       ),
-
                       Text(
                         'Let\'s exchange',
                         style: GoogleFonts.poppins(
@@ -97,7 +131,7 @@ class HomepageHeader extends StatelessWidget {
                     iconRadius: 20,
                     color: Color(0xFFFFFFFF).withValues(alpha: 0.05),
                     imagePath: Assets.images.notification.keyName,
-                    onTap: notificationAction,
+                    onTap: widget.notificationAction,
                   ),
                   widthBox10,
                   CircleIconWidget(
@@ -105,112 +139,110 @@ class HomepageHeader extends StatelessWidget {
                     iconRadius: 20,
                     color: Color(0xFFFFFFFF).withValues(alpha: 0.05),
                     imagePath: Assets.images.filter.keyName,
-                    onTap: settingsAction,
+                    onTap: widget.settingsAction,
                   ),
                 ],
               ),
             ],
           ),
           heightBox14,
-          Container(
-            height: 150,
-            decoration: BoxDecoration(
-              color: Color(0xFFFFFFFF).withValues(alpha: 0.05),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Balance',
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          CrashSafeImage(
-                            Assets.images.banana.keyName,
-                            height: 16,
-                          ),
-                          widthBox10,
-                          Text(
-                            ammount,
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.yellowColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  heightBox10,
-                  Container(
-                    height: 0.3,
-                    width: double.infinity,
-                    color: Color(0xFFFFFFFF),
-                  ),
-                  heightBox10,
-                  Row(
-                    children: [
-                      CrashSafeImage(Assets.images.bag.keyName, height: 16),
-                      widthBox10,
-                      Text(
-                        'Buy banana tokens ',
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  heightBox10,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: 260,
-                        child: Text(
-                          'Lorem ipsum dolor sit amet, consectetur our adipiscing elit Maecenas hendrerit',
+          AnimatedOpacity(
+            opacity: _balanceOpacity,
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.easeOut,
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.18,
+              decoration: BoxDecoration(
+                color: Color(0xFFFFFFFF).withValues(alpha: 0.05),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(16.0.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Balance',
                           style: GoogleFonts.poppins(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w400,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
                             color: Colors.white,
                           ),
                         ),
-                      ),
-                      CircleIconWidget(
-                        imagePath: Assets.images.arrowFont.keyName,
-                        onTap: arrowAction,
-                        color: Color(0xFFFFFFFF).withValues(alpha: 0.05),
-                      ),
-                    ],
-                  ),
-                ],
+                        Row(
+                          children: [
+                            CrashSafeImage(
+                              Assets.images.banana.keyName,
+                              height: 16.h,
+                            ),
+                            widthBox10,
+                            Text(
+                              widget.ammount,
+                              style: GoogleFonts.poppins(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.yellowColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    heightBox10,
+                    Container(
+                      height: 0.3,
+                      width: double.infinity,
+                      color: Color(0xFFFFFFFF),
+                    ),
+                    heightBox10,
+                    Row(
+                      children: [
+                        CrashSafeImage(
+                          Assets.images.bag.keyName,
+                          height: 16,
+                        ),
+                        widthBox10,
+                        Text(
+                          'Buy banana tokens ',
+                          style: GoogleFonts.poppins(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                    heightBox10,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: 260,
+                          child: Text(
+                            'Lorem ipsum dolor sit amet, consectetur our adipiscing elit Maecenas hendrerit',
+                            style: GoogleFonts.poppins(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        CircleIconWidget(
+                          imagePath: Assets.images.arrowFont.keyName,
+                          onTap: widget.arrowAction,
+                          color: Color(0xFFFFFFFF).withValues(alpha: 0.05),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-          // heightBox20,
-
-          // TextFormField(
-          //   decoration: InputDecoration(
-          //     prefixIcon: Icon(Icons.search, color: Colors.black, size: 28),
-          //     hintText: 'Looking for..',
-          //     fillColor: Colors.white,
-          //   ),
-          // ),
         ],
       ),
     );

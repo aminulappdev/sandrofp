@@ -15,6 +15,7 @@ class ChatHeader extends StatelessWidget {
   final String? id;
   final String? name;
   final String? image;
+
   final bool? isOnline;
 
   const ChatHeader({super.key, this.name, this.image, this.isOnline, this.id});
@@ -22,7 +23,6 @@ class ChatHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-  
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.only(
@@ -35,7 +35,12 @@ class ChatHeader extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 16),
+        padding: const EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: 20,
+          bottom: 16,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.end,
@@ -73,7 +78,7 @@ class ChatHeader extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          isOnline == true ? 'Online' : 'Offline',
+                          'Seller',
                           style: GoogleFonts.poppins(
                             fontSize: 11,
                             fontWeight: FontWeight.w500,

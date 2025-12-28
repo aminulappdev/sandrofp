@@ -78,7 +78,9 @@ class ProfileScreen extends GetView<ProfileScreenController> {
 
     // Screen load হওয়ার সাথে সাথে location fetch করা
     _getCurrentAddress().then((address) {
-      currentAddress.value = address.isEmpty ? "Location not available" : address;
+      currentAddress.value = address.isEmpty
+          ? "Location not available"
+          : address;
     });
 
     return Scaffold(
@@ -176,7 +178,9 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                     CrashSafeImage(Assets.images.star.keyName, height: 30),
                     widthBox8,
                     Text(
-                      profileController.profileData?.avgRating?.toStringAsFixed(1) ??
+                      profileController.profileData?.avgRating?.toStringAsFixed(
+                            1,
+                          ) ??
                           '0.0',
                       style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
                     ),
@@ -226,8 +230,7 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                 // About Me
                 _buildInfoCard('About me', [
                   Text(
-                    profileController.profileData?.about ??
-                        'No bio added yet.',
+                    profileController.profileData?.about ?? 'No bio added yet.',
                     style: GoogleFonts.poppins(fontSize: 12),
                     maxLines: 5,
                     overflow: TextOverflow.ellipsis,
@@ -254,7 +257,7 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                     ),
                     heightBox10,
                     SizedBox(
-                      height: Get.height * 0.67,
+                      height: Get.height * 0.60,
                       child: Obx(() {
                         if (myProductController.isLoading.value) {
                           return const Center(
@@ -290,12 +293,14 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                                 imagePath: product.images.isEmpty
                                     ? ''
                                     : product.images.first.url,
-                                title: product.brands ?? 'No Brand',
+                                title: product.name ?? 'No Brand',
                                 description: product.descriptions ?? '',
+
                                 discount: product.discount?.toString() ?? '0',
                                 rating:
-                                    product.author?.avgRating?.toString() ?? '0',
-                                distance: '1',
+                                    product.author?.avgRating?.toString() ??
+                                    '0',
+
                                 profile: product.author?.profile ?? '',
                                 ownerName: product.author?.name ?? 'Unknown',
                                 address: 'N/A',
@@ -331,8 +336,9 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                     itemCount:
                         controller.myFeedbackController.myFeedbackItems.length,
                     itemBuilder: (context, index) {
-                      var item =
-                          controller.myFeedbackController.myFeedbackItems[index];
+                      var item = controller
+                          .myFeedbackController
+                          .myFeedbackItems[index];
                       return CommentSection(
                         imagePath: item.user?.profile,
                         name: item.user?.name,

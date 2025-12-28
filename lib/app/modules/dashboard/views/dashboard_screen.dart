@@ -44,7 +44,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     await profileController.getMyProfile();
     await friendController.getAllFriends();
     await myProductController.getMyProduct();
-  }
+  } 
 
   @override
   Widget build(BuildContext context) {

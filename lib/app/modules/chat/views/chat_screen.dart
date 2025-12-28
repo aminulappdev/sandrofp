@@ -239,6 +239,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                           receiverId: friend['receiverId'],
                           receiverName: friend['name'],
                           receiverImageUrl: friend['profileImage'],
+                          
                         ),
                       );
                     },

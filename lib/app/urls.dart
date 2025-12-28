@@ -15,7 +15,6 @@ class Urls {
   static const String forgetPasswordUrl = '$_baseUrl/auth/forgot-password';
   static const String resetPasswordUrl = '$_baseUrl/auth/reset-password';
   static const String changePasswordUrl = '$_baseUrl/auth/change-password';
-
   static const String signInUrl = '$_baseUrl/auth/login';
 
   // =========================================== Profile ====================================== //

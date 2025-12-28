@@ -28,9 +28,6 @@ class ProductInterestController extends GetxController {
       );
 
       if (response.isSuccess && response.responseData != null) {
-        _notificationModel.value = NotificationsModel.fromJson(
-          response.responseData,
-        );
       } else {
         // showError(response.errorMessage);
         _notificationModel.value = null;

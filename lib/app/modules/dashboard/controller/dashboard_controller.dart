@@ -11,7 +11,7 @@ class DashboardController extends GetxController {
 
   // সবসময় Home tab (index 2) দিয়ে শুরু
   final RxInt _tabIndex = 2.obs;
-  int get tabIndex => _tabIndex.value;
+  int get tabIndex => _tabIndex.value; 
   set tabIndex(int v) => _tabIndex.value = v;
 
   late PageController pageController;
