@@ -18,7 +18,7 @@ class UploadProductFileScreen extends GetView<AddProductController> {
   Widget build(BuildContext context) {
     final controller = Get.find<AddProductController>();
     final imagePickerHelper = ImagePickerHelper();
-
+ 
     return Scaffold(
       appBar: CustomAppBar(title: 'Upload Product', leading: Container()),
       body: SingleChildScrollView(
@@ -186,7 +186,7 @@ class UploadProductFileScreen extends GetView<AddProductController> {
                 borderColor: Colors.black,
                 title: 'Add more photos',
                 onPress: () {
-                  imagePickerHelper.showMultiImagePicker(context, (file) {
+                  imagePickerHelper.showAlertDialog(context, (file) {
                     controller.addImage(file);
                   });
                 },

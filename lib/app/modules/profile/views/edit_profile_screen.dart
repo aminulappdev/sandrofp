@@ -13,7 +13,7 @@ class EditProfileScreen extends GetView<EditProfileController> {
   const EditProfileScreen({super.key});
 
   // সবচেয়ে সেফ ইমেজ প্রোভাইডার
-  ImageProvider _safeImageProvider() {
+   ImageProvider _safeImageProvider() {
     if (controller.selectedImage.value != null &&
         controller.selectedImage.value!.existsSync()) {
       return FileImage(controller.selectedImage.value!);

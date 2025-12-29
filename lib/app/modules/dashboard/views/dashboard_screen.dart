@@ -52,12 +52,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
       extendBody: true,
       bottomNavigationBar: Obx(
         () => CircleNavBar(
+          tabDurationMillSec: 3000,
           activeIcons: _activeIcons,
           inactiveIcons: _inactiveIcons,
           circleColor: AppColors.yellowColor,
           color: const Color(0xff204C33),
-          height: 85,
-          circleWidth: 70,
+          height: 80,
+          circleWidth: 64,
           activeIndex: controller.tabIndex,
           onTap: controller.changeTab,
           cornerRadius: const BorderRadius.only(

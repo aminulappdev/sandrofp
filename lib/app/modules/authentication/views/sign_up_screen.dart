@@ -41,7 +41,7 @@ class SignUpScreen extends GetView<SignUpController> {
                   validator: (value) => ValidatorService.validateSimpleField(
                     controller.usernameCtrl.text,
                   ),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  autovalidateMode: AutovalidateMode.onUserInteraction, 
                   controller: controller.usernameCtrl,
                   decoration: const InputDecoration(
                     hintText: 'Enter your username',

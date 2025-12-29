@@ -11,7 +11,7 @@ import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
 
 class HomeController extends GetxController {
   final AllProductController allProductController =
-      Get.find<AllProductController>();
+      Get.put(AllProductController());
 
   var lat = 0.0.obs;
   var long = 0.0.obs;

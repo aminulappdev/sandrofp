@@ -16,6 +16,7 @@ import 'package:sandrofp/app/modules/settings/views/token_exchange_screen.dart';
 import 'package:sandrofp/app/res/app_colors/app_colors.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/app/res/shimmer/category_shimmer.dart';
+import 'package:sandrofp/app/res/shimmer/home_page_shimmer.dart';
 import 'package:sandrofp/app/res/shimmer/product_card_shimmer.dart';
 import 'package:sandrofp/app/services/location/address_fetcher.dart';
 import 'package:sandrofp/app/services/location/google_distance_services.dart';
@@ -27,9 +28,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomeController homeController = Get.put(HomeController());
-    final profileController = Get.find<ProfileController>();
-    final categoryController = Get.find<CategoryController>();
-    final productController = Get.find<HomeProductController>();
+    final profileController = Get.put(ProfileController());
+    final categoryController = Get.put(CategoryController());
+    final productController = Get.put(HomeProductController());
     ProductInterestController productInterestController =
         ProductInterestController();
 
@@ -63,7 +64,12 @@ class HomeScreen extends StatelessWidget {
             pinned: true,
             snap: false,
             stretch: true,
-            backgroundColor: Color.fromARGB(255, 2, 58, 27), // Transparent background
+            backgroundColor: Color.fromARGB(
+              255,
+              2,
+              58,
+              27,
+            ), // Transparent background
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(
                 bottom: Radius.circular(40.r),
@@ -100,11 +106,7 @@ class HomeScreen extends StatelessWidget {
                         // Balance Card Content
                         Obx(() {
                           if (profileController.isLoading.value) {
-                            return const Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                              ),
-                            );
+                            return HomeShimmerEffectWidget();
                           }
                           return Padding(
                             padding: EdgeInsets.symmetric(
@@ -439,11 +441,11 @@ class HomeScreen extends StatelessWidget {
                               physics: const NeverScrollableScrollPhysics(),
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 8,
-                                crossAxisSpacing: 8,
-                                childAspectRatio: 1.6,
-                              ),
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 8,
+                                    crossAxisSpacing: 8,
+                                    childAspectRatio: 1.6,
+                                  ),
                               itemCount: categories.length > 4
                                   ? 4
                                   : categories.length,
@@ -491,20 +493,20 @@ class HomeScreen extends StatelessWidget {
                               scale: 0.98,
                               onSwipe:
                                   (previousIndex, currentIndex, direction) {
-                                if (direction == CardSwiperDirection.left) {
-                                  productInterestController.updateInterest(
-                                    false,
-                                    items[currentIndex!].id.toString(),
-                                  );
-                                } else if (direction ==
-                                    CardSwiperDirection.right) {
-                                  productInterestController.updateInterest(
-                                    true,
-                                    items[currentIndex!].id.toString(),
-                                  );
-                                }
-                                return true;
-                              },
+                                    if (direction == CardSwiperDirection.left) {
+                                      productInterestController.updateInterest(
+                                        false,
+                                        items[currentIndex!].id.toString(),
+                                      );
+                                    } else if (direction ==
+                                        CardSwiperDirection.right) {
+                                      productInterestController.updateInterest(
+                                        true,
+                                        items[currentIndex!].id.toString(),
+                                      );
+                                    }
+                                    return true;
+                                  },
                               backCardOffset: const Offset(12, 0),
                               numberOfCardsDisplayed: items.length >= 2 ? 2 : 1,
                               cardsCount: items.length,
@@ -516,7 +518,7 @@ class HomeScreen extends StatelessWidget {
                                     product.location?.coordinates[0];
                                 final priceAfterDiscount =
                                     (product.price ?? 0) -
-                                        (product.discount ?? 0);
+                                    (product.discount ?? 0);
 
                                 return FutureBuilder<String>(
                                   future: getLiveDistance(
@@ -541,7 +543,8 @@ class HomeScreen extends StatelessWidget {
                                       ),
                                       discount: '${product.discount ?? 0}\$',
                                       distance: distance,
-                                      rating: product.author?.avgRating
+                                      rating:
+                                          product.author?.avgRating
                                               ?.toStringAsFixed(1) ??
                                           '0',
                                       profile: product.author?.profile ?? '',
@@ -591,7 +594,7 @@ class HomeScreen extends StatelessWidget {
                                     product.location?.coordinates[0];
                                 final priceAfterDiscount =
                                     (product.price ?? 0) -
-                                        (product.discount ?? 0);
+                                    (product.discount ?? 0);
 
                                 return FutureBuilder<String>(
                                   future: getLiveDistance(
@@ -616,7 +619,8 @@ class HomeScreen extends StatelessWidget {
                                       ),
                                       discount: '${product.discount ?? 0}\$',
                                       distance: distance,
-                                      rating: product.author?.avgRating
+                                      rating:
+                                          product.author?.avgRating
                                               ?.toStringAsFixed(1) ??
                                           '0',
                                       profile: product.author?.profile ?? '',

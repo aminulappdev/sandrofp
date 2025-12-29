@@ -56,7 +56,7 @@ class ValidatorService {
   }
 
   //<======= Password validator
-  static String? validatePassword(String? password) {
+  static String? validatePassword(String? password) { 
     if (password == null || password.isEmpty) {
       return 'Password is required';
     }
