@@ -62,7 +62,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           activeIndex: controller.tabIndex,
           onTap: controller.changeTab,
           cornerRadius: const BorderRadius.only(
-            topLeft: Radius.circular(30),
+            topLeft: Radius.circular(30), 
             topRight: Radius.circular(30),
           ),
           elevation: 0,
