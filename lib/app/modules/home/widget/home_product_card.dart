@@ -26,7 +26,7 @@ class HomeProductCard extends StatelessWidget {
   const HomeProductCard({ 
     super.key, 
     required this.onTap, 
-    this.imagePath,
+    this.imagePath, 
     this.price,
     this.discount,
     this.ownerName,
@@ -291,7 +291,7 @@ class HomeProductCard extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       child: Text(
-                        title ?? 'No Title',
+                        title ?? '',
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: GoogleFonts.poppins(
@@ -332,6 +332,7 @@ class HomeProductCard extends StatelessWidget {
                         textColor: Colors.white,
                       ),
                     ),
+                    heightBox10
                   ],
                 ),
               ),

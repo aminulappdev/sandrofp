@@ -11,7 +11,7 @@ import 'package:sandrofp/gen/assets.gen.dart';
 class BuyerDetails extends StatelessWidget {
   final String? image;
   final String? name;
-  final int? rating;
+  final double? rating; 
   final String? description;
   final String? id;
   const BuyerDetails({

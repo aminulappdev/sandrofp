@@ -149,9 +149,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       BuyerDetails(
                         image: controller.product!.author?.profile ?? '',
                         description: controller.product?.descriptions ?? '',
-                        rating: controller.product?.author?.avgRating ?? 0,
+                        rating: controller.product?.author?.avgRating.toDouble() ?? 0.0,
                         id: controller.product?.author?.id ?? '',
-                        name: controller.product?.author?.name ?? '',
+                        name: controller.product?.author?.name ?? '',  
                       ),
 
                     if (controller.product!.author?.id !=

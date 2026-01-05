@@ -12,8 +12,8 @@ import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
 class TokenExchangeScreen extends StatefulWidget {
-  const TokenExchangeScreen({super.key});
-
+  const TokenExchangeScreen({super.key}); 
+ 
   @override 
   State<TokenExchangeScreen> createState() => _TokenExchangeScreenState();
 }
@@ -188,7 +188,7 @@ class _TokenExchangeScreenState extends State<TokenExchangeScreen> {
                               controller: amountController,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
-                                    decimal: true,
+                                    decimal: false,
                                   ),
                               decoration: InputDecoration(
                                 prefixIcon: Padding(

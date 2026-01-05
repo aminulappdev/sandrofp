@@ -15,7 +15,7 @@ class HomeController extends GetxController {
 
   var lat = 0.0.obs;
   var long = 0.0.obs;
-
+ 
   @override
   void onInit() {
     super.onInit();
