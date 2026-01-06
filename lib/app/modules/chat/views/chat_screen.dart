@@ -73,7 +73,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
         text.isNotEmpty ? text : (images.isNotEmpty ? "Photo" : "Message");
     final String time =
         messageData['createdAt']?.toString() ?? DateTime.now().toIso8601String();
-
+ 
     final bool isFromMe = senderId == myId;
     final String friendId = isFromMe ? receiverId : senderId;
     if (friendId.isEmpty) return;

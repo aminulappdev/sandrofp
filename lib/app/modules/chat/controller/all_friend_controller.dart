@@ -11,7 +11,7 @@ class FriendController extends GetxController {
   var inProgress = false.obs; 
   var friendList = <AllFriendsItemModel>[].obs;
 
-  @override
+  @override 
   void onInit() {
     super.onInit();
     getAllFriends();
