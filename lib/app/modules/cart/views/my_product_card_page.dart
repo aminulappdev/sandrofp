@@ -31,7 +31,7 @@ class _MyProductCardScreenState extends State<MyProductCardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Product Card', leading: Container()),
+      appBar: CustomAppBar(title: 'Product Card', leading: Container(), isBack: false,),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

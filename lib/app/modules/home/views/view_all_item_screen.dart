@@ -1,6 +1,7 @@
 // lib/app/modules/home/views/view_all_item_screen.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sandrofp/app/get_storage.dart';
 import 'package:sandrofp/app/modules/home/controller/home_controller.dart';
 import 'package:sandrofp/app/modules/home/controller/view_all_item_controller.dart';
 import 'package:sandrofp/app/modules/home/widget/home_product_card.dart';
@@ -14,7 +15,7 @@ class ViewAllItemScreen extends GetView<ViewAllItemController> {
    Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: controller.title ?? 'All Items',
+        title: controller.title ?? 'All Items', 
         leading: Container(),
       ),
       body: RefreshIndicator(
@@ -70,10 +71,10 @@ class ViewAllItemScreen extends GetView<ViewAllItemController> {
               var lng = product.location?.coordinates[1];
 
               final address = AddressHelper.getAddress(lat, lng);
-              return Padding(
+              return product.author?.id == StorageUtil.getData(StorageUtil.userId) ? Container() : Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: HomeProductCard(
-                  onTap: () {
+                  onTap: () { 
                     // Get.find<HomeController>().goToProductDetails(product);
                      Get.put(HomeController()).goToProductDetails(product); 
                   },

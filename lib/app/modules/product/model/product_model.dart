@@ -5,7 +5,7 @@ class AllProductModel {
         required this.data,
     });
 
-    final bool? success;
+    final bool? success; 
     final String? message;
     final Data? data;
 

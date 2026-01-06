@@ -9,7 +9,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Widget leading;
   const CustomAppBar({
-    super.key,
+    super.key, 
     required this.title,
     required this.leading,
     this.isBack = true,

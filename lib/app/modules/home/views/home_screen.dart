@@ -3,6 +3,7 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sandrofp/app/get_storage.dart';
 import 'package:sandrofp/app/modules/home/controller/category_controller.dart';
 import 'package:sandrofp/app/modules/home/controller/home_controller.dart';
 import 'package:sandrofp/app/modules/home/controller/home_product_controller.dart';
@@ -483,7 +484,7 @@ class HomeScreen extends StatelessWidget {
                             );
                           }
                           return SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.60,
+                            height: MediaQuery.of(context).size.height * 0.58,
                             child: CardSwiper(
                               padding: const EdgeInsets.only(
                                 left: 0,
@@ -527,29 +528,38 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                   builder: (context, snapshot) {
                                     final distance = snapshot.data ?? "Far";
-                                    return HomeProductCard(
-                                      onTap: () => homeController
-                                          .goToProductDetails(product),
-                                      imagePath: product.images.isNotEmpty
-                                          ? product.images.first.url
-                                          : 'https://via.placeholder.com/300',
-                                      price: '\$$priceAfterDiscount',
-                                      ownerName:
-                                          product.author?.name ?? 'Unknown',
-                                      description: product.descriptions ?? '',
-                                      address: AddressHelper.getAddress(
-                                        productLat,
-                                        productLng,
-                                      ),
-                                      discount: '${product.discount ?? 0}\$',
-                                      distance: distance,
-                                      rating:
-                                          product.author?.avgRating
-                                              ?.toStringAsFixed(1) ??
-                                          '0',
-                                      profile: product.author?.profile ?? '',
-                                      title: product.name ?? 'No Title',
-                                    );
+                                    return product.author?.id ==
+                                            StorageUtil.getData(
+                                              StorageUtil.userId,
+                                            )
+                                        ? Container()
+                                        : HomeProductCard(
+                                            onTap: () => homeController
+                                                .goToProductDetails(product),
+                                            imagePath: product.images.isNotEmpty
+                                                ? product.images.first.url
+                                                : 'https://via.placeholder.com/300',
+                                            price: '\$$priceAfterDiscount',
+                                            ownerName:
+                                                product.author?.name ??
+                                                'Unknown',
+                                            description:
+                                                product.descriptions ?? '',
+                                            address: AddressHelper.getAddress(
+                                              productLat,
+                                              productLng,
+                                            ),
+                                            discount:
+                                                '${product.discount ?? 0}\$',
+                                            distance: distance,
+                                            rating:
+                                                product.author?.avgRating
+                                                    ?.toStringAsFixed(1) ??
+                                                '0',
+                                            profile:
+                                                product.author?.profile ?? '',
+                                            title: product.name ?? '',
+                                          );
                                   },
                                 );
                               },
@@ -576,7 +586,7 @@ class HomeScreen extends StatelessWidget {
                             );
                           }
                           return SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.60,
+                            height: MediaQuery.of(context).size.height * 0.58,
                             child: CardSwiper(
                               padding: const EdgeInsets.only(
                                 left: 0,
@@ -624,7 +634,7 @@ class HomeScreen extends StatelessWidget {
                                               ?.toStringAsFixed(1) ??
                                           '0',
                                       profile: product.author?.profile ?? '',
-                                      title: product.name ?? 'No Title',
+                                      title: product.name ?? '',
                                     );
                                   },
                                 );
