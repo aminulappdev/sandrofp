@@ -57,7 +57,7 @@ class LocationService extends GetxService {
       "longitude": 90.4125,
     });
     isReady.value = true;
-    debugPrint("Fallback location: Dhaka");
+    debugPrint("Fallback location: Dhaka"); 
   }
 }
 
