@@ -11,7 +11,7 @@ class ContentScreen extends GetView<ContentController> {
   @override
   Widget build(BuildContext context) {
     // প্রতিবার নতুন ইন্সট্যান্স তৈরি করা হচ্ছে (পুরোনোটা onClose-এ ডিলিট হয়ে যাবে)
-    Get.put(ContentController());
+    Get.put(ContentController()); 
 
     return Scaffold(
       appBar: CustomAppBar(

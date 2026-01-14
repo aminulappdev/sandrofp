@@ -61,7 +61,7 @@ class FeedbackScreen extends GetView<FeedbackController> {
 
               // Quick Tags (Single Select)
               Text(
-                'What did you think?',
+                'What did you think?', 
                 style: GoogleFonts.poppins(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,

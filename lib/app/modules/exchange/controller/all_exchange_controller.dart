@@ -42,7 +42,7 @@ class AllExchangeController extends GetxController {
       }
     } catch (e) {
       showError('Network error: $e');
-      _exchangeModel.value = null;
+      _exchangeModel.value = null; 
     } finally {
       isLoading(false);
     }

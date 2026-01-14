@@ -19,7 +19,7 @@ class Product {
   Product({
     required this.id,
     required this.image,
-    required this.title,
+    required this.title, 
     required this.price,
     this.description, 
     this.userId,

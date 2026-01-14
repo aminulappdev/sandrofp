@@ -17,7 +17,7 @@ class ProductInterestController extends GetxController {
   final RxBool isLoading = true.obs;
 
   Future<void> updateInterest(bool? isInterest, String id) async {
-    isLoading(true);
+    isLoading(true); 
     var url = isInterest == true
         ? Urls.intertestUrlById(id)
         : Urls.dontInterestUrlById(id);

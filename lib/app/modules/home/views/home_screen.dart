@@ -596,6 +596,22 @@ class HomeScreen extends StatelessWidget {
                               backCardOffset: const Offset(12, 0),
                               numberOfCardsDisplayed: items.length >= 2 ? 2 : 1,
                               cardsCount: items.length,
+                              onSwipe:
+                                  (previousIndex, currentIndex, direction) {
+                                    if (direction == CardSwiperDirection.left) {
+                                      productInterestController.updateInterest(
+                                        false,
+                                        items[currentIndex!].id.toString(),
+                                      );
+                                    } else if (direction ==
+                                        CardSwiperDirection.right) {
+                                      productInterestController.updateInterest(
+                                        true,
+                                        items[currentIndex!].id.toString(),
+                                      );
+                                    }
+                                    return true;
+                                  },
                               cardBuilder: (context, index, _, __) {
                                 final product = items[index];
                                 final double? productLat =

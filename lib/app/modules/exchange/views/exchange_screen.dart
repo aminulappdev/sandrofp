@@ -30,7 +30,7 @@ class ExchangeView extends GetView<ExchangeController> {
           Expanded(
             child: GetBuilder<ExchangeController>(
               builder: (ctrl) => SingleChildScrollView(
-                padding: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(12.0), 
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

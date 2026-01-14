@@ -6,7 +6,7 @@ import 'package:sandrofp/app/services/network_caller/network_caller.dart';
 import 'package:sandrofp/app/urls.dart';
 
 class ContentController extends GetxController {
-  final RxBool isLoading = false.obs;
+  final RxBool isLoading = false.obs; 
   final NetworkCaller _networkCaller = NetworkCaller();
 
   final RxString title = 'Content'.obs;

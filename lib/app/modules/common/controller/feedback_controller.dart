@@ -8,9 +8,9 @@ import 'package:sandrofp/app/services/network_caller/custom.dart';
 import 'package:sandrofp/app/services/network_caller/network_caller.dart';
 import 'package:sandrofp/app/urls.dart';
 
-class FeedbackController extends GetxController {
+class FeedbackController extends GetxController { 
   final NetworkCaller _networkCaller = NetworkCaller();
-  final RxBool isLoading = false.obs;
+  final RxBool isLoading = false.obs; 
  
   late String sellerId;
   late String exchangeId;
