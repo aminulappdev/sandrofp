@@ -96,7 +96,7 @@ class _OnboardingScreen03State extends State<OnboardingScreen03> {
                           title: 'Next',
                           color: AppColors.yellowColor,
                           onPress: () {
-                            Get.to(() => const SignInScreen());
+                            Get.to(() => SignInScreen());
                           },
                         ),
                         heightBox50,

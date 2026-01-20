@@ -12,7 +12,7 @@ class ProductInterestController extends GetxController {
   final Rx<NotificationsModel?> _notificationModel = Rx<NotificationsModel?>(
     null,
   );
-
+  
   // লোডিং স্টেট
   final RxBool isLoading = true.obs;
 

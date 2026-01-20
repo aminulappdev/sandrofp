@@ -187,7 +187,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             final dashboardController = Get.find<DashboardController>();
             dashboardController.tabIndex = 2;
             dashboardController.pageController.jumpToPage(2);
-            Get.offAll(() => const SignInScreen());
+            Get.offAll(() =>  SignInScreen());
           },
           iconData: Icons.delete,
           subtitle: '',

@@ -44,7 +44,7 @@ class SignInController extends GetxController {
       if (data != null) {
         emailCtrl.clear();
         passwordCtrl.clear();
-        StorageUtil.saveData(StorageUtil.userAccessToken, data['accessToken']);
+        StorageUtil.saveData(StorageUtil.userAccessToken, data['accessToken']); 
         print(StorageUtil.getData(StorageUtil.userAccessToken));
         StorageUtil.saveData(StorageUtil.userId, data['user']['_id']);
         print(StorageUtil.getData(StorageUtil.userId));     

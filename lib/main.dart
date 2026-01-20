@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -28,6 +29,7 @@ void main() async {
   });
 
   final SocketService socketService = Get.put(SocketService());
+  await Firebase.initializeApp();
   await socketService.init();
   runApp(const MyApp());
 }

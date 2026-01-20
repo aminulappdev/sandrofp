@@ -484,7 +484,7 @@ class HomeScreen extends StatelessWidget {
                             );
                           }
                           return SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.58,
+                            height: MediaQuery.of(context).size.height * 0.60,
                             child: CardSwiper(
                               padding: const EdgeInsets.only(
                                 left: 0,
@@ -586,7 +586,7 @@ class HomeScreen extends StatelessWidget {
                             );
                           }
                           return SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.58,
+                            height: MediaQuery.of(context).size.height * 0.60,
                             child: CardSwiper(
                               padding: const EdgeInsets.only(
                                 left: 0,

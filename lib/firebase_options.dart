@@ -41,48 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDOB5fsKpGMFq5cxWJLp2M5b5cdMWh-5NU',
-    appId: '1:749908221061:web:823fe8ad9d11b32b24ddec',
-    messagingSenderId: '749908221061',
-    projectId: 'alyse-rose',
-    authDomain: 'alyse-rose.firebaseapp.com',
-    storageBucket: 'alyse-rose.firebasestorage.app',
-    measurementId: 'G-6TB4MYQJRH',
+    apiKey: 'AIzaSyDW6lE40tqDKGj3GtC77IX_AMyYBty5Jtc',
+    appId: '1:85949404610:web:ab81d515ed000e9adc725b',
+    messagingSenderId: '85949404610',
+    projectId: 'sandrop-eae65',
+    authDomain: 'sandrop-eae65.firebaseapp.com',
+    storageBucket: 'sandrop-eae65.firebasestorage.app',
+    measurementId: 'G-98Z3RJMKYW',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAVA8HOshOwZQOKsHklW7uQqCWQ2cZPro0',
-    appId: '1:749908221061:android:57e984f1d8dc30c324ddec',
-    messagingSenderId: '749908221061',
-    projectId: 'alyse-rose',
-    storageBucket: 'alyse-rose.firebasestorage.app',
+    apiKey: 'AIzaSyA8A8WAMKbRSuMUOCVyLibX9XWd-NYRdoQ',
+    appId: '1:85949404610:android:c58dab0f507196e2dc725b',
+    messagingSenderId: '85949404610',
+    projectId: 'sandrop-eae65',
+    storageBucket: 'sandrop-eae65.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDAJKYsVJNjRl5HTuAfml1G6amxSsQMi1o',
-    appId: '1:749908221061:ios:0206701ea5dd16b124ddec',
-    messagingSenderId: '749908221061',
-    projectId: 'alyse-rose',
-    storageBucket: 'alyse-rose.firebasestorage.app',
-    iosBundleId: 'com.example.alyseRoe',
+    apiKey: 'AIzaSyAVIx9R8Vy8YGc375wwAtrnnsGkNf9c3uE',
+    appId: '1:85949404610:ios:7a5730fcf33992d2dc725b',
+    messagingSenderId: '85949404610',
+    projectId: 'sandrop-eae65',
+    storageBucket: 'sandrop-eae65.firebasestorage.app',
+    iosBundleId: 'com.example.sandrofp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDAJKYsVJNjRl5HTuAfml1G6amxSsQMi1o',
-    appId: '1:749908221061:ios:0206701ea5dd16b124ddec',
-    messagingSenderId: '749908221061',
-    projectId: 'alyse-rose',
-    storageBucket: 'alyse-rose.firebasestorage.app',
-    iosBundleId: 'com.example.alyseRoe',
+    apiKey: 'AIzaSyAVIx9R8Vy8YGc375wwAtrnnsGkNf9c3uE',
+    appId: '1:85949404610:ios:7a5730fcf33992d2dc725b',
+    messagingSenderId: '85949404610',
+    projectId: 'sandrop-eae65',
+    storageBucket: 'sandrop-eae65.firebasestorage.app',
+    iosBundleId: 'com.example.sandrofp',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDOB5fsKpGMFq5cxWJLp2M5b5cdMWh-5NU',
-    appId: '1:749908221061:web:0cc105fd81101eb224ddec',
-    messagingSenderId: '749908221061',
-    projectId: 'alyse-rose',
-    authDomain: 'alyse-rose.firebaseapp.com',
-    storageBucket: 'alyse-rose.firebasestorage.app',
-    measurementId: 'G-D7F0MY0BTE',
+    apiKey: 'AIzaSyDW6lE40tqDKGj3GtC77IX_AMyYBty5Jtc',
+    appId: '1:85949404610:web:c882f6f12304d745dc725b',
+    messagingSenderId: '85949404610',
+    projectId: 'sandrop-eae65',
+    authDomain: 'sandrop-eae65.firebaseapp.com',
+    storageBucket: 'sandrop-eae65.firebasestorage.app',
+    measurementId: 'G-7R89P25Q3N',
   );
+
 }

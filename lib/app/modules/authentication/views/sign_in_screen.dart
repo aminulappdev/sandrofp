@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sandrofp/app/modules/authentication/controller/google_auth_controller.dart';
 import 'package:sandrofp/app/modules/authentication/controller/sign_in_controller.dart';
 import 'package:sandrofp/app/modules/authentication/views/forgot_password_screen.dart';
 import 'package:sandrofp/app/modules/authentication/widget/auth_header_widget.dart';
@@ -10,17 +11,55 @@ import 'package:sandrofp/app/modules/authentication/widget/label_name_widget.dar
 import 'package:sandrofp/app/modules/authentication/widget/liner_widger.dart';
 import 'package:sandrofp/app/modules/authentication/widget/sign_up_widget.dart';
 import 'package:sandrofp/app/res/common_widgets/custom_elevated_button.dart';
+import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
 import 'package:sandrofp/app/res/custom_style/custom_size.dart';
 import 'package:sandrofp/app/services/network_caller/validator_service.dart';
 import 'package:sandrofp/gen/assets.gen.dart';
 
 class SignInScreen extends GetView<SignInController> {
-  const SignInScreen({super.key});
+  SignInScreen({super.key});
+
+  final GoogleAuthController googleAuthController = Get.put(
+    GoogleAuthController(),
+  );
+
+  Future<void> onTapGoogleSignIn(BuildContext context) async {
+    final bool isSuccess = await googleAuthController.signInWithGoogle();
+    if (isSuccess && context.mounted) {
+      showSuccess(
+        'Successfully logged in with Google',
+      ); // Localized "Successfully logged in with Google"
+    } else if (context.mounted) {
+      final message =
+          googleAuthController.errorMessage ??
+          'Google login failed'; // Localized "Google login failed"
+      if (message.contains('credentials')) {
+        await showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: Text('Sign In Issue'), // Localized "Account Issue"
+            content: Text(
+              'This email is already registered with email-password. Please select another Google account.',
+            ), // Localized "This email is already registered with email-password. Please select another Google account."
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('OK'), // Localized "OK"
+              ),
+            ],
+          ),
+        );
+        await onTapGoogleSignIn(context);
+      } else {
+        showError(message);
+      }
+    }
+  }
 
   @override
-  Widget build(BuildContext context) { 
+  Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding( 
+      body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Column(
@@ -114,7 +153,9 @@ class SignInScreen extends GetView<SignInController> {
                       borderColor: Colors.grey,
                       iconData: Assets.images.google.keyName,
                       title: 'Login with Google',
-                      onPress: () {},
+                      onPress: () {
+                        onTapGoogleSignIn(context);
+                      },
                     ),
                     heightBox30,
 

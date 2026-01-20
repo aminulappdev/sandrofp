@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "85949404610",
+    "project_id": "sandrop-eae65",
+    "storage_bucket": "sandrop-eae65.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85949404610:android:c58dab0f507196e2dc725b",
+        "android_client_info": {
+          "package_name": "com.example.sandrofp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8A8WAMKbRSuMUOCVyLibX9XWd-NYRdoQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
