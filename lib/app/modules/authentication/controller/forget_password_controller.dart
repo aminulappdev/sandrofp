@@ -11,7 +11,7 @@ import 'package:sandrofp/app/urls.dart';
 class ForgotPasswordController extends GetxController {
   late final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  final TextEditingController emailCtrl = TextEditingController();
+  final TextEditingController emailCtrl = TextEditingController(); 
   final RxBool isLoading = false.obs;
 
   final NetworkCaller _networkCaller = NetworkCaller();

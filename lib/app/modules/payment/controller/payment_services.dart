@@ -8,7 +8,7 @@ import 'package:sandrofp/app/res/common_widgets/custom_snackbar.dart';
 
 class PaymentService {
   final PaymentController paymentController = PaymentController();
-
+ 
   Future<void> payment(BuildContext context, String referenceId) async {
     final bool isSuccess = await paymentController.getPayment(referenceId);
 

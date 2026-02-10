@@ -10,7 +10,7 @@ class PaymentController extends GetxController {
   bool get inProgress => _inProgress;
 
   String? _errorMessage;
-  String? get errorMessage => _errorMessage;
+  String? get errorMessage => _errorMessage; 
 
   String? _accessToken;
   String? get accessToken => _accessToken;
@@ -18,7 +18,7 @@ class PaymentController extends GetxController {
   PaymentModel? paymentModel;
   PaymentModel? get paymentData => paymentModel;
 
-  
+   
 
   Future<bool> getPayment(String amount) async {
     bool isSuccess = false;
