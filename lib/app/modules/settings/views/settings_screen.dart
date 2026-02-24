@@ -177,7 +177,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       builder: (BuildContext context) {
         return CustomDialog(
           yesText: 'Yes',
-          noText: 'No',
+          noText: 'No', 
           noOntap: () {
             Navigator.pop(context);
           },
